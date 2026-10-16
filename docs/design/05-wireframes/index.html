@@ -1,0 +1,1301 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product A — Wireframes (low-fi) · 桜水産市場 業務支援システム</title>
+<!--
+  Low-fidelity wireframes for the 9 core screens. Source of truth = docs/design/04-screen-specs/scr-*.md (post-review revision 2026-10-16).
+  Self-contained: inline CSS + vanilla JS, no network. Grey boxes only; accent = primary button, red/yellow = error/warning.
+  Variant switching: each .scr has a .vbar; elements with data-show="v1 v2" are visible only for those variants.
+  Callouts (.co) are numbered per screen by JS and listed in that screen's "注記" block (title attr = note).
+  Message codes: RJ-xx (shared table, SCR-016 §9), V016-xx / V019-xx, M-xx (SCR-001), E-xx (SCR-010), shared M-06 / AUTH-403 / NET-01 (README).
+-->
+<style>
+:root{--acc:#1f5fbf;--err:#c62828;--warn:#b58900;--line:#999;--mut:#666;--fill:#e7e7e7}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font:14px/1.55 system-ui,-apple-system,"Segoe UI","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;color:#222;background:#f2f2f2}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.page{max-width:1240px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:0}
+h2{font-size:18px;margin:0 0 4px}
+h3{font-size:14px;margin:12px 0 6px}
+.sub{color:var(--mut);font-size:12px}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:12px 16px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.toc a{border:1px solid var(--line);background:#fafafa;padding:4px 8px;font-size:12px;text-decoration:none;min-height:32px;display:inline-flex;align-items:center}
+section.blk{background:#fff;border:1px solid var(--line);margin:16px 0;padding:14px;scroll-margin-top:8px}
+.meta{font-size:12px;color:var(--mut);margin-bottom:8px}
+.meta code{background:var(--fill);padding:0 4px}
+.vbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:4px;align-items:center;background:#fff;padding:6px 0;border-bottom:1px solid #ccc;margin-bottom:6px}
+.vbar span{font-size:12px;color:var(--mut);margin-right:4px}
+.vbar button{font:inherit;font-size:12px;min-height:36px;padding:4px 10px;border:1px solid #777;background:#f7f7f7;cursor:pointer}
+.vbar button[aria-pressed="true"]{background:#222;color:#fff;border-color:#222}
+.frame{border:1px solid var(--line);background:#fafafa;margin:10px 0}
+.url{background:#ddd;font:12px ui-monospace,Consolas,monospace;padding:4px 8px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.rg{border:1px dashed #aaa;padding:12px 10px 10px;margin:10px;background:#fff;position:relative}
+.rg>.rl{position:absolute;top:-9px;left:8px;background:#fff;font-size:10px;color:var(--mut);padding:0 4px;letter-spacing:.04em}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:1100px){.cols{grid-template-columns:1fr}}
+.f{display:flex;flex-direction:column;gap:3px;flex:1 1 150px;min-width:130px}
+.f.w2{flex-basis:240px}.f.w3{flex-basis:100%}.f.n{flex:0 1 110px;min-width:100px}
+.lb{font-size:12px;font-weight:600}
+.lb .vi{display:block;font-weight:400;font-size:11px;color:var(--mut)}
+.req{color:var(--err);font-style:normal;margin-left:2px}
+.id{font:10px ui-monospace,Consolas,monospace;background:var(--fill);padding:0 4px;margin-left:4px;font-weight:400}
+.ip{border:1px solid #888;background:#fff;min-height:40px;padding:8px;font-size:13px;position:relative}
+.ip.sel::after{content:"▾";position:absolute;right:8px;color:#666}
+.ip.ta{min-height:60px}
+.ip.ro{background:#eee;border-style:dashed}
+.ip.ph{color:#999}
+.ip.bad{border:2px solid var(--err)}
+.hint{font-size:11px;color:var(--mut)}
+.msg{font-size:11px;color:var(--err)}
+.dd{border:1px solid #888;background:#fff;font-size:12px;margin-top:-1px}
+.dd div{padding:4px 8px;border-top:1px solid #eee}
+.dd .on{background:#e9e9e9}
+.chk{display:inline-flex;align-items:center;gap:6px;min-height:32px;font-size:13px}
+.box{display:inline-block;width:16px;height:16px;border:1px solid #555;background:#fff;text-align:center;line-height:14px;font-size:12px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid #555;background:#eee;padding:6px 12px;min-height:44px;font-size:13px;font-family:inherit;color:#222}
+.btn.pri{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:600}
+.btn.pri kbd{color:#222}
+.btn.dis{opacity:.5;border-style:dashed;cursor:not-allowed}
+.btn.big{min-height:56px;padding:8px 18px;font-size:15px}
+.btn.on{background:#222;color:#fff}
+.perm{font:10px ui-monospace,Consolas,monospace;background:#fff;color:#333;border:1px solid #999;padding:0 4px;font-weight:400}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.bn{border-left:5px solid #777;padding:8px 12px;margin:6px 0;font-size:13px;background:#f0f0f0}
+.bn .vi{display:block;font-size:12px;color:#444}
+.bn.err{background:#fde8e8;border-color:var(--err)}
+.bn.warn{background:#fff4cc;border-color:var(--warn)}
+.bn.ok{background:#e9f0fb;border-color:var(--acc)}
+.bn code{font-size:11px;background:rgba(0,0,0,.08);padding:0 4px}
+.badge{display:inline-block;border:1px solid #444;border-radius:10px;padding:0 8px;font-size:12px;background:#fff}
+.badge.dk{background:#555;color:#fff}
+.net{font-size:12px;border:1px solid #777;padding:2px 8px;background:#fff}
+.net.off{border-color:var(--err);color:var(--err);font-weight:600}
+.co{display:inline-flex;align-items:center;font:10px/1.5 ui-monospace,Consolas,monospace;background:#333;color:#fff;border-radius:9px;padding:0 6px 0 0;margin:0 3px;vertical-align:middle;white-space:nowrap;cursor:help;font-style:normal;font-weight:400}
+.co b{background:#fff;color:#222;border:1px solid #333;border-radius:9px;padding:0 5px;margin-right:4px}
+kbd{font:11px ui-monospace,Consolas,monospace;border:1px solid #777;border-bottom-width:2px;padding:0 4px;background:#fff;border-radius:3px}
+.absent{color:#888;text-decoration:line-through}
+.tw{overflow-x:auto}
+table.t{border-collapse:collapse;width:100%;font-size:12px;background:#fff}
+.t th,.t td{border:1px solid #bbb;padding:5px 6px;text-align:left;vertical-align:top;white-space:nowrap}
+.t th{background:var(--fill);font-weight:600}
+.t th .vi{display:block;font-weight:400;color:var(--mut);font-size:10px}
+.t td.num,.t th.num{text-align:right}
+.t td.wrap{white-space:normal}
+.t tr.hl td{background:#fff4cc}
+.t tr.er td{background:#fde8e8}
+.dlg{border:2px solid #555;background:#fff;box-shadow:4px 4px 0 #bbb;padding:10px 12px;margin:10px}
+.dlg>h4{margin:0 0 8px;font-size:13px;border-bottom:1px solid #ccc;padding-bottom:4px}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kpi>div{border:1px solid #888;background:#fff;padding:8px;min-height:72px}
+.kpi b{display:block;font-size:22px}
+.kpi small{color:var(--mut)}
+.qr{width:120px;height:120px;border:1px solid #555;background:repeating-linear-gradient(45deg,#ccc 0 6px,#fff 6px 12px);display:flex;align-items:center;justify-content:center;font-size:11px}
+.notes{font-size:12px;margin-top:10px;border-top:1px solid #ccc;padding-top:6px}
+.notes summary{cursor:pointer;font-weight:600;min-height:32px;display:flex;align-items:center}
+.notes ol{columns:2;column-gap:24px;margin:4px 0;padding-left:28px}
+@media (max-width:1100px){.notes ol{columns:1}}
+.notes li{break-inside:avoid}
+.notes code{background:var(--fill);padding:0 3px}
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px 16px;font-size:12px}
+.legend>div{display:flex;gap:8px;align-items:center}
+.shell{display:grid;grid-template-columns:200px 1fr;min-height:260px}
+.shell nav{border-right:1px solid var(--line);background:#efefef;padding:8px;font-size:12px}
+.shell nav div{padding:6px;min-height:36px;border-bottom:1px solid #ddd}
+.shell nav .grp{font-weight:700;background:#e2e2e2;min-height:auto}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:8px 10px;background:#fff;border-bottom:1px solid var(--line)}
+.skel{height:14px;background:#ddd;margin:6px 0}
+.dec td:first-child{font-family:ui-monospace,Consolas,monospace}
+.tl{display:flex;border:1px solid #888;font-size:11px;background:#fff}
+.tl>div{padding:6px;border-right:1px solid #888}
+.tl>div:last-child{border-right:0}
+.tl .cur{background:#555;color:#fff}
+.tl .fut{background:repeating-linear-gradient(45deg,#eee 0 6px,#fff 6px 12px)}
+.chg{font-size:10px;border:1px solid var(--warn);background:#fff4cc;padding:0 4px;margin-left:6px}
+svg a:hover rect{fill:#e9f0fb}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media print{.vbar{position:static}}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>桜水産市場 業務支援システム — 低忠実度ワイヤーフレーム</h1>
+  <div class="sub">Wireframe low-fi 9 màn hình · nguồn: <code>docs/design/04-screen-specs/*.md</code> (bản sau review 2026-10-16) · 業務日 hiện tại mẫu 2026/10/16 (金) <code>open</code> · desktop 1280 / tablet 1024</div>
+  <nav class="toc" aria-label="目次">
+    <a href="#legend">凡例 Legend</a><a href="#map">画面遷移 Map</a><a href="#shell">App shell・共通</a>
+    <a href="#scr-001">SCR-001 ログイン</a><a href="#scr-010">SCR-010 取引参加者</a><a href="#scr-012">SCR-012/013 入荷・下見</a>
+    <a href="#scr-016">SCR-016 相対取引</a><a href="#scr-019">SCR-019 せり結果</a><a href="#scr-029">SCR-029/030 引渡し</a>
+    <a href="#scr-024">SCR-024/025 照合・締め</a><a href="#scr-022">SCR-022/023 修正申請</a><a href="#scr-034">SCR-034/035 規則・料率</a>
+  </nav>
+</header>
+<main class="page">
+
+<!-- ============ LEGEND ============ -->
+<section class="blk" id="legend">
+  <h2>凡例 / Chú giải</h2>
+  <div class="legend">
+    <div><span class="lb">ラベル<em class="req">*</em><span class="vi">Nhãn tiếng Việt</span></span> Nhãn JP chính, VI nhỏ bên dưới; <em class="req">*</em> = bắt buộc</div>
+    <div><code class="id">F-03</code> Mã field theo §5 của spec</div>
+    <div><span class="btn pri">確定 <span class="perm">trades.create</span></span> Nút chính (màu nhấn duy nhất) + mã quyền §7</div>
+    <div><span class="btn dis">確定 <span class="perm">trades.create</span></span> Nút disabled (viền đứt)</div>
+    <div><i class="co" title="ví dụ"><b>n</b>BC-06</i> Chú thích đánh số → quy tắc spec (BC / RJ / G / ADR…), danh sách ở cuối mỗi màn hình</div>
+    <div><span class="bn err" style="margin:0">lỗi / chặn</span><span class="bn warn" style="margin:0">cảnh báo</span><span class="bn ok" style="margin:0">thành công / info</span></div>
+    <div><span class="ip ro" style="min-height:0;padding:2px 8px">chỉ đọc</span> Ô chỉ đọc / suy ra · <span class="ip sel" style="min-height:0;padding:2px 24px 2px 8px">select</span></div>
+    <div><span class="absent">không có</span> Thành phần cố ý KHÔNG tồn tại (bẫy RFP)</div>
+    <div><span class="badge">有効</span> Huy hiệu trạng thái (màu thật theo spec, wireframe để xám)</div>
+    <div><kbd>Alt</kbd>+<kbd>L</kbd> Phím tắt (SCR-016)</div>
+    <div>Thanh <b>Variant</b> dính trên đầu mỗi màn hình: bấm để đổi trạng thái §6 / nhánh §9</div>
+    <div>Tầng validation: <b>C</b> client · <b>A</b> API · <b>D</b> DB / <code>fn_*</code> (nơi quyết định)</div>
+  </div>
+  <h3>Không gian mã thông báo (README spec)</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Mã</th><th>Phạm vi</th><th>JP</th><th>VI</th></tr>
+    <tr><td>RJ-00…RJ-14, RJ-01a, RJ-08a</td><td class="wrap">Từ chối nghiệp vụ — bảng chung, chủ sở hữu SCR-016 §9 (dùng lại ở SCR-019)</td><td colspan="2" class="wrap">Xem <a href="#scr-016">SCR-016</a></td></tr>
+    <tr><td>V016-xx / V019-xx</td><td>Lỗi nhập của từng màn hình</td><td colspan="2">—</td></tr>
+    <tr><td>M-xx / E-xx</td><td>Cục bộ SCR-001 / SCR-010</td><td colspan="2">—</td></tr>
+    <tr><td><b>M-06</b> (SCR-001)</td><td class="wrap">Vai trò thuộc <code>mfa_required_roles</code>, phiên chưa AAL2 → 401</td><td class="wrap">この役割では二要素認証が必須です。認証アプリを登録してください。</td><td class="wrap">Vai trò này bắt buộc xác thực hai lớp. Hãy đăng ký ứng dụng xác thực.</td></tr>
+    <tr><td><b>AUTH-403</b></td><td>Thiếu quyền (API, màn hình, nút)</td><td>この操作を行う権限がありません。</td><td>Bạn không có quyền thực hiện thao tác này.</td></tr>
+    <tr><td><b>NET-01</b></td><td>Cần mạng, không có hàng đợi</td><td>この操作にはネットワーク接続が必要です。</td><td>Thao tác này cần có mạng.</td></tr>
+  </table></div>
+  <h3>Dữ liệu mẫu — theo Given của tiêu chí nghiệm thu (README: không dựa vào seed)</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Mã</th><th>Tên</th><th>Nhóm</th><th>Căn cứ</th><th>Trạng thái dùng trong wireframe</th><th>Nguồn</th></tr>
+    <tr><td>W-001</td><td>海洋水産卸</td><td>卸売業者</td><td>市場登録</td><td>有効</td><td>SCR-012 AC1</td></tr>
+    <tr><td>W-002</td><td>港魚類</td><td>卸売業者</td><td>市場登録</td><td>一時停止</td><td>SCR-012 AC2, SCR-016 AC9</td></tr>
+    <tr><td>M-001</td><td>丸吉商店</td><td>仲卸</td><td>許可</td><td>有効 2026/01/01–2026/12/31</td><td>SCR-016 AC1</td></tr>
+    <tr><td>M-002</td><td>山一水産</td><td>仲卸</td><td>許可</td><td>有効, 期限 2026/10/26 (còn 10 ngày)</td><td>SCR-010 AC7</td></tr>
+    <tr><td>M-003</td><td>金子漁業</td><td>仲卸</td><td>許可</td><td>失効 — valid_to 2026/10/15</td><td>SCR-010 AC1, SCR-016 AC2</td></tr>
+    <tr><td>M-004</td><td>大成商店</td><td>仲卸</td><td>許可</td><td>一時停止, 条件「是正報告書の提出」</td><td>SCR-010 AC3</td></tr>
+    <tr><td>M-005</td><td>（例）新規仲卸</td><td>仲卸</td><td>許可</td><td>開始前 — valid_from 2026/10/20</td><td>SCR-016 AC14</td></tr>
+    <tr><td>B-001</td><td>白熊スーパー</td><td>売買参加者</td><td>承認</td><td>有効</td><td>SCR-019 AC2</td></tr>
+    <tr><td>B-003</td><td>北斗加工</td><td>売買参加者</td><td>承認</td><td>一時停止 (SCR-010 AC2) / 再審査中 (SCR-010 AC5, SCR-016 AC3)</td><td>2 kịch bản</td></tr>
+    <tr><td>R-003</td><td>割烹しおみ</td><td>買出人</td><td>取引地点登録</td><td>期限切れ — valid_to 2026/10/15</td><td>SCR-016 AC4</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ MAP ============ -->
+<section class="blk" id="map">
+  <h2>画面遷移図 / Sơ đồ chuyển màn hình</h2>
+  <div class="meta">Bấm ô để tới màn hình. Mũi tên liền = điều hướng chính; đứt = liên kết từ thông báo. Mọi trang: hết phiên (M-07) / chưa AAL2 (M-06) → SCR-001.</div>
+  <svg viewBox="0 0 940 400" width="100%" role="img" aria-label="Screen transition map" style="max-width:940px;font:12px system-ui,sans-serif">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#333"/></marker></defs>
+    <g stroke="#333" fill="none" marker-end="url(#ar)">
+      <path d="M85,90V168"/>
+      <path d="M160,190L270,92"/>
+      <path d="M350,60H388"/>
+      <path d="M540,60H578"/>
+      <path d="M730,60H768"/>
+      <path d="M160,205H578"/>
+      <path d="M730,195L840,92"/>
+      <path d="M85,230V330H388"/>
+      <path d="M620,90L500,298" stroke-dasharray="5 4"/>
+      <path d="M600,230L520,298" stroke-dasharray="5 4"/>
+      <path d="M722,90L830,298" stroke-dasharray="5 4"/>
+      <path d="M700,230L800,298" stroke-dasharray="5 4"/>
+      <path d="M880,90V298"/>
+      <path d="M275,90V385H860V362"/>
+      <path d="M85,330V370H655V362"/>
+      <path d="M770,345H732" stroke-dasharray="5 4"/>
+    </g>
+    <g fill="#333" font-size="10">
+      <text x="92" y="130">ログイン後</text>
+      <text x="185" y="125">02:00 業務日開始</text>
+      <text x="352" y="52">open</text>
+      <text x="547" y="52">選択</text>
+      <text x="737" y="52">確定</text>
+      <text x="300" y="200">取引メニュー 2番目 (BC-24)</text>
+      <text x="785" y="150">せり取引</text>
+      <text x="92" y="322">取引参加者メニュー</text>
+      <text x="470" y="190" transform="rotate(-58 470 190)">RJ-01…RJ-08 リンク</text>
+      <text x="760" y="175">RJ-10</text>
+      <text x="875" y="200" text-anchor="end">impact=delivery</text>
+      <text x="300" y="396">締め済 → 修正は SCR-022（-R/-A）</text>
+      <text x="92" y="364">設定 › 規則・料率</text>
+      <text x="738" y="338">規則</text>
+    </g>
+    <g stroke="#333" fill="#fff">
+      <a href="#scr-001"><rect x="10" y="30" width="150" height="60"/><text x="20" y="55" fill="#222" stroke="none" font-weight="700">SCR-001</text><text x="20" y="75" fill="#222" stroke="none">ログイン / MFA</text></a>
+      <a href="#shell"><rect x="10" y="170" width="150" height="60" stroke-dasharray="4 3"/><text x="20" y="195" fill="#222" stroke="none" font-weight="700">App shell</text><text x="20" y="215" fill="#222" stroke="none">メニュー（権限別）</text></a>
+      <a href="#scr-024"><rect x="200" y="30" width="150" height="60"/><text x="210" y="55" fill="#222" stroke="none" font-weight="700">SCR-024/025</text><text x="210" y="75" fill="#222" stroke="none">業務日開始・照合・締め</text></a>
+      <a href="#scr-012"><rect x="390" y="30" width="150" height="60"/><text x="400" y="55" fill="#222" stroke="none" font-weight="700">SCR-012/013</text><text x="400" y="75" fill="#222" stroke="none">入荷受付・下見評価</text></a>
+      <a href="#scr-016"><rect x="580" y="30" width="150" height="60" stroke-width="2.5"/><text x="590" y="55" fill="#222" stroke="none" font-weight="700">SCR-016 (主 ~90%)</text><text x="590" y="75" fill="#222" stroke="none">相対取引入力</text></a>
+      <a href="#scr-029"><rect x="770" y="30" width="150" height="60"/><text x="780" y="55" fill="#222" stroke="none" font-weight="700">SCR-029/030</text><text x="780" y="75" fill="#222" stroke="none">引渡し・例外・係争</text></a>
+      <a href="#scr-019"><rect x="580" y="170" width="150" height="60"/><text x="590" y="195" fill="#222" stroke="none" font-weight="700">SCR-019 (副 ~10%)</text><text x="590" y="215" fill="#222" stroke="none">せり結果入力</text></a>
+      <a href="#scr-010"><rect x="390" y="300" width="150" height="60"/><text x="400" y="325" fill="#222" stroke="none" font-weight="700">SCR-010</text><text x="400" y="345" fill="#222" stroke="none">取引参加者・参加資格</text></a>
+      <a href="#scr-034"><rect x="580" y="300" width="150" height="60"/><text x="590" y="325" fill="#222" stroke="none" font-weight="700">SCR-034/035</text><text x="590" y="345" fill="#222" stroke="none">規則・料率バージョン</text></a>
+      <a href="#scr-022"><rect x="770" y="300" width="150" height="60"/><text x="780" y="325" fill="#222" stroke="none" font-weight="700">SCR-022/023</text><text x="780" y="345" fill="#222" stroke="none">確定後修正申請・承認</text></a>
+    </g>
+  </svg>
+</section>
+
+<!-- ============ APP SHELL ============ -->
+<section class="blk scr" id="shell">
+  <h2>App shell・共通状態 / Khung ứng dụng & trạng thái chung</h2>
+  <div class="meta">Không có spec riêng — suy ra từ §2 của các spec (menu, 業務日, nhãn mạng) và bảng thông báo dùng chung của README.</div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="norm">通常 (trade)</button><button data-v="noday">業務日なし</button><button data-v="load">読込中</button><button data-v="deny">権限なし AUTH-403</button><button data-v="mfa">AAL2 未達 M-06</button><button data-v="off">オフライン NET-01</button>
+  </div>
+  <div class="frame">
+    <div class="url"><span>/ (role: trade)</span><span>ログイン後の既定: /trades/new <i class="co" title="相対 là phím tắt mặc định sau đăng nhập của trade (SCR-016 §2)">BC-24</i></span></div>
+    <div class="bar">
+      <b>桜水産市場 業務支援システム</b>
+      <span data-show="norm load deny mfa off">業務日 <b>2026/10/16 (金)</b> <span class="badge">営業中</span> <i class="co" title="Ngày hiện tại = ngày open duy nhất (fn_current_business_date); đồng hồ chỉ cảnh báo/gợi ý">ADR-009</i></span>
+      <span data-show="noday">業務日 <b>— 未開始</b> <span class="hint">(ngày gần nhất 2026/10/16 締め済)</span></span>
+      <span data-show="norm noday load deny mfa"><span class="net">● オンライン</span> 未同期 0</span>
+      <span data-show="off"><span class="net off">● オフライン</span> 未同期 2 <i class="co" title="Chỉ tiếp nhận lô và giao hàng được xếp hàng offline">ADR-010</i></span>
+      <span>佐藤 一郎（trade）<span class="btn" style="min-height:36px">ログアウト</span> <i class="co" title="Máy dùng chung: đăng xuất xóa nháp cục bộ">BC-64</i></span>
+    </div>
+    <div class="shell">
+      <nav aria-label="メニュー">
+        <div class="grp">取引 / Giao dịch</div>
+        <div><a href="#scr-016">① 相対取引入力</a> <i class="co" title="Mục đầu tiên nhóm 取引; せり là phụ">BC-24</i></div>
+        <div><a href="#scr-019">② せり結果入力</a></div>
+        <div>取引一覧 <span class="hint">(SCR-018 chưa có spec)</span></div>
+        <div class="grp">業務</div>
+        <div><a href="#scr-012">入荷・ロット</a></div>
+        <div><a href="#scr-029">引渡し</a></div>
+        <div><a href="#scr-010">取引参加者</a></div>
+        <div><a href="#scr-022">修正申請</a></div>
+        <div><a href="#scr-024">日次照合・締め</a></div>
+        <div class="grp">設定</div>
+        <div><a href="#scr-034">規則・料率</a> <span class="hint">(rules.read / draft / approve)</span></div>
+        <div class="hint">Menu lọc theo quyền của vai trò <i class="co" title="Ma trận quyền roles × permissions; mã mới đăng ký ở ADR-004">ADR-004</i></div>
+      </nav>
+      <div style="padding:10px">
+        <div data-show="norm"><div class="rg"><span class="rl">CONTENT</span>Nội dung màn hình (xem từng SCR bên dưới)</div></div>
+        <div data-show="noday"><div class="bn warn">業務日を開始してください<span class="vi">Chưa có ngày open: màn hình ghi (SCR-012/016/019/029) khóa form; liên kết SCR-024</span> <a href="#scr-024">SCR-024 →</a></div></div>
+        <div data-show="load"><div class="rg"><span class="rl">LOADING</span><div class="skel" style="width:40%"></div><div class="skel"></div><div class="skel"></div><div class="skel" style="width:70%"></div><div class="hint">Skeleton; form disabled</div></div></div>
+        <div data-show="deny"><div class="rg" style="text-align:center;padding:30px"><span class="rl">403</span>
+          <div style="font-size:18px;font-weight:700">この操作を行う権限がありません。</div><div>Bạn không có quyền thực hiện thao tác này.</div>
+          <div class="hint">AUTH-403 — một câu cho mọi màn hình, API 403 và nút bị chặn <i class="co" title="Thông báo dùng chung README">AUTH-403</i></div>
+          <div class="acts" style="justify-content:center"><span class="btn">ホームへ戻る</span></div></div></div>
+        <div data-show="mfa"><div class="bn err">この役割では二要素認証が必須です。認証アプリを登録してください。<span class="vi">Vai trò này bắt buộc xác thực hai lớp. Hãy đăng ký ứng dụng xác thực.</span><code>M-06 · 401</code> → proxy đưa về /login/mfa · MFA chỉ theo phiên, không hỏi lại theo thao tác <i class="co" title="Một cơ chế MFA (AAL2) cho system_settings.mfa_required_roles">G-19</i></div></div>
+        <div data-show="off"><div class="bn err">この操作にはネットワーク接続が必要です。<span class="vi">Thao tác này cần có mạng. (NET-01 — dùng khi thao tác không có hàng đợi; SCR-012/029 xếp hàng; SCR-016/019 lưu nháp với RJ-13 / V019-13)</span> <i class="co" title="Thông báo dùng chung README">NET-01</i></div></div>
+      </div>
+    </div>
+  </div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-001 ============ -->
+<section class="blk scr" id="scr-001">
+  <h2>SCR-001 ログイン / 二要素認証 — Đăng nhập + MFA</h2>
+  <div class="meta"><code>/login</code>, <code>/login/mfa</code> · công khai · <code>?next=</code> chỉ nhận <code>/…</code> không <code>//</code> · Spec: <a href="../04-screen-specs/scr-001-login.md">scr-001-login.md</a></div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="pw">Bước 1 パスワード</button><button data-v="sending">送信中</button><button data-v="m02">M-02 誤り</button><button data-v="m03">M-03 一時ロック</button><button data-v="m04">M-04 無効</button><button data-v="m07">M-07 タイムアウト</button><button data-v="m08">M-08 オフライン</button><button data-v="mfa">Bước 2 MFA 確認</button><button data-v="enroll">MFA 初回登録</button>
+  </div>
+  <div class="cols">
+  <div class="frame" style="max-width:460px">
+    <div class="url"><span data-show="pw sending m02 m03 m04 m07 m08">/login?next=/trades/new</span><span data-show="mfa enroll">/login/mfa</span><span>card 420px</span></div>
+    <div class="rg"><span class="rl">1 HEADER</span>
+      <div style="font-weight:700;font-size:16px">桜水産市場 業務支援システム</div><div class="sub">Hệ thống hỗ trợ nghiệp vụ chợ thủy sản Sakura</div>
+    </div>
+    <div class="rg" role="alert"><span class="rl">2 ALERT role=alert</span>
+      <div data-show="pw sending mfa" class="hint">(trống)</div>
+      <div data-show="m02" class="bn err">メールアドレスまたはパスワードが正しくありません。<span class="vi">Email hoặc mật khẩu không đúng.</span><code>M-02 · 401</code> <i class="co" title="Dùng chung cho email không tồn tại và sai mật khẩu — không lộ tài khoản">BC-86</i></div>
+      <div data-show="m03" class="bn err">ログイン失敗が続いたため、03:47までロックされています。時間をおいて再度お試しいただくか、システム管理者に連絡してください。<span class="vi">Sai quá nhiều lần, tài khoản bị khóa tạm đến 03:47. Thử lại sau hoặc liên hệ quản trị hệ thống.</span><code>M-03 · 423</code> <i class="co" title="login_max_failures=5 / window 15 / lock 15 phút — system_settings (fn_setting, hiệu lực ngay, S); không lộ số lần sai">G-23</i></div>
+      <div data-show="m04" class="bn err">このアカウントは無効化されているか、役割が割り当てられていません。<span class="vi">Tài khoản đã bị khóa hoặc chưa được gán vai trò.</span><code>M-04 · 403</code> — phiên đã signOut</div>
+      <div data-show="m07" class="bn warn">一定時間操作がなかったため、ログアウトしました。再度ログインしてください。<span class="vi">Phiên đã hết do không thao tác. Đăng nhập lại.</span><code>M-07 · ?reason=timeout</code> <i class="co" title="session_idle_timeout_min=30 (system_settings, S), cookie last_seen ở proxy.ts">BC-86</i></div>
+      <div data-show="m08" class="bn err">ネットワークに接続できません。接続を確認してください。<span class="vi">Không kết nối được mạng. Kiểm tra kết nối.</span><code>M-08</code> — không xếp hàng, không tự gửi lại <i class="co" title="ADR-010 không áp cho đăng nhập">ADR-010</i></div>
+      <div data-show="enroll" class="bn warn">この役割では二要素認証が必須です。認証アプリを登録してください。<span class="vi">Vai trò này bắt buộc xác thực hai lớp. Hãy đăng ký ứng dụng xác thực.</span><code>M-06</code> (thông báo dùng chung)</div>
+    </div>
+    <div class="rg" data-show="pw sending m02 m03 m04 m07 m08"><span class="rl">3 BƯỚC 1 — FORM</span>
+      <div class="f w3"><span class="lb">メールアドレス<em class="req">*</em><code class="id">F-01</code><span class="vi">Email</span></span><div class="ip">sato.ichiro@sakura-ichiba.jp</div><div class="hint">autocomplete=username · focus mặc định · C: định dạng · A: trim+lowercase</div></div>
+      <div class="f w3" style="margin-top:8px"><span class="lb">パスワード<em class="req">*</em><code class="id">F-02</code><span class="vi">Mật khẩu</span></span><div class="ip" data-show="pw sending m03 m04 m07 m08">••••••••••</div><div class="ip bad" data-show="m02"></div><div class="hint">autocomplete=current-password · Enter = ログイン · không log, không lưu client</div></div>
+      <div class="hint" style="margin-top:6px"><span class="absent">ログイン状態を保持する</span> — không có ô "ghi nhớ thiết bị" <i class="co" title="Cấm cho vai trò duyệt; máy dùng chung — bỏ cho mọi vai trò (S)">BC-85</i></div>
+      <div class="acts">
+        <span class="btn pri big" data-show="pw m02 m03 m04 m07 m08" style="width:100%;justify-content:center">ログイン <span class="perm">public</span></span>
+        <span class="btn pri big dis" data-show="sending" style="width:100%;justify-content:center">ログイン中… / Đang đăng nhập…</span>
+      </div>
+      <div class="hint" data-show="m03">Nút ログイン vẫn bật; thử lại nhận lại M-03 đến hết khóa.</div>
+    </div>
+    <div class="rg" data-show="mfa"><span class="rl">4 BƯỚC 2 — MFA 確認</span>
+      <div style="font-weight:700">二要素認証 <span class="sub">/ Xác thực hai lớp</span> <i class="co" title="system_settings.mfa_required_roles mặc định sys_admin, rule_admin, approver (B) + settlement (S)">BC-85</i></div>
+      <div class="f w3" style="margin-top:6px"><span class="lb">確認コード<em class="req">*</em><code class="id">F-03</code><span class="vi">Mã xác thực (6 số)</span></span><div class="ip" style="letter-spacing:.6em;font-family:monospace">4 8 2 _ _ _</div><div class="hint">inputmode=numeric · one-time-code · sai → M-05, cộng vào bộ đếm khóa</div><div class="msg">確認コードが正しくないか、有効期限が切れています。/ Mã xác thực sai hoặc đã hết hạn. (M-05)</div></div>
+      <div class="acts"><span class="btn pri big">確認 <span class="perm">AAL1 session</span></span><span class="btn">戻る <span class="perm">—</span></span></div>
+      <div class="hint">Chưa AAL2 mà gọi /api/* → 401 M-06; không màn hình nào hỏi MFA lại theo thao tác <i class="co" title="guard() + proxy.ts đòi AAL2 cho mfa_required_roles">G-19</i></div>
+    </div>
+    <div class="rg" data-show="enroll"><span class="rl">4' MFA 初回登録 / Đăng ký lần đầu</span>
+      <div class="row" style="align-items:flex-start"><div class="qr">QR (TOTP SVG)</div><div style="flex:1;font-size:12px">1. 認証アプリでQRを読み取る<br>2. 表示された6桁を入力<br><span class="hint">Secret: JBSW Y3DP EHPK 3PXP (chỉ hiện lần này, không lưu client)</span></div></div>
+      <div class="f w3" style="margin-top:8px"><span class="lb">確認コード（登録）<em class="req">*</em><code class="id">F-04</code><span class="vi">Mã xác nhận đăng ký</span></span><div class="ip ph">______</div></div>
+      <div class="acts"><span class="btn pri big">認証アプリを登録 <span class="perm">AAL1 · MFA role</span></span><span class="btn">戻る</span></div>
+    </div>
+    <div class="rg"><span class="rl">5 FOOTER</span><span class="hint">共用端末では業務終了時に必ずログアウトしてください / Máy dùng chung: hết ca phải đăng xuất</span> <i class="co" title="Máy dùng chung theo ca">BC-64</i></div>
+  </div>
+  <div>
+    <h3>Bảng quyết định POST /api/auth/login (§9, dừng ở dòng khớp đầu)</h3>
+    <div class="tw"><table class="t dec">
+      <tr><th>#</th><th>Điều kiện</th><th>Kết quả</th></tr>
+      <tr><td>1</td><td>Thiếu email/mật khẩu</td><td>400 M-01</td></tr>
+      <tr><td>2</td><td>Đang khóa tạm (đếm từ audit_logs)</td><td>423 M-03</td></tr>
+      <tr><td>3</td><td>Supabase Auth từ chối</td><td>401 M-02 (+account_locked khi chạm ngưỡng)</td></tr>
+      <tr><td>4</td><td>profiles.active=false / không vai trò</td><td>403 M-04</td></tr>
+      <tr><td>5</td><td>Vai trò MFA, chưa có factor</td><td>mfa:"enroll"</td></tr>
+      <tr><td>6</td><td>Vai trò MFA, có factor</td><td>mfa:"verify"</td></tr>
+      <tr><td>7</td><td>Còn lại</td><td>mfa:"none" → next hoặc /</td></tr>
+    </table></div>
+    <div class="hint">Ngưỡng / timeout ở <code>system_settings</code> (sys_admin, <code>settings.manage</code>, hiệu lực ngay, không tính 4 lần/năm) <i class="co" title="Tham số bảo mật tách khỏi rule_values">ADR-008</i> · Không kiểm tư cách / 業務日 lúc đăng nhập <i class="co" title="Tư cách kiểm lúc chốt, không lúc đăng nhập (bẫy T3)">BC-06</i> · audit: login, login_failed, account_locked, mfa_*, logout, session_timeout <i class="co" title="Ghi mọi kết quả vào audit_logs">BC-81</i></div>
+  </div>
+  </div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-010 ============ -->
+<section class="blk scr" id="scr-010">
+  <h2>SCR-010 取引参加者詳細・参加資格 — Chi tiết người tham gia & tư cách</h2>
+  <div class="meta"><code>/participants/{id}</code> · <code>participants.read</code> · 許可 và 承認 không bao giờ dùng chung nhãn / nút / câu <i class="co" title="Gộp hai căn cứ = bị loại hồ sơ (RFP 12-06, bẫy T2)">BC-01</i> · trạng thái tính theo <b>ngày tham chiếu</b> (= ngày hiện tại, hoặc ngày nghiệp vụ gần nhất khi chưa mở) <i class="co" title="fn_qualification_state(qid, ngày tham chiếu), không theo ngày máy">ADR-009</i> · Spec: <a href="../04-screen-specs/scr-010-participant-qualifications.md">scr-010</a></div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Căn cứ × trạng thái:</span>
+    <button data-v="permit">許可・一時停止 (M-004)</button><button data-v="pwarn">許可・期限間近 (M-002)</button><button data-v="pexp">許可・失効 (M-003)</button><button data-v="asusp">承認・一時停止 (B-003)</button><button data-v="arev">承認・再審査中 (B-003)</button><button data-v="mreg">市場登録・一時停止 (W-002)</button><button data-v="point">取引地点登録・失効 (R-003)</button><button data-v="off">オフライン NET-01</button>
+  </div>
+  <div class="frame">
+    <div class="url"><span>/participants/{id} (vai trò xem: market_ops; nút 解除を承認 chỉ approver)</span><span>log truy cập <i class="co" title="audit_logs action=view khi vai trò thấy lịch sử sự kiện (APPI)">BC-84</i></span></div>
+    <div class="rg"><span class="rl">1 HEADER</span>
+      <div class="row" style="align-items:center">
+        <b style="font-size:16px" data-show="permit off">M-004 · 大成商店</b><b style="font-size:16px" data-show="pwarn">M-002 · 山一水産</b><b style="font-size:16px" data-show="pexp">M-003 · 金子漁業</b><b style="font-size:16px" data-show="asusp arev">B-003 · 北斗加工</b><b style="font-size:16px" data-show="mreg">W-002 · 港魚類</b><b style="font-size:16px" data-show="point">R-003 · 割烹しおみ</b>
+        <span class="badge" data-show="permit pwarn pexp off">仲卸</span><span class="badge" data-show="asusp arev">売買参加者</span><span class="badge" data-show="mreg">卸売業者</span><span class="badge" data-show="point">買出人</span>
+        <span data-show="permit pwarn pexp off"><b>許可</b> / Giấy phép</span><span data-show="asusp arev"><b>承認</b> / Chấp thuận</span><span data-show="mreg"><b>市場登録</b> / Đăng ký với chợ</span><span data-show="point"><b>取引地点登録</b> / Đăng ký tại điểm giao dịch</span>
+        <i class="co" title="Nhãn căn cứ theo bảng §1, không dùng chữ chung 'license'">G-24</i>
+        <span class="badge dk" data-show="permit asusp mreg off">一時停止</span><span class="badge" data-show="pwarn">有効</span><span class="badge dk" data-show="pexp point">失効</span><span class="badge dk" data-show="arev">再審査中</span>
+        <i class="co" title="state = fn_qualification_state(qid, ngày tham chiếu) — tính ở server">G-02</i>
+      </div>
+      <div class="hint">Màu huy hiệu theo spec: 有効 xanh · 一時停止 cam · 再審査中 tím · 失効 đỏ · 開始前 xám</div>
+    </div>
+    <div class="rg"><span class="rl">2 DẢI CẢNH BÁO</span>
+      <div class="bn warn" data-show="permit off">許可は一時停止中です。解除条件: 是正報告書の提出<span class="vi">許可 đang tạm dừng. Điều kiện để gỡ: 是正報告書の提出</span><span class="hint">spec: dải cam</span></div>
+      <div class="bn warn" data-show="pwarn">許可の有効期限まで残り10日（2026/10/26）<span class="vi">許可 còn 10 ngày hết hạn (2026/10/26)</span> <i class="co" title="expiry_warning_days qua fn_rule(ngày tham chiếu), mặc định 30 (S), sửa ở SCR-034">BC-07</i></div>
+      <div class="bn err" data-show="pexp">許可は2026/10/15に失効しています<span class="vi">許可 đã hết hiệu lực từ 2026/10/15</span></div>
+      <div class="bn warn" data-show="asusp">承認は一時停止中です。再審査を経なければ再開できません。<span class="vi">承認 đang tạm dừng. Phải qua 再審査 mới hoạt động lại.</span><span class="hint">spec: dải cam</span></div>
+      <div class="bn warn" data-show="arev">承認は再審査中です。<span class="vi">承認 đang tái thẩm định.</span><span class="hint">spec: dải tím</span></div>
+      <div class="bn warn" data-show="mreg">市場登録は一時停止中です。解除には承認者の承認が必要です。<span class="vi">市場登録 đang tạm dừng. Gỡ cần người phê duyệt duyệt.</span></div>
+      <div class="bn err" data-show="point">取引地点登録は2026/10/15に失効しています<span class="vi">取引地点登録 đã hết hiệu lực từ 2026/10/15</span></div>
+      <div class="bn err" data-show="off">この操作にはネットワーク接続が必要です。<span class="vi">Thao tác này cần có mạng. — chỉ đọc dữ liệu đã tải, mọi nút ghi disabled, không xếp hàng</span><code>NET-01</code> <i class="co" title="Không xếp hàng cho thao tác tư cách">ADR-010</i></div>
+    </div>
+    <div class="rg"><span class="rl">3 THẺ TƯ CÁCH HIỆN HÀNH</span>
+      <div class="row">
+        <div class="f"><span class="lb">番号<span class="vi">Số hiệu</span></span><div class="ip ro" data-show="permit off">仲-2019-0412</div><div class="ip ro" data-show="pwarn">仲-2021-0108</div><div class="ip ro" data-show="pexp">仲-2018-0377</div><div class="ip ro" data-show="asusp arev">承-2026-0088</div><div class="ip ro" data-show="mreg point">—</div></div>
+        <div class="f"><span class="lb">発行者<span class="vi">Cơ quan cấp</span></span><div class="ip ro">桜市 市場管理課</div></div>
+        <div class="f"><span class="lb">有効期間<span class="vi">Hiệu lực từ – đến</span></span><div class="ip ro" data-show="permit off">2026/03/30 – 2027/08/12</div><div class="ip ro" data-show="pwarn">2025/10/27 – 2026/10/26</div><div class="ip ro" data-show="pexp">2026/04/01 – 2026/10/15</div><div class="ip ro" data-show="asusp arev">2026/08/27 – 2027/08/12</div><div class="ip ro" data-show="mreg">2024/12/26 – 期限なし / Không thời hạn</div><div class="ip ro" data-show="point">2026/04/16 – 2026/10/15</div></div>
+        <div class="f n"><span class="lb">状態<span class="vi">Trạng thái</span></span><div class="ip ro" data-show="permit asusp mreg off">一時停止</div><div class="ip ro" data-show="pwarn">有効 · 残10日</div><div class="ip ro" data-show="pexp point">失効</div><div class="ip ro" data-show="arev">再審査中</div></div>
+        <div class="f"><span class="lb">承認者<span class="vi">Người duyệt</span></span><div class="ip ro">山田 花子</div></div>
+        <div class="f"><span class="lb">根拠資料<span class="vi">Bằng chứng</span></span><div class="ip ro">📄 scan.pdf</div></div>
+      </div>
+      <div class="f w3" data-show="permit pwarn pexp off" style="margin-top:8px"><span class="lb">条件<span class="vi">Điều kiện kèm theo (chỉ 許可)</span></span><div class="ip ro ta"><span data-show="permit off">是正報告書の提出</span><span data-show="pwarn pexp">—</span></div><div class="hint">Văn bản tự do (Q5) <i class="co" title="条件付き chỉ cho 許可; nội dung chưa định nghĩa trong RFP">BC-05</i></div></div>
+    </div>
+    <div class="rg"><span class="rl">4 THANH HÀNH ĐỘNG (theo căn cứ, §7)</span>
+      <div class="acts" data-show="permit">
+        <span class="btn">資格登録・更新 <span class="perm">participants.write</span></span>
+        <span class="btn dis" title="status ≠ valid">一時停止 <span class="perm">participants.write</span></span>
+        <span class="btn pri">条件充足により解除 <span class="perm">participants.write</span></span>
+        <i class="co" title="permit: gỡ khi đủ 条件 (suspend_policy=conditional)">FIG-004</i>
+      </div>
+      <div class="acts" data-show="pwarn">
+        <span class="btn pri">資格登録・更新 <span class="perm">participants.write</span></span>
+        <span class="btn">一時停止 <span class="perm">participants.write</span></span>
+      </div>
+      <div class="acts" data-show="pexp">
+        <span class="btn pri">資格登録・更新 <span class="perm">participants.write</span></span>
+        <span class="btn dis">一時停止 <span class="perm">participants.write</span></span>
+        <span class="hint">失効 → gia hạn bằng bản ghi mới (Form A)</span>
+      </div>
+      <div class="acts" data-show="asusp">
+        <span class="btn">資格登録・更新 <span class="perm">participants.write</span></span>
+        <span class="btn pri">再審査を開始 <span class="perm">participants.write</span></span>
+        <span class="btn dis absent" title="Không tồn tại">解除</span>
+        <span class="msg">Không có nút 解除 cho 承認 ở bất kỳ trạng thái nào; API lift → 400 E-13 「承認の一時停止は直接解除できません。再審査を開始してください。」</span>
+        <i class="co" title="承認 tạm dừng → bắt buộc qua 再審査 (suspend_policy=re_review)">BC-04</i>
+      </div>
+      <div class="acts" data-show="arev">
+        <span class="btn dis" title="approval đang re_review: gia hạn qua kết quả 再審査">資格登録・更新 <span class="perm">participants.write</span></span>
+        <span class="btn pri">再審査結果を登録 <span class="perm">participants.write</span></span>
+        <span class="btn dis absent">解除</span>
+      </div>
+      <div class="acts" data-show="mreg">
+        <span class="btn">資格登録・更新 <span class="perm">participants.write</span></span>
+        <span class="btn pri">解除を承認 <span class="perm">qualifications.approve</span></span>
+        <span class="hint">market_ops: nút hiện E-14 「市場登録の一時停止解除は承認者のみ実行できます。」, API 403 AUTH-403; approver = người đã tạm dừng → 400 E-15</span>
+        <i class="co" title="Người duyệt ≠ người tạm dừng (maker–checker)">BC-88</i>
+      </div>
+      <div class="acts" data-show="point">
+        <span class="btn pri">資格登録・更新 <span class="perm">participants.write</span></span>
+        <span class="btn dis">一時停止 <span class="perm">participants.write</span></span>
+        <span class="btn dis" title="Chỉ khi suspended">解除 <span class="perm">participants.write</span></span>
+        <i class="co" title="買出人: FIG-004 không có dòng; giả định S gỡ trực tiếp, có hạn (M1)">BC-11</i>
+      </div>
+      <div class="acts" data-show="off">
+        <span class="btn dis">資格登録・更新</span><span class="btn dis">条件充足により解除</span><span class="btn dis">連絡先を保存</span><span class="msg">NET-01</span>
+      </div>
+      <div class="hint">Mọi POST gửi <code>version</code> (= updated_at); lệch → 409 E-17 「他の利用者が先に更新しました。画面を再読み込みしてください。」 · thiếu quyền → 403 AUTH-403 · qualification_events + audit_logs cùng giao dịch <i class="co" title="Audit trong cùng giao dịch, lỗi audit → rollback">ADR-006</i></div>
+    </div>
+
+    <div class="cols">
+      <div class="dlg"><h4>Form A — 資格登録・更新 / Đăng ký, gia hạn tư cách</h4>
+        <div class="row">
+          <div class="f"><span class="lb">根拠<em class="req">*</em><code class="id">A-01</code><span class="vi">Căn cứ</span></span><div class="ip ro" data-show="permit pwarn pexp off">許可（仲卸のみ）</div><div class="ip ro" data-show="asusp arev">承認</div><div class="ip ro" data-show="mreg">市場登録</div><div class="ip ro" data-show="point">取引地点登録</div><div class="hint">chỉ đọc khi nhóm có 1 căn cứ · D: FK party_kind_basis → E-01</div></div>
+          <div class="f"><span class="lb">番号<em class="req" data-show="permit pwarn pexp asusp arev off">*</em><code class="id">A-02</code><span class="vi">Số hiệu (bắt buộc với 許可/承認 — S)</span></span><div class="ip ph">—</div><div class="hint" data-show="mreg point">không bắt buộc với căn cứ này</div></div>
+          <div class="f"><span class="lb">発行者<code class="id">A-03</code><span class="vi">Cơ quan cấp</span></span><div class="ip ph">—</div></div>
+        </div>
+        <div class="row" style="margin-top:6px">
+          <div class="f"><span class="lb">有効開始日<em class="req">*</em><code class="id">A-04</code><span class="vi">Hiệu lực từ</span></span><div class="ip">2026/10/16</div><div class="hint">mặc định 業務日 hiện tại</div></div>
+          <div class="f"><span class="lb">有効期限<em class="req" data-show="permit pwarn pexp asusp arev point off">*</em><code class="id">A-05</code><span class="vi">Hiệu lực đến</span></span><div class="ip ph">YYYY/MM/DD</div><div class="hint">≥ A-04 (E-04) · không đặt hạn mặc định <i class="co" title="Không đặt thời hạn mặc định cho 許可/承認">BC-12</i></div><div class="hint" data-show="mreg">市場登録: không bắt buộc (S) <i class="co" title="Plan A chỉ kiểm tạm dừng 市場登録 (Q33)">BC-10</i></div></div>
+        </div>
+        <div class="f w3" data-show="permit pwarn pexp off" style="margin-top:6px"><span class="lb">条件<code class="id">A-06</code><span class="vi">Điều kiện kèm theo (chỉ 許可)</span></span><div class="ip ta ph">—</div><div class="hint">Căn cứ khác: ẩn; D CHECK → E-05</div></div>
+        <div class="row" style="margin-top:6px">
+          <div class="f"><span class="lb">根拠資料<code class="id">A-07</code><span class="vi">Bằng chứng PDF/JPG/PNG ≤10MB</span></span><div class="ip">［ファイル選択］ <span class="perm">attachments.upload</span></div></div>
+          <div class="f w2"><span class="lb">理由<em class="req">*</em><code class="id">A-08</code><span class="vi">Lý do</span></span><div class="ip ta ph">—</div></div>
+        </div>
+        <div class="hint">Trùng khoảng hiệu lực cùng căn cứ → E-08 (D exclusion, giả định S)</div>
+        <div class="acts"><span class="btn pri">登録 <span class="perm">participants.write</span></span><span class="btn">キャンセル</span></div>
+      </div>
+
+      <div>
+        <div class="dlg" data-show="pwarn"><h4>Form B — 一時停止 / Tạm dừng</h4>
+          <div class="f w3"><span class="lb">停止理由<em class="req">*</em><code class="id">B-01</code><span class="vi">Lý do tạm dừng</span></span><div class="ip ta ph">—</div></div>
+          <div class="f w3" style="margin-top:6px"><span class="lb">解除条件<em class="req">*</em><code class="id">B-02</code><span class="vi">Điều kiện để gỡ (bắt buộc với 許可; ẩn với căn cứ khác)</span></span><div class="ip ta bad"></div><div class="msg">許可の一時停止には解除条件の入力が必要です。(E-09)</div></div>
+          <div class="f w3" style="margin-top:6px"><span class="lb">根拠資料<code class="id">B-03</code><span class="vi">Bằng chứng</span></span><div class="ip">［ファイル選択］</div></div>
+          <div class="acts"><span class="btn pri">一時停止 <span class="perm">participants.write</span></span><span class="hint">mở khi status = valid</span></div>
+        </div>
+
+        <div class="dlg" data-show="permit"><h4>Form C — 条件充足により解除 (許可)</h4>
+          <div class="f w3"><span class="lb">解除理由<em class="req">*</em><code class="id">C-01</code><span class="vi">Lý do gỡ</span></span><div class="ip ta ph">—</div></div>
+          <div class="f w3" style="margin-top:6px"><span class="lb">条件充足の確認<em class="req">*</em><code class="id">C-02</code><span class="vi">Đã đủ điều kiện (tick + 確認内容)</span></span>
+            <div class="ip ro">条件（原文）: 是正報告書の提出</div>
+            <span class="chk"><span class="box">✓</span> 解除条件を満たしたことを確認しました</span>
+            <div class="ip ta ph">確認内容 —</div><div class="msg">解除条件を満たしたことを確認し、確認内容を入力してください。(E-10)</div></div>
+          <div class="acts"><span class="btn pri">解除 <span class="perm">participants.write</span></span><span class="hint">conditions_met_note → qualification_events.payload</span></div>
+        </div>
+
+        <div class="dlg" data-show="asusp"><h4>Form C — 再審査を開始 / Mở tái thẩm định (承認)</h4>
+          <div class="f w3"><span class="lb">再審査理由<em class="req">*</em><code class="id">C-05</code><span class="vi">Lý do mở tái thẩm định ≤1000</span></span><div class="ip ta ph">—</div><div class="msg">理由を入力してください。(E-07)</div></div>
+          <div class="acts"><span class="btn pri">再審査を開始 <span class="perm">participants.write</span></span><span class="hint">status suspended / expired → re_review · reason = C-05</span></div>
+        </div>
+
+        <div class="dlg" data-show="arev"><h4>Form C — 再審査結果を登録 (承認)</h4>
+          <div class="f w3"><span class="lb">解除理由<em class="req">*</em><code class="id">C-01</code><span class="vi">Lý do</span></span><div class="ip ta ph">—</div></div>
+          <div class="f w3" style="margin-top:6px"><span class="lb">再審査結果<em class="req">*</em><code class="id">C-03</code><span class="vi">Kết quả tái thẩm định</span></span>
+            <span class="chk"><span class="box">●</span> 承認継続（đạt）</span> <span class="chk"><span class="box"></span> 否認（không đạt → expired）</span><div class="msg">再審査の結果を選択してください。(E-11)</div></div>
+          <div class="f" style="margin-top:6px"><span class="lb">新有効期限<em class="req">*</em><code class="id">C-04</code><span class="vi">Hạn mới (khi đạt)</span></span><div class="ip">2027/08/12</div><div class="hint">&gt; ngày tham chiếu (E-12)</div></div>
+          <div class="acts"><span class="btn pri">登録 <span class="perm">participants.write</span></span></div>
+        </div>
+
+        <div class="dlg" data-show="mreg"><h4>Form C — 解除を承認 (市場登録)</h4>
+          <div class="f w3"><span class="lb">解除理由<em class="req">*</em><code class="id">C-01</code><span class="vi">Lý do gỡ</span></span><div class="ip ta ph">—</div></div>
+          <div class="bn err">一時停止を行った本人は解除を承認できません。<span class="vi">Người đã tạm dừng không được tự duyệt gỡ. (E-15, khi người duyệt = người tạm dừng)</span></div>
+          <div class="acts"><span class="btn pri">解除を承認 <span class="perm">qualifications.approve</span></span></div>
+        </div>
+
+        <div class="dlg"><h4>Form D — 連絡先 / Liên hệ</h4>
+          <div class="row"><div class="f"><span class="lb">電話<span class="vi">phone ≤20</span></span><div class="ip">045-000-0xxx</div></div><div class="f w2"><span class="lb">メモ<span class="vi">note ≤500</span></span><div class="ip">—</div></div></div>
+          <div class="f w3" style="margin-top:6px"><span class="lb">理由<em class="req">*</em><span class="vi">Lý do (E-07)</span></span><div class="ip ph">—</div></div>
+          <div class="hint">Không còn ô sửa trạng thái / ngày hiệu lực <i class="co" title="Bỏ dropdown trạng thái tự do của prototype">G-01</i></div>
+          <div class="acts"><span class="btn pri" data-show="permit pwarn pexp asusp arev mreg point">連絡先を保存 <span class="perm">participants.write</span></span><span class="btn dis" data-show="off">連絡先を保存 — NET-01</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rg"><span class="rl">5 LỊCH SỬ TƯ CÁCH (participant_qualifications, mới nhất trước)</span>
+      <div class="tw"><table class="t">
+        <tr><th>番号<span class="vi">Số hiệu</span></th><th>根拠<span class="vi">Căn cứ</span></th><th>有効開始<span class="vi">Từ</span></th><th>有効期限<span class="vi">Đến</span></th><th>状態<span class="vi">Trạng thái</span></th><th>承認者<span class="vi">Người duyệt</span></th></tr>
+        <tr><td data-show="permit pwarn pexp off">仲-…</td><td data-show="asusp arev">承-2026-0088</td><td data-show="mreg point">—</td><td data-show="permit pwarn pexp off">許可</td><td data-show="asusp arev">承認</td><td data-show="mreg">市場登録</td><td data-show="point">取引地点登録</td><td>(như thẻ 3)</td><td>(như thẻ 3)</td><td>現行</td><td>山田 花子</td></tr>
+        <tr><td colspan="6" class="hint">… bản cũ chỉ đọc, không sửa</td></tr>
+      </table></div>
+    </div>
+    <div class="cols">
+      <div class="rg"><span class="rl">6 SỰ KIỆN (qualification_events, chỉ thêm)</span>
+        <div class="tw"><table class="t">
+          <tr><th>日時 JST</th><th>イベント</th><th>実施者</th><th>理由</th></tr>
+          <tr data-show="permit asusp arev mreg off"><td>2026/10/02 14:10</td><td>suspend 一時停止</td><td>市場運営 鈴木</td><td>規約違反</td></tr>
+          <tr data-show="pexp point"><td>2026/10/16 02:00</td><td>expire 失効</td><td>システム</td><td>valid_to &lt; ngày tham chiếu</td></tr>
+          <tr data-show="arev"><td>2026/10/09 10:30</td><td>re_review 再審査開始</td><td>市場運営 鈴木</td><td>書類再提出 (C-05)</td></tr>
+          <tr><td>(cũ hơn)</td><td>apply / approve</td><td>山田 花子</td><td>新規</td></tr>
+        </table></div>
+        <div class="hint">intake / trade: ẩn vùng 6 và 7 <i class="co" title="APPI: vai trò hiện trường không thấy lịch sử, liên hệ">BC-84</i></div>
+      </div>
+      <div class="rg"><span class="rl">8 GIAO DỊCH GẦN ĐÂY (20 dòng)</span>
+        <div class="tw"><table class="t">
+          <tr><th>取引番号</th><th>業務日</th><th>種別</th><th class="num">金額</th></tr>
+          <tr><td><a href="#scr-016">T261001-0021</a></td><td>2026/10/01</td><td>相対</td><td class="num">¥186,000</td></tr>
+          <tr><td>T260930-0017</td><td>2026/09/30</td><td>せり</td><td class="num">¥412,000</td></tr>
+        </table></div>
+      </div>
+    </div>
+  </div>
+  <h3>Bảng quyết định gỡ tạm dừng (§9, D: fn_qualification_event theo suspend_policy)</h3>
+  <div class="tw"><table class="t">
+    <tr><th>Căn cứ</th><th>Ai gỡ</th><th>Bắt buộc</th><th>Kết quả</th></tr>
+    <tr><td>市場登録 (卸売業者)</td><td>qualifications.approve, ≠ người tạm dừng</td><td>Lý do (C-01)</td><td>valid</td></tr>
+    <tr><td>許可 (仲卸)</td><td>market_ops</td><td>Lý do + C-02</td><td>valid</td></tr>
+    <tr><td>承認 (売買参加者)</td><td>— không gỡ trực tiếp (E-13)</td><td>再審査を開始 (C-05) → kết quả C-03 + hạn mới C-04</td><td>valid / expired</td></tr>
+    <tr><td>取引地点登録 (買出人)</td><td>market_ops</td><td>Lý do (C-01)</td><td>valid (S)</td></tr>
+  </table></div>
+  <div class="hint">Không có ô "được mua ở 相対 / せり" — ma trận <code>trade_kind_matrix</code> ở <a href="#scr-034">SCR-034</a> <i class="co" title="Không bịa quy tắc (bẫy T21); mặc định 3 nhóm bên mua được cả 相対 và せり (TBL-ACTOR-01)">ADR-008</i></div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-012 ============ -->
+<section class="blk scr" id="scr-012">
+  <h2>SCR-012/013 入荷受付・下見評価 — Tiếp nhận lô & đánh giá</h2>
+  <div class="meta"><code>/lots?day=YYYY-MM-DD</code> (<code>lots.read</code>/<code>lots.create</code>) · <code>/lots/{id}</code> (<code>lots.inspect</code>) · bộ chọn ngày chỉ để <b>xem</b>, lô mới luôn vào ngày hiện tại · Spec: <a href="../04-screen-specs/scr-012-lot-intake-and-inspection.md">scr-012</a></div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="intake">受付 (成功)</button><button data-v="offline">オフライン・未同期</button><button data-v="insp">下見評価 (取引なし)</button><button data-v="reinsp">再評価 (取引あり)</button><button data-v="closing">締め待ち・締め解除中の日</button><button data-v="locked">締め済</button><button data-v="notopen">業務日未開始</button><button data-v="empty">ロットなし</button>
+  </div>
+  <div class="frame" data-show="intake offline closing locked notopen empty">
+    <div class="url"><span>/lots?day=<span data-show="intake offline notopen empty">2026-10-16</span><span data-show="closing">2026-10-15</span><span data-show="locked">2026-10-14</span> (role: intake / judge)</span><span>p95 tìm/lọc ≤ 2s <i class="co" title="350 lô/ngày, cao điểm 600">BC-80</i></span></div>
+    <div class="rg"><span class="rl">1 HEADER</span>
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <b>入荷・ロット / Lô hàng</b>
+        <span>表示する業務日 <span class="ip sel" style="display:inline-block;min-height:32px;padding:4px 28px 4px 8px"><span data-show="intake offline notopen empty">2026/10/16 (金)</span><span data-show="closing">2026/10/15 (木)</span><span data-show="locked">2026/10/14 (水)</span></span> <i class="co" title="Mặc định = ngày hiện tại từ /api/business-days/current; chọn ngày khác chỉ để xem">ADR-009</i></span>
+        <span class="badge" data-show="intake offline empty">営業中 / Đang mở</span><span class="badge dk" data-show="closing">締め待ち closing</span><span class="badge dk" data-show="locked">締め済 / Đã khóa</span><span class="badge" data-show="notopen">未開始</span>
+        <span data-show="intake closing locked notopen empty"><span class="net">● オンライン</span> 未同期 0</span><span data-show="offline"><span class="net off">● オフライン</span> 未同期 2</span>
+      </div>
+    </div>
+    <div class="bn ok" data-show="intake" role="status">ロット L261016-005 を受け付けました<span class="vi">Đã tiếp nhận lô L261016-005 — xóa F-03/F-04/F-06, giữ F-02, focus F-04</span></div>
+    <div class="bn err" data-show="offline">オフライン — 受付は端末に保存し、接続回復後に自動送信します。<span class="vi">Mất mạng — tiếp nhận lưu IndexedDB và tự đồng bộ. Đánh giá: nút khóa với NET-01.</span></div>
+    <div class="bn warn" data-show="closing">この業務日は現在の業務日ではありません（締め待ち）— 入荷受付は現在の業務日 2026/10/16 に記録されます<span class="vi">Ngày đang xem là closing / reopened: ẩn form tiếp nhận; form đánh giá vẫn dùng được (sửa bản ghi đã có)</span> <i class="co" title="closing / reopened không nhận bản ghi mới, chỉ sửa; reopened ghi kèm reopen_request_id">ADR-009</i></div>
+    <div class="bn warn" data-show="locked">締め済みのため閲覧のみ<span class="vi">Ngày đã khóa sổ: chỉ xem — ẩn form tiếp nhận & đánh giá</span> <i class="co" title="Ngày khóa: không ghi trực tiếp; cố ghi → LOCKED_DAY + blocked_edit">BC-43</i></div>
+    <div class="bn warn" data-show="notopen">業務日を開始してください<span class="vi">Hãy mở ngày nghiệp vụ</span> → <a href="#scr-024">SCR-024 業務日開始</a></div>
+
+    <div class="rg" data-show="intake offline empty"><span class="rl">2 FORM TIẾP NHẬN — 1 hàng 6 ô (tablet ngang)</span>
+      <div class="row">
+        <div class="f n"><span class="lb">業務日<em class="req">*</em><code class="id">F-01</code><span class="vi">Ngày nghiệp vụ (chỉ đọc)</span></span><div class="ip ro">2026/10/16</div></div>
+        <div class="f w2"><span class="lb">卸売業者<em class="req">*</em><code class="id">F-02</code><span class="vi">Bên bán</span></span><div class="ip sel">W-001 · 海洋水産卸</div><div class="hint">purpose=sell&amp;day=</div></div>
+        <div class="f"><span class="lb">荷主<em class="req">*</em><code class="id">F-03</code><span class="vi">Chủ hàng (≤100)</span></span><div class="ip ph">JF桜浜</div></div>
+        <div class="f w2"><span class="lb">品目<em class="req">*</em><code class="id">F-04</code><span class="vi">Mặt hàng (tìm kiếm)</span></span><div class="ip sel ph">本マグロ</div><div class="hint">danh mục items <i class="co" title="Danh mục items(code PK), không text tự do">G-15</i></div></div>
+        <div class="f n"><span class="lb">単位<code class="id">F-05</code><span class="vi">Đơn vị (chỉ đọc)</span></span><div class="ip ro">kg</div><i class="co" title="Đơn vị theo mặt hàng, không chọn, không quy đổi">BC-37</i></div>
+        <div class="f n"><span class="lb">数量<em class="req">*</em><code class="id">F-06</code><span class="vi">Số lượng (0.01)</span></span><div class="ip ph">120.00</div></div>
+        <span class="btn pri big" data-show="intake empty">受付 <kbd>Enter</kbd> <span class="perm">lots.create</span></span>
+        <span class="btn pri big" data-show="offline">受付（端末保存） <span class="perm">lots.create</span></span>
+      </div>
+      <div class="hint">F-01 lỗi: この業務日は締め済みです。修正申請を作成してください · 業務日が未開始です · 現在の業務日ではありません · client_ref (F-07, ẩn) → trùng = trả lô đã có <i class="co" title="Chống trùng khi đồng bộ lại">BC-76</i> · F-02 lỗi: 「W-002 港魚類 は一時停止中のため入荷を受け付けできません」 <i class="co" title="Bên bán 市場登録 suspended → chặn (seller_registration_check = suspension_only mặc định, Q33)">BC-10</i></div>
+    </div>
+
+    <div class="rg" data-show="offline"><span class="rl">4 未同期 / CHƯA ĐỒNG BỘ (IndexedDB queue)</span>
+      <div class="tw"><table class="t">
+        <tr><th>仮コード<span class="vi">Mã tạm</span></th><th>品目</th><th class="num">数量</th><th>保存時刻</th><th>送信状態<span class="vi">Trạng thái gửi</span></th></tr>
+        <tr><td>TMP-3f9a21c0</td><td>ブリ</td><td class="num">80.00 kg</td><td>03:21</td><td>待機中 / Chờ mạng</td></tr>
+        <tr class="er"><td>TMP-b72e0d14</td><td>ホタテ</td><td class="num">30 ケース</td><td>02:58</td><td>同期エラー: 業務日2026/10/15は現在の業務日ではありません → <u>照合（SCR-054, chưa có spec）</u></td></tr>
+      </table></div>
+      <div class="hint">Bản ghi giữ <code>day</code> = ngày hiện tại lúc lưu; khi đồng bộ ngày đó không còn là ngày hiện tại → hòa giải, không tự chuyển ngày <i class="co" title="Hàng đợi offline chỉ cho tiếp nhận; client_ref UNIQUE">ADR-010</i> <i class="co" title="Prototype chưa có offline">G-20</i></div>
+    </div>
+
+    <div class="rg"><span class="rl">3 BẢNG LÔ CỦA NGÀY + BỘ LỌC</span>
+      <div class="row" style="margin-bottom:6px">
+        <div class="f"><span class="lb">品目<span class="vi">Mặt hàng</span></span><div class="ip sel">すべて</div></div>
+        <div class="f"><span class="lb">卸売業者<span class="vi">Bên bán</span></span><div class="ip sel">すべて</div></div>
+        <div class="f"><span class="lb">状態<span class="vi">Trạng thái</span></span><div class="ip sel">すべて</div></div>
+        <span class="chk"><span class="box"></span> 未評価のみ / chưa đánh giá</span>
+      </div>
+      <div data-show="empty" class="ip ro" style="text-align:center">この業務日のロットはありません / Chưa có lô nào trong ngày</div>
+      <div class="tw" data-show="intake offline closing locked notopen"><table class="t">
+        <tr><th>ロット<span class="vi">Mã lô</span></th><th>品目</th><th>卸売業者</th><th>荷主</th><th class="num">初期</th><th class="num">残<span class="vi">Khả dụng</span></th><th>評価</th><th>状態 <i class="co" title="Suy ra từ tồn/giao dịch/đánh giá, không lưu cứng">G-13</i></th><th></th></tr>
+        <tr data-show="offline"><td>TMP-3f9a21c0 <span class="badge">未同期</span></td><td>ブリ</td><td>W-001 · 海洋水産卸</td><td>銚子港</td><td class="num">80.00 kg</td><td class="num"><b>80.00 kg</b></td><td>—</td><td>—</td><td>—</td></tr>
+        <tr data-show="intake"><td><a href="#scr-012">L261016-005</a></td><td>本マグロ</td><td>W-001 · 海洋水産卸</td><td>JF桜浜</td><td class="num">120.00 kg</td><td class="num"><b>120.00 kg</b></td><td>未評価</td><td>受付</td><td><span class="btn" style="min-height:32px">ラベル印刷</span></td></tr>
+        <tr data-show="intake offline notopen"><td>L261016-001</td><td>サーモン</td><td>W-001 · 海洋水産卸</td><td>JF桜浜</td><td class="num">150.00 kg</td><td class="num"><b>30.00 kg</b></td><td>A</td><td>販売中</td><td></td></tr>
+        <tr data-show="intake offline notopen"><td>L261016-002</td><td>ズワイガニ</td><td>W-001 · 海洋水産卸</td><td>石巻漁協</td><td class="num">40 ケース</td><td class="num"><b>15 ケース</b></td><td>未評価</td><td>販売中</td><td></td></tr>
+        <tr data-show="intake offline notopen"><td>L261016-003</td><td>ブリ</td><td>W-001 · 海洋水産卸</td><td>銚子港</td><td class="num">120.00 kg</td><td class="num"><b>120.00 kg</b></td><td>B</td><td>下見済</td><td></td></tr>
+        <tr data-show="closing"><td>L261015-003</td><td>スルメイカ</td><td>W-001 · 海洋水産卸</td><td>銚子港</td><td class="num">90.00 kg</td><td class="num"><b>20.00 kg</b></td><td>A</td><td>販売中</td><td></td></tr>
+        <tr data-show="locked"><td>L261014-001</td><td>本マグロ</td><td>W-001 · 海洋水産卸</td><td>JF桜浜</td><td class="num">180.00 kg</td><td class="num"><b>0.00 kg</b></td><td>A</td><td>完売</td><td></td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="frame" data-show="insp reinsp closing locked offline">
+    <div class="url"><span>/lots/{id} — <span data-show="insp">L261016-003 ブリ</span><span data-show="reinsp offline">L261016-001 サーモン</span><span data-show="closing">L261015-003 スルメイカ (締め待ち)</span><span data-show="locked">L261014-001 本マグロ</span> (role: judge)</span><span>SCR-013</span></div>
+    <div class="rg"><span class="rl">5a THẺ SỐ LƯỢNG</span>
+      <div class="kpi">
+        <div><small>初期数量 / Ban đầu</small><b data-show="insp">120.00 kg</b><b data-show="reinsp offline">150.00 kg</b><b data-show="closing">90.00 kg</b><b data-show="locked">180.00 kg</b></div>
+        <div><small>残数量 / Khả dụng</small><b data-show="insp">120.00 kg</b><b data-show="reinsp offline">30.00 kg</b><b data-show="closing">20.00 kg</b><b data-show="locked">0.00 kg</b></div>
+        <div><small>販売済 / Đã bán</small><b data-show="insp">0.00 kg</b><b data-show="reinsp offline">120.00 kg</b><b data-show="closing">70.00 kg</b><b data-show="locked">180.00 kg</b></div>
+        <div><small>状態</small><b data-show="insp">下見済</b><b data-show="reinsp offline closing">販売中</b><b data-show="locked">完売</b></div>
+      </div>
+    </div>
+    <div class="cols">
+      <div class="rg"><span class="rl">5b THẺ ĐÁNH GIÁ</span>
+        <div class="row"><div class="f n"><span class="lb">評価</span><div class="ip ro"><span data-show="insp">B</span><span data-show="reinsp offline locked closing">A</span></div></div><div class="f"><span class="lb">評価者</span><div class="ip ro">下見 高橋</div></div><div class="f n"><span class="lb">時刻</span><div class="ip ro">02:41</div></div></div>
+      </div>
+      <div class="rg" data-show="insp reinsp closing offline"><span class="rl">5c FORM ĐÁNH GIÁ — người quyết định hạng</span>
+        <div class="row">
+          <div class="f n"><span class="lb">評価<em class="req">*</em><code class="id">F-11</code><span class="vi">Hạng</span></span><div class="ip sel"><span data-show="insp">B</span><span data-show="reinsp offline closing">B（A から変更）</span></div><div class="hint">fn_rule('grades', 業務日 của lô) <i class="co" title="Hạng từ rule_values (sửa ở SCR-034 F-12), không hardcode A/B/C">G-05</i></div></div>
+          <div class="f w2"><span class="lb">所見<code class="id">F-12</code><span class="vi">Nhận xét ≤500</span></span><div class="ip ta">身質やや柔らかい</div></div>
+        </div>
+        <div class="f w3" data-show="reinsp offline closing" style="margin-top:6px"><span class="lb">修正理由<em class="req">*</em><code class="id">F-13</code><span class="vi">Lý do sửa (lô đã có giao dịch)</span></span><div class="ip ta bad"></div><div class="msg">取引済みロットの評価修正には理由が必要です / Lô đã có giao dịch: phải nhập lý do sửa kết quả đánh giá</div><i class="co" title="Sửa đánh giá sau giao dịch là thao tác nhạy cảm của JUDGE; audit before/after/reason">BC-47</i></div>
+        <div class="hint"><span class="absent">自動評価 / 画像から評価 / 一括承認</span> — không có <i class="co" title="Con người quyết định hạng; không auto-grade, không đọc ảnh">BC-29</i> <i class="co" title="Không có trường ảnh → hạng">BC-27</i></div>
+        <div class="acts">
+          <span class="btn pri" data-show="insp reinsp closing">評価を登録 <span class="perm">lots.inspect</span></span>
+          <span class="btn pri dis" data-show="offline">評価を登録 <span class="perm">lots.inspect</span></span>
+          <span class="btn">ラベル印刷 <span class="perm">lots.read</span></span>
+          <a class="btn" href="#scr-016" data-show="insp reinsp offline">相対取引入力へ →</a>
+        </div>
+        <div class="msg" data-show="offline">この操作にはネットワーク接続が必要です。/ Thao tác này cần có mạng. (NET-01)</div>
+        <div class="hint">Ngày của lô open / closing / reopened → được sửa <i class="co" title="fn_assert_day_editable thay fn_assert_day_open">ADR-009</i> · chưa đánh giá vẫn bán được (Q32) <i class="co" title="RFP không bắt buộc 下見 trước 公開">BC-38</i></div>
+      </div>
+      <div class="rg" data-show="locked"><span class="rl">5c FORM ĐÁNH GIÁ</span><div class="hint">Ẩn — ngày của lô đã khóa (Q-012-2: sửa sau khóa chưa có đường) <i class="co" title="fn_inspect_lot chặn ngày khóa + blocked_edit">G-04</i></div></div>
+    </div>
+    <div class="cols">
+      <div class="rg"><span class="rl">5d GIAO DỊCH TRÊN LÔ (gồm -R/-A)</span>
+        <div class="tw"><table class="t">
+          <tr><th>取引番号</th><th>種別</th><th>買受人</th><th class="num">数量</th><th>状態</th></tr>
+          <tr data-show="insp"><td colspan="5" class="hint">なし / chưa có</td></tr>
+          <tr data-show="reinsp offline"><td>T261016-0001</td><td>相対</td><td>B-001</td><td class="num">80.00</td><td>確定</td></tr>
+          <tr data-show="reinsp offline"><td>T261016-0002</td><td>相対</td><td>M-001</td><td class="num">40.00</td><td>確定</td></tr>
+          <tr data-show="closing"><td>T261015-0012</td><td>相対</td><td>B-002</td><td class="num">70.00</td><td>確定</td></tr>
+          <tr data-show="locked"><td>T261014-0001</td><td>せり</td><td>M-001</td><td class="num">180.00</td><td>確定</td></tr>
+        </table></div>
+      </div>
+      <div class="rg"><span class="rl">5e LỊCH SỬ ĐÁNH GIÁ (audit_logs)</span>
+        <div class="tw"><table class="t"><tr><th>日時</th><th>前→後</th><th>担当</th><th>理由</th></tr>
+          <tr><td>02:41</td><td>— → <span data-show="insp">B</span><span data-show="reinsp offline locked closing">A</span></td><td>下見 高橋</td><td>—</td></tr></table></div>
+      </div>
+    </div>
+  </div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-016 ============ -->
+<section class="blk scr" id="scr-016">
+  <h2>SCR-016 相対取引入力 — Nhập giao dịch thỏa thuận (luồng chính ~90%)</h2>
+  <div class="meta"><code>/trades/new</code> · <code>trades.create</code> (chỉ vai trò trade) · ≤ 15 giây/giao dịch chỉ bằng bàn phím, API p95 ≤ 2s (S) <i class="co" title="700–1.200 giao dịch/ngày, ~7 lần chốt/phút toàn chợ">BC-80</i> · Spec: <a href="../04-screen-specs/scr-016-negotiated-trade-entry.md">scr-016</a> (chủ sở hữu bảng RJ chung)</div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="norm">入力中</button><button data-v="ok">確定成功 S-01</button><button data-v="rj01">RJ-01 許可失効</button><button data-v="rj01a">RJ-01a 開始前</button><button data-v="rj02">RJ-02 許可停止</button><button data-v="rj04">RJ-04 承認停止</button><button data-v="rj05">RJ-05 承認再審査</button><button data-v="rj06">RJ-06 取引地点登録期限</button><button data-v="rj08">RJ-08 卸売業者停止</button><button data-v="rj09">RJ-09 残数量不足</button><button data-v="rj10">RJ-10 締め済</button><button data-v="rj11">RJ-11 未開始</button><button data-v="off">オフライン RJ-13</button><button data-v="empty">ロットなし</button><button data-v="send">送信中</button>
+  </div>
+  <div class="frame">
+    <div class="url"><span>/trades/new (role: trade)</span><span>確定者 = recorded_by = ログイン者</span></div>
+    <div class="rg"><span class="rl">1 HEADER — không có bộ chọn ngày</span>
+      <div class="row" style="align-items:flex-end;justify-content:space-between">
+        <div><b>相対取引入力</b> <span class="sub">/ Nhập giao dịch thỏa thuận</span></div>
+        <div class="f n" style="flex:0 0 220px"><span class="lb">業務日<code class="id">F-01</code><span class="vi">Ngày nghiệp vụ hiện tại (chỉ đọc, không gửi từ client)</span></span><div class="ip ro" data-show="norm ok rj01 rj01a rj02 rj04 rj05 rj06 rj08 rj09 rj10 off empty send">2026/10/16 (金) 営業中</div><div class="ip ro" data-show="rj11">— 未開始</div></div>
+        <i class="co" title="Bỏ BusinessDayPicker; GET /api/business-days/current; lô chỉ của ngày hiện tại">G-07</i>
+        <span data-show="norm ok rj01 rj01a rj02 rj04 rj05 rj06 rj08 rj09 rj10 rj11 empty send"><span class="net">● オンライン</span></span>
+        <span data-show="off"><span class="net off">● オフライン</span> 下書き保存済</span>
+      </div>
+    </div>
+    <div class="rg" role="alert" aria-live="assertive"><span class="rl">2 VÙNG THÔNG BÁO role=alert aria-live</span>
+      <div class="hint" data-show="norm send">(kết quả chốt gần nhất / lý do từ chối)</div>
+      <div class="bn ok" data-show="ok">T261016-0004 を確定しました：50kg × ¥3,000 = ¥150,000<span class="vi">Đã chốt T261016-0004: 50kg × ¥3,000 = ¥150,000</span><code>S-01 · 201</code></div>
+      <div class="bn err" data-show="rj01">仲卸の許可が失効しています（有効期限: 2026/10/15）。取引を確定できません。<span class="vi">許可 của 仲卸 đã hết hiệu lực (2026/10/15). Không chốt được.</span><code>RJ-01</code> <a href="#scr-010">M-003 の資格を見る →</a> <i class="co" title="Tư cách kiểm lúc chốt theo business_date = ngày hiện tại; valid_to tính bao gồm (qualification_valid_to_inclusive)">BC-06</i></div>
+      <div class="bn err" data-show="rj01a">許可の有効期間がまだ始まっていません（開始日: 2026/10/20）。取引を確定できません。<span class="vi">許可 chưa tới ngày bắt đầu hiệu lực (2026/10/20). Không chốt được.</span><code>RJ-01a</code> — {根拠} thay bằng nhãn đúng căn cứ</div>
+      <div class="bn err" data-show="rj02">仲卸の許可は一時停止中です。解除条件を満たすまで確定できません。<span class="vi">許可 của 仲卸 đang tạm dừng. Chưa đủ điều kiện gỡ thì không chốt được.</span><code>RJ-02</code> <a href="#scr-010">M-004 →</a></div>
+      <div class="bn err" data-show="rj04">売買参加者の承認は一時停止中です。再審査を経るまで確定できません。<span class="vi">承認 đang tạm dừng. Phải qua 再審査 mới chốt được.</span><code>RJ-04</code> <a href="#scr-010">B-003 →</a></div>
+      <div class="bn err" data-show="rj05">売買参加者の承認は再審査中です。再審査が完了するまで確定できません。<span class="vi">承認 đang tái thẩm định. Chờ xong 再審査 mới chốt được.</span><code>RJ-05</code> <a href="#scr-010">B-003 →</a> <i class="co" title="Khác câu với RJ-01: 許可 ≠ 承認">BC-01</i></div>
+      <div class="bn err" data-show="rj06">買出人の取引地点登録の期限が切れています（2026/10/15）。取引地点で再登録してください。<span class="vi">取引地点登録 của 買出人 đã hết hạn (2026/10/15). Đăng ký lại tại điểm giao dịch.</span><code>RJ-06</code> <a href="#scr-010">R-003 →</a> <i class="co" title="買出人 có hạn — giả định S (M1)">BC-11</i></div>
+      <div class="bn err" data-show="rj08">卸売業者（W-002 港魚類）の市場登録が一時停止中のため、このロットは取引できません。<span class="vi">市場登録 của 卸売業者 (W-002 港魚類) đang tạm dừng, lô này không giao dịch được.</span><code>RJ-08</code> <i class="co" title="Bên bán: seller_registration_check = suspension_only mặc định; full → thêm RJ-08a (hết hạn) (Q33)">BC-10</i></div>
+      <div class="bn err" data-show="rj09">ロットL261016-005の残数量は10kgです。12kgは確定できません。<span class="vi">Lô L261016-005 chỉ còn 10kg, không chốt được 12kg.</span><code>RJ-09</code> <i class="co" title="Tồn lô không âm; khóa dòng lô FOR UPDATE trong cùng giao dịch">BC-33</i></div>
+      <div class="bn err" data-show="rj10">業務日2026/10/16は締め済みです。修正は確定後修正申請で行ってください。<span class="vi">業務日 2026/10/16 đã khóa sổ. Muốn sửa hãy tạo yêu cầu điều chỉnh.</span><code>RJ-10</code> <a href="#scr-022">修正申請へ →</a> · form disabled · API ghi <code>blocked_edit</code> <i class="co" title="LOCKED_DAY → fn_log_blocked_edit ghi audit_logs action=blocked_edit">ADR-006</i></div>
+      <div class="bn err" data-show="rj11">業務日{day}はまだ開始されていません。<span class="vi">業務日 {day} chưa được mở. — form disabled</span><code>RJ-11</code> <a href="#scr-024">業務日開始 (SCR-024) →</a></div>
+      <div class="bn err" data-show="off">ネットワークに接続されていません。取引の確定にはオンライン接続が必要です。入力内容は端末に下書き保存しました。<span class="vi">Mất mạng. Chốt giao dịch cần có mạng. Nội dung đã lưu nháp trên máy.</span><code>RJ-13</code> <i class="co" title="Chốt không xếp hàng offline; nháp localStorage trade-draft:{userId}">BC-77</i></div>
+      <div class="bn warn" data-show="empty">販売可能なロットがありません<span class="vi">Không còn lô có hàng — nút 確定 disabled</span></div>
+    </div>
+    <div class="rg"><span class="rl">3 FORM MỘT HÀNG (tablet: 2 hàng) · thứ tự Tab = thứ tự nhập</span>
+      <div class="row">
+        <div class="f w2"><span class="lb">ロット<em class="req">*</em><code class="id">F-02</code> <kbd>Alt</kbd>+<kbd>L</kbd><span class="vi">Lô — gõ mã / mặt hàng (chỉ lô ngày hiện tại)</span></span>
+          <div class="ip" data-show="norm ok rj01 rj01a rj02 rj04 rj05 rj06 rj09 rj10 off send">L261016-005 · 本マグロ</div><div class="ip" data-show="rj08">L261016-020 · ズワイガニ</div><div class="ip ro" data-show="empty rj11">販売可能なロットがありません</div>
+          <div class="hint" data-show="norm rj01 rj01a rj02 rj04 rj05 rj06 rj10 off send">残 120 kg</div><div class="hint" data-show="ok">残 70 kg</div><div class="hint" data-show="rj09"><b>残 10 kg</b></div><div class="hint" data-show="rj08">残 15 ケース (W-002)</div>
+          <div class="dd" data-show="norm"><div class="on">L261016-005 · 本マグロ · 残 120 kg</div><div>L261016-001 · サーモン · 残 30 kg</div><div>L261016-002 · ズワイガニ · 残 15 ケース</div></div>
+        </div>
+        <div class="f w2"><span class="lb">買受人<em class="req">*</em><code class="id">F-03</code> <kbd>Alt</kbd>+<kbd>B</kbd><span class="vi">Người mua — gõ mã / tên</span></span>
+          <div class="ip" data-show="norm ok rj08 rj09 rj10 off send">M-001 · 丸吉商店（仲卸）</div>
+          <div class="ip bad" data-show="rj01">M-003 · 金子漁業（仲卸） ⚠ 許可失効</div><div class="ip bad" data-show="rj01a">M-005 · 新規仲卸（仲卸） ⚠ 許可開始前</div><div class="ip bad" data-show="rj02">M-004 · 大成商店（仲卸） ⚠ 許可停止</div><div class="ip bad" data-show="rj04">B-003 · 北斗加工（売買参加者） ⚠ 承認停止</div><div class="ip bad" data-show="rj05">B-003 · 北斗加工（売買参加者） ⚠ 承認再審査中</div><div class="ip bad" data-show="rj06">R-003 · 割烹しおみ（買出人） ⚠ 取引地点登録期限切れ</div><div class="ip ph" data-show="empty rj11">—</div>
+          <div class="hint" data-show="rj01 rj01a rj02 rj04 rj05 rj06">focus → F-03 (RJ-00…RJ-08a), mọi field giữ nguyên</div>
+          <div class="dd" data-show="norm"><div class="on">M-001 · 丸吉商店（仲卸）</div><div>M-003 · 金子漁業（仲卸） ⚠ 許可失効</div><div>B-003 · 北斗加工（売買参加者） ⚠ 承認再審査中</div><div>R-003 · 割烹しおみ（買出人） ⚠ 取引地点登録期限切れ</div></div>
+          <div class="hint" data-show="norm">Người không hợp lệ vẫn chọn được để lý do hiện rõ · cờ do server tính <i class="co" title="Cờ ⚠ tính ở server (fn_qualification_state, purpose=buy&amp;day=), không theo UTC client">G-02</i></div>
+        </div>
+        <div class="f n"><span class="lb">数量 (kg)<em class="req">*</em><code class="id">F-04</code> <kbd>Alt</kbd>+<kbd>Q</kbd><span class="vi">Số lượng, 2 số lẻ</span></span>
+          <div class="ip" data-show="norm rj01 rj01a rj02 rj04 rj05 rj06 rj08 rj10 off send">50</div><div class="ip ph" data-show="ok empty rj11">　</div><div class="ip bad" data-show="rj09">12</div>
+          <div class="hint" data-show="ok">focus ở đây cho dòng kế</div><div class="hint" data-show="rj09">focus → F-04</div>
+        </div>
+        <div class="f n"><span class="lb">単価 (¥, 税抜)<em class="req">*</em><code class="id">F-05</code><span class="vi">Đơn giá, số nguyên</span></span><div class="ip" data-show="norm rj01 rj01a rj02 rj04 rj05 rj06 rj08 rj09 rj10 off send">3000</div><div class="ip ph" data-show="ok empty rj11">　</div></div>
+        <div class="f"><span class="lb">備考<code class="id">F-06</code><span class="vi">Ghi chú ≤200</span></span><div class="ip ph">—</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span class="hint">見込金額 <b data-show="norm rj01 rj01a rj02 rj04 rj05 rj06 rj08 rj10 off send">¥150,000（税抜）</b><b data-show="rj09">¥36,000（税抜）</b> <i class="co" title="Chỉ để xem; số chính thức trades.amount do DB sinh; thuế theo mặt hàng, không áp 110/100">BC-70</i></span>
+          <span class="btn pri big" data-show="norm ok rj01 rj01a rj02 rj04 rj05 rj06 rj08 rj09">確定 <kbd>Enter</kbd> <span class="perm">trades.create</span></span>
+          <span class="btn pri big dis" data-show="send">確定中…</span>
+          <span class="btn pri big dis" data-show="off rj10 rj11 empty">確定 <span class="perm">trades.create</span></span>
+          <span class="hint">確定者: 佐藤 一郎 <i class="co" title="confirmed_by = recorded_by = người thật đang đăng nhập (S, Q8)">BC-26</i></span>
+        </div>
+      </div>
+      <div class="row" style="margin-top:8px;justify-content:space-between">
+        <span class="hint">Phím: <kbd>Alt</kbd>+<kbd>L</kbd> ロット · <kbd>Alt</kbd>+<kbd>B</kbd> 買受人 · <kbd>Alt</kbd>+<kbd>Q</kbd> 数量 · <kbd>Tab</kbd> kế tiếp · <kbd>Enter</kbd> 確定 (bất kỳ field) · <kbd>Esc</kbd> クリア · Enter lần 2 khi đang gửi bị bỏ qua</span>
+        <span class="btn">クリア <kbd>Esc</kbd></span>
+      </div>
+      <div class="hint">client_ref UUID ẩn, mới mỗi lần form sạch; gửi lại trả bản ghi cũ <i class="co" title="Chống trùng khi mất phản hồi">BC-76</i> · Nháp F-02…F-06 ở localStorage, khôi phục sau timeout SCR-001 · Thành công: xóa F-04/F-05/F-06, giữ F-02/F-03 · Lỗi phiên: 401 → SCR-001 hoặc M-06; thiếu quyền 403 AUTH-403</div>
+      <div class="hint">Lỗi nhập V016: V016-01 ロットを選択してください。· V016-02 買受人を選択してください。· V016-03 数量は0より大きい数値で入力してください（小数点以下2桁まで）。· V016-04 単価は0以上の整数（円）で入力してください。· V016-05 備考は200文字以内で入力してください。</div>
+    </div>
+    <div class="rg"><span class="rl">4 GIAO DỊCH 相対 VỪA CHỐT — 業務日 hiện tại, 15 dòng mới nhất</span>
+      <div class="tw"><table class="t">
+        <tr><th>取引番号</th><th>確定時刻</th><th>ロット</th><th>買受人</th><th class="num">数量</th><th class="num">単価</th><th class="num">金額</th><th>状態</th></tr>
+        <tr data-show="ok"><td><a href="#scr-029">T261016-0004</a></td><td>03:40</td><td>L261016-005</td><td>M-001 · 丸吉商店</td><td class="num">50.00 kg</td><td class="num">¥3,000</td><td class="num">¥150,000</td><td>確定</td></tr>
+        <tr><td><a href="#scr-029">T261016-0002</a></td><td>03:11</td><td>L261016-001</td><td>M-001 · 丸吉商店</td><td class="num">40.00 kg</td><td class="num">¥2,700</td><td class="num">¥108,000</td><td>確定</td></tr>
+        <tr><td><a href="#scr-029">T261016-0001</a></td><td>03:05</td><td>L261016-001</td><td>B-001 · 白熊スーパー</td><td class="num">80.00 kg</td><td class="num">¥2,600</td><td class="num">¥208,000</td><td>確定</td></tr>
+      </table></div>
+      <div class="hint">Hủy (取消) không ở đây: <code>/trades/{id}</code> (SCR-018, chưa có spec), <code>trades.cancel</code>, trước khóa sổ</div>
+    </div>
+  </div>
+  <h3>Bảng RJ chung — thứ tự kiểm fn_confirm_trade (01 §9.1, dừng ở lỗi đầu) <i class="co" title="Thứ tự 01 §9.1; RJ-xx do D raise kèm mã, client không tự dựng câu">G-24</i></h3>
+  <div class="tw"><table class="t dec">
+    <tr><th>#</th><th>Mã</th><th>JP</th><th>Focus</th></tr>
+    <tr><td>0</td><td>RJ-00</td><td class="wrap">この区分の取引参加者は{取引種別}の買い手になれません。 ({取引種別} = 相対取引 / せり; trade_kind_matrix)</td><td>F-03</td></tr>
+    <tr><td>1a</td><td>RJ-01</td><td class="wrap">仲卸の許可が失効しています（有効期限: {date}）。取引を確定できません。</td><td>F-03</td></tr>
+    <tr><td>1a'</td><td>RJ-01a</td><td class="wrap">{根拠}の有効期間がまだ始まっていません（開始日: {date}）。取引を確定できません。</td><td>F-03</td></tr>
+    <tr><td>1b</td><td>RJ-02</td><td class="wrap">仲卸の許可は一時停止中です。解除条件を満たすまで確定できません。</td><td>F-03</td></tr>
+    <tr><td>2a</td><td>RJ-03</td><td class="wrap">売買参加者の承認が失効しています（{date}）。再審査の手続きが必要です。</td><td>F-03</td></tr>
+    <tr><td>2b / 2c</td><td>RJ-04 / RJ-05</td><td class="wrap">承認: tạm dừng / đang 再審査 (xem variant)</td><td>F-03</td></tr>
+    <tr><td>3a</td><td>RJ-06</td><td class="wrap">買出人の取引地点登録の期限が切れています（{date}）。取引地点で再登録してください。</td><td>F-03</td></tr>
+    <tr><td>3b</td><td>RJ-07</td><td class="wrap">買出人の取引地点登録は一時停止中です。</td><td>F-03</td></tr>
+    <tr><td>4</td><td>RJ-08</td><td class="wrap">卸売業者（{seller}）の市場登録が一時停止中のため、このロットは取引できません。</td><td>F-03</td></tr>
+    <tr><td>4'</td><td>RJ-08a</td><td class="wrap">卸売業者（{seller}）の市場登録の有効期限が切れています（{date}）。 — chỉ khi seller_registration_check = full</td><td>F-03</td></tr>
+    <tr><td>5</td><td>RJ-09</td><td class="wrap">ロット{lot}の残数量は{available}{unit}です。{qty}{unit}は確定できません。</td><td>F-04</td></tr>
+    <tr><td>6</td><td>RJ-10</td><td class="wrap">業務日{day}は締め済みです。修正は確定後修正申請で行ってください。 (+ blocked_edit)</td><td>form disabled</td></tr>
+    <tr><td>6'</td><td>RJ-11</td><td class="wrap">業務日{day}はまだ開始されていません。</td><td>form disabled</td></tr>
+    <tr><td>6''</td><td>RJ-14</td><td class="wrap">ロット{lot}は業務日{day}のロットのため、現在の業務日では取引できません。 — chỉ tới được qua API (UI chỉ liệt kê lô ngày hiện tại; allow_trade_on_previous_day_lots = false)</td><td>F-02</td></tr>
+    <tr><td>—</td><td>RJ-12</td><td class="wrap">指定したロットが見つかりません。</td><td>F-02</td></tr>
+    <tr><td>—</td><td>RJ-13</td><td class="wrap">Mất mạng (client) — xem variant オフライン</td><td>—</td></tr>
+  </table></div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-019 ============ -->
+<section class="blk scr" id="scr-019">
+  <h2>SCR-019 せり結果入力 — Ghi kết quả đấu giá (chỉ kết quả cuối)</h2>
+  <div class="meta"><code>/auction</code> · <code>auction.record</code> · mục thứ hai nhóm 取引 · <b>Không phải hệ thống đấu giá</b> <i class="co" title="Không phòng đấu giá thời gian thực, không bid, không WebSocket, không OCR (SCOPE-OUT-02, bẫy T1/T5)">BC-27</i> · Spec: <a href="../04-screen-specs/scr-019-auction-result-entry.md">scr-019</a></div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="norm">初回表示 (確認者 空)</button><button data-v="sel">確認者 選択済</button><button data-v="ok">記録成功 S-02</button><button data-v="v07">V019-07 確認者なし</button><button data-v="v06">V019-06 時刻範囲外</button><button data-v="rj05">RJ-05 承認再審査</button><button data-v="rj10">RJ-10 締め済</button><button data-v="off">オフライン V019-13</button>
+  </div>
+  <div class="frame">
+    <div class="url"><span>/auction (role: trade)</span><span>recorded_by = ログイン者 · confirmed_by = F-07 (chọn tay)</span></div>
+    <div class="rg"><span class="rl">1 HEADER — không có bộ chọn ngày</span>
+      <div class="row" style="justify-content:space-between;align-items:flex-end">
+        <div><b>せり結果入力</b> <span class="sub">/ Ghi kết quả đấu giá</span><div class="bn" style="margin:4px 0 0">せりの最終結果のみを記録します（入札機能はありません）<span class="vi">Chỉ ghi kết quả cuối, không có chức năng bid</span></div></div>
+        <div class="f n" style="flex:0 0 220px"><span class="lb">業務日<code class="id">F-01</code><span class="vi">Ngày nghiệp vụ hiện tại (chỉ đọc)</span></span><div class="ip ro">2026/10/16 (金) 営業中</div></div>
+        <i class="co" title="/api/business-days/current, không có bộ chọn ngày">G-07</i>
+        <span data-show="norm sel ok v07 v06 rj05 rj10"><span class="net">● オンライン</span></span><span data-show="off"><span class="net off">● オフライン</span></span>
+      </div>
+    </div>
+    <div class="rg" role="alert"><span class="rl">2 VÙNG THÔNG BÁO</span>
+      <div class="hint" data-show="norm sel">(trống)</div>
+      <div class="bn ok" data-show="ok">T261016-0005 のせり結果を記録しました<span class="vi">Đã ghi kết quả せり T261016-0005</span><code>S-02</code> — giữ F-07 đã chọn tay, focus F-02</div>
+      <div class="bn err" data-show="v07">確認者を選択してください。せり結果は確認者なしで記録できません。<span class="vi">Chọn người xác nhận. Không ghi được kết quả せり khi thiếu người xác nhận.</span><code>V019-07</code> — không có request ghi <i class="co" title="Kết quả せり phải có người xác nhận là người thật, chọn tường minh">BC-28</i></div>
+      <div class="bn err" data-show="v06">落札時刻は業務日の開始以降、現在時刻以前で入力してください。<span class="vi">Thời điểm chốt phải từ lúc mở 業務日 tới hiện tại.</span><code>V019-06</code> <i class="co" title="[業務日 + business_day_start_time (system_settings, 02:00), now]">ADR-009</i></div>
+      <div class="bn err" data-show="rj05">売買参加者の承認は再審査中です。再審査が完了するまで確定できません。<span class="vi">承認 đang tái thẩm định. Chờ xong 再審査 mới chốt được.</span><code>RJ-05</code> <a href="#scr-010">B-003 →</a> — bảng RJ chung với SCR-016</div>
+      <div class="bn err" data-show="rj10">業務日2026/10/16は締め済みです。修正は確定後修正申請で行ってください。<span class="vi">業務日 2026/10/16 đã khóa sổ. Muốn sửa hãy tạo yêu cầu điều chỉnh. — form disabled, API ghi blocked_edit</span><code>RJ-10</code> <a href="#scr-022">修正申請へ →</a></div>
+      <div class="bn err" data-show="off">ネットワークに接続されていません。せり結果の記録にはオンライン接続が必要です。入力内容は端末に下書き保存しました。<span class="vi">Mất mạng. Ghi kết quả せり cần có mạng. Nội dung đã lưu nháp trên máy. (auction-draft:{userId}, không lưu F-07; không xếp hàng)</span><code>V019-13</code> <i class="co" title="Không xếp hàng offline cho せり">ADR-010</i></div>
+    </div>
+    <div class="rg"><span class="rl">3 FORM MỘT DÒNG KẾT QUẢ</span>
+      <div class="row">
+        <div class="f w2"><span class="lb">ロット<em class="req">*</em><code class="id">F-02</code><span class="vi">Lô (không giữ sau khi ghi)</span></span><div class="ip" data-show="norm sel v07 v06 rj05 rj10 off">L261016-006 · 本マグロ</div><div class="ip ph" data-show="ok">　</div><div class="hint" data-show="norm sel v07 v06 rj05 rj10 off">残 1 本</div></div>
+        <div class="f w2"><span class="lb">落札者<em class="req">*</em><code class="id">F-03</code><span class="vi">Người thắng</span></span><div class="ip" data-show="norm sel v07 v06 rj10 off">B-001 · 白熊スーパー（売買参加者）</div><div class="ip bad" data-show="rj05">B-003 · 北斗加工（売買参加者） ⚠ 承認再審査中</div><div class="ip ph" data-show="ok">　</div></div>
+        <div class="f n"><span class="lb">数量 (本)<em class="req">*</em><code class="id">F-04</code><span class="vi">mặc định = tồn</span></span><div class="ip" data-show="norm sel v07 v06 rj05 rj10 off">1</div><div class="ip ph" data-show="ok">　</div></div>
+        <div class="f n"><span class="lb">落札単価 (¥)<em class="req">*</em><code class="id">F-05</code><span class="vi">Đơn giá trúng, 税抜</span></span><div class="ip" data-show="norm sel v07 v06 rj05 rj10 off">820000</div><div class="ip ph" data-show="ok">　</div></div>
+        <div class="f n"><span class="lb">落札時刻<em class="req">*</em><code class="id">F-06</code><span class="vi">HH:mm JST</span></span><div class="ip" data-show="norm sel v07 rj05 rj10 off ok">03:12</div><div class="ip bad" data-show="v06">04:52</div></div>
+        <div class="f"><span class="lb">確認者<em class="req">*</em><code class="id">F-07</code><span class="vi">Người xác nhận — KHÔNG mặc định</span></span>
+          <div class="ip sel ph" data-show="norm off">— 選択してください —</div><div class="ip sel bad" data-show="v07">— 選択してください —</div><div class="ip sel" data-show="sel v06 rj05 rj10">進行役 中村 健（手動選択）</div><div class="ip sel" data-show="ok">進行役 中村 健（前の行から保持）</div>
+          <div class="hint">Trống mỗi lần mở / tải lại form; không bao giờ tự điền người đăng nhập; sau khi ghi thành công giữ người đã chọn tay <i class="co" title="F-07 bắt buộc, không mặc định — chặn quay lại lỗi G-22 (confirmed_by = người gọi)">G-22</i></div></div>
+        <div class="f"><span class="lb">備考<code class="id">F-08</code><span class="vi">≤200</span></span><div class="ip ph">—</div></div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span class="hint">見込金額 <b>¥820,000（税抜）</b></span>
+          <span class="btn pri big" data-show="sel ok v06 rj05">記録 <kbd>Enter</kbd> <span class="perm">auction.record</span></span>
+          <span class="btn pri big dis" data-show="norm v07 rj10 off">記録 <span class="perm">auction.record</span></span>
+          <span class="hint" data-show="norm">disabled đến khi F-07 có giá trị (§7)</span>
+          <span class="btn">クリア <kbd>Esc</kbd></span>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:6px">Lỗi nhập: V016-01 / V016-03 / V016-04 / V016-05 (câu giống SCR-016) · V019-02 落札者を選択してください。· V019-08 選択した確認者は無効か、せり結果を確認する権限がありません。· V019-09 確認者は記録者と別の人を選択してください。(chỉ khi auction_confirmer_must_differ = true)</div>
+      <div class="hint">Không có trên màn hình: <span class="absent">入札一覧</span> · <span class="absent">現在価格</span> · <span class="absent">カウントダウン</span> · <span class="absent">写真アップロード / OCR 手やり・符丁</span> · <span class="absent">一括入力 / CSV取込</span> · <span class="absent">自動確認</span> <i class="co" title="Không auto-confirm, không nhập hàng loạt (bẫy T19)">BC-29</i></div>
+    </div>
+    <div class="rg"><span class="rl">4 KẾT QUẢ せり ĐÃ GHI — toàn bộ trong ngày, mới nhất trước</span>
+      <div class="tw"><table class="t">
+        <tr><th>取引番号</th><th>落札時刻</th><th>ロット</th><th>落札者</th><th class="num">数量</th><th class="num">単価</th><th class="num">金額</th><th>確認者</th><th>入力者</th><th>状態</th></tr>
+        <tr data-show="ok"><td>T261016-0005</td><td>03:12</td><td>L261016-006</td><td>B-001 · 白熊スーパー</td><td class="num">1 本</td><td class="num">¥820,000</td><td class="num">¥820,000</td><td>中村 健</td><td>佐藤 一郎</td><td>確定</td></tr>
+        <tr><td>T261016-0003</td><td>02:55</td><td>L261016-002</td><td>M-002 · 山一水産</td><td class="num">25 ケース</td><td class="num">¥9,800</td><td class="num">¥245,000</td><td>中村 健</td><td>佐藤 一郎</td><td>確定</td></tr>
+      </table></div>
+      <div class="hint">Mã T&lt;YYMMDD&gt;-NNNN chung bộ đếm với 相対 <i class="co" title="Mã nghiệp vụ xuyên suốt; doc_counters thay count(*)+1">BC-31</i></div>
+    </div>
+  </div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-029 ============ -->
+<section class="blk scr" id="scr-029">
+  <h2>SCR-029/030 引渡し記録・例外処理 — Ghi giao hàng, ngoại lệ & tranh chấp</h2>
+  <div class="meta"><code>/deliveries/{tradeId}</code> · xem <code>trades.read</code>/<code>deliveries.record</code> · ghi <code>deliveries.record</code> · file <code>attachments.upload</code> · <b>Không dùng chữ 完納</b> <i class="co" title="完納 = trả tiền đủ đúng hạn (完納奨励金), không phải giao đủ hàng (bẫy T6)">BC-65</i> · Spec: <a href="../04-screen-specs/scr-029-delivery-recording.md">scr-029</a></div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="norm">引渡し中</button><button data-v="exc">例外入力 (係争あり)</button><button data-v="conf">例外の確認</button><button data-v="disp">係争中 → 解決</button><button data-v="flag">資格失効後 (黄)</button><button data-v="block">一時停止 (赤)</button><button data-v="noday">業務日未開始</button><button data-v="locked">本日締め済</button><button data-v="off">オフライン 未同期</button><button data-v="done">引渡し完了</button>
+  </div>
+  <div class="frame">
+    <div class="url"><span>/deliveries/{tradeId} (role: delivery · tablet, nút lớn) · người dùng: <span data-show="norm exc conf flag block noday locked off done">配送 伊藤</span><span data-show="disp">配送 小林 (≠ người ghi)</span></span><span>business_date lần giao = fn_current_business_date() (server gán)</span></div>
+    <div class="rg"><span class="rl">1 HEADER</span>
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <span><b>引渡し / Giao hàng · <span data-show="norm exc conf disp noday locked off done">T261016-0001</span><span data-show="flag">T261015-0008</span><span data-show="block">T261015-0003</span></b>
+          · <span data-show="norm exc conf disp noday locked off done">サーモン · B-001 白熊スーパー（売買参加者）</span><span data-show="flag">スルメイカ · M-003 金子漁業（仲卸）</span><span data-show="block">サバ · M-004 大成商店（仲卸）</span></span>
+        <span>業務日 <b data-show="norm exc conf disp flag block locked off done">2026/10/16</b><b data-show="noday">— 未開始</b></span>
+        <span data-show="norm exc conf disp flag block noday locked done"><span class="net">● オンライン</span> 未同期 0</span><span data-show="off"><span class="net off">● オフライン</span> 未同期 1</span>
+      </div>
+    </div>
+    <div class="bn warn" data-show="flag">金子漁業 の許可は2026/10/15に失効しています。確定済み取引のため引渡しを記録し、照合事務局に通知しました<span class="vi">許可 của 金子漁業 đã hết hiệu lực ngày 2026/10/15; vì giao dịch đã chốt trước đó nên vẫn ghi giao và đã báo bộ phận đối soát</span><code>allow_with_flag</code> <i class="co" title="fn_qualification_block_reason(buyer, business_date, 'deliver') → block / allow_with_flag / allow (Q31)">BC-62</i></div>
+    <div class="bn err" data-show="block">大成商店 の許可は一時停止中のため引渡しできません。例外として記録してください<span class="vi">許可 của 大成商店 đang bị tạm dừng, không giao được; hãy ghi ngoại lệ</span> — ẩn loại 引渡し <i class="co" title="Nhãn căn cứ 許可 / 承認 / 取引地点登録, không gộp">BC-01</i></div>
+    <div class="bn err" data-show="noday">業務日が開始されていません<span class="vi">Chưa mở ngày nghiệp vụ — form khóa, vẫn xem được; không gán ngày theo đồng hồ</span> <i class="co" title="Ngày ghi = ngày open duy nhất, không dùng đồng hồ">ADR-009</i></div>
+    <div class="bn err" data-show="locked">本日の業務日は締め済みです<span class="vi">Ngày nghiệp vụ hiện tại đã khóa sổ — form khóa; API: 業務日2026/10/16は締め済みのため記録できません + blocked_edit. (Ngày của giao dịch đã khóa thì vẫn ghi được vào ngày hiện tại)</span> <i class="co" title="Giao vắt kỳ: ghi vào ngày hiện tại">BC-50</i> <i class="co" title="fn_record_delivery chặn ngày khóa + blocked_edit">G-03</i></div>
+    <div class="rg"><span class="rl">3 THẺ TÌNH TRẠNG (suy ra trên cả chuỗi gốc + -A)</span>
+      <div class="kpi">
+        <div><small>販売数量 / Đã bán</small><b data-show="norm exc conf disp noday locked off done">80.00 kg</b><b data-show="flag">40.00 kg</b><b data-show="block">30.00 kg</b></div>
+        <div><small>引渡し累計 / Đã giao (ròng)</small><b data-show="norm exc conf noday locked">30.00 kg</b><b data-show="disp">75.00 kg</b><b data-show="off">50.00 kg*</b><b data-show="done">80.00 kg</b><b data-show="flag block">0.00 kg</b></div>
+        <div><small>残数量 / Còn lại</small><b data-show="norm exc conf noday locked">50.00 kg</b><b data-show="disp">0.00 kg</b><b data-show="off">30.00 kg*</b><b data-show="done">0.00 kg</b><b data-show="flag">40.00 kg</b><b data-show="block">30.00 kg</b></div>
+        <div><small>状態 / Trạng thái <i class="co" title="例外 nếu có ngoại lệ chưa xác nhận HOẶC tranh chấp chưa giải quyết; 完了 nếu còn lại=0; 引渡し中 nếu đã giao>0; còn lại 待機. Không có nút ép hoàn tất">BC-55</i></small><b data-show="norm noday locked off">引渡し中</b><b data-show="exc conf disp">例外</b><b data-show="done">引渡し完了</b><b data-show="flag block">待機</b></div>
+      </div>
+      <div class="hint">不足処理済 / Đã xử lý thiếu: <span data-show="disp">5.00</span><span data-show="norm exc conf flag block noday locked off done">0.00</span> kg · 過剰 / Giao thừa: 0.00 kg (riêng) <i class="co" title="Lũy kế trên mọi deliveries của chuỗi reverses_id (gốc + -A, bỏ -R)">BC-54</i><span data-show="off"> · * gồm bản ghi 未同期</span></div>
+    </div>
+    <div class="rg" data-show="norm exc flag block off done"><span class="rl">4 FORM GHI NHẬN — nút lớn cho tablet</span>
+      <div class="row">
+        <div class="f w2"><span class="lb">区分<em class="req">*</em><code class="id">F-01</code><span class="vi">Loại (segmented)</span></span>
+          <div class="row" style="gap:0">
+            <span class="btn big on" data-show="norm flag off">引渡し</span><span class="btn big dis" data-show="block done">引渡し</span><span class="btn big" data-show="exc">引渡し</span>
+            <span class="btn big" data-show="norm flag off">例外</span><span class="btn big on" data-show="exc block done">例外</span>
+          </div></div>
+        <div class="f n"><span class="lb">数量 (kg)<em class="req">*</em><code class="id">F-02</code><span class="vi">mặc định = còn lại</span></span><div class="ip" data-show="norm off">50.00</div><div class="ip" data-show="flag">40.00</div><div class="ip" data-show="exc">5.00</div><div class="ip ph" data-show="block done">—</div></div>
+        <div class="f" data-show="exc block done"><span class="lb">例外種別<em class="req">*</em><code class="id">F-03</code><span class="vi">Loại ngoại lệ</span></span><div class="ip sel" data-show="exc">short 不足</div><div class="ip sel" data-show="block">partial_cancel 一部取消</div><div class="ip sel" data-show="done">return 返品</div><div class="hint">short 不足 · over 過剰 · return 返品 · partial_cancel 一部取消</div></div>
+      </div>
+      <div class="row" data-show="exc block done" style="margin-top:6px">
+        <div class="f w2"><span class="lb">理由<em class="req">*</em><code class="id">F-05</code><span class="vi">Lý do (bắt buộc khi ngoại lệ)</span></span><div class="ip ta">計量で5kg不足</div><div class="hint">例外には理由の入力が必要です</div></div>
+        <div class="f"><span class="lb">証跡<code class="id">F-06</code><span class="vi">Ảnh, chứng từ JPG/PNG/PDF ≤10MB</span></span><div class="ip">［撮影 / ファイル］ <span class="perm">attachments.upload</span></div></div>
+      </div>
+      <div class="row" data-show="exc block done" style="margin-top:6px">
+        <div class="f n"><span class="lb">係争あり<code class="id">F-09</code><span class="vi">Có tranh chấp (chỉ khi 例外)</span></span><span class="chk"><span class="box" data-show="exc">✓</span><span class="box" data-show="block done"></span> 係争あり</span></div>
+        <div class="f w2" data-show="exc"><span class="lb">係争内容<em class="req">*</em><code class="id">F-10</code><span class="vi">Nội dung tranh chấp (bắt buộc khi F-09 tích)</span></span><div class="ip ta">買受人が計量結果に異議あり</div><div class="hint">係争内容を入力してください · 係争は例外にのみ設定できます</div></div>
+      </div>
+      <div class="hint">Giới hạn (F-04, D): short/partial_cancel ≤ còn lại · return ≤ đã giao ròng · delivery &gt; còn lại → 「残数量は50です。超過分は「過剰引渡し」として例外登録してください」 <i class="co" title="Giao vượt phải ghi ngoại lệ over; disputed với kind=delivery bị chặn">BC-55</i> · client_ref (F-08) ẩn</div>
+      <div class="hint" data-show="done">Hoàn tất: form chỉ còn loại 例外 (cho 返品)</div>
+      <div class="acts">
+        <span class="btn pri big" data-show="norm exc flag block done">記録 <span class="perm">deliveries.record</span></span>
+        <span class="btn pri big" data-show="off">記録（端末保存） <span class="perm">deliveries.record</span></span>
+      </div>
+    </div>
+    <div class="rg" data-show="noday locked"><span class="rl">4 FORM GHI NHẬN</span><span class="btn pri big dis">記録 <span class="perm">deliveries.record</span></span></div>
+    <div class="cols">
+      <div class="rg"><span class="rl">5 LỊCH SỬ</span>
+        <div class="tw"><table class="t">
+          <tr><th>回</th><th>区分</th><th class="num">数量</th><th>業務日</th><th>記録者</th><th>確認者</th><th>係争</th><th>同期</th></tr>
+          <tr data-show="flag block"><td colspan="8" class="hint">引渡し記録はまだありません / Chưa có lần giao nào</td></tr>
+          <tr data-show="norm exc conf noday locked off done"><td>1</td><td>引渡し</td><td class="num">30.00</td><td>2026-10-16</td><td>配送 伊藤</td><td>配送 伊藤</td><td>—</td><td>済</td></tr>
+          <tr data-show="disp"><td>1</td><td>引渡し</td><td class="num">75.00</td><td>2026-10-16</td><td>配送 伊藤</td><td>配送 伊藤</td><td>—</td><td>済</td></tr>
+          <tr data-show="conf"><td>2</td><td>例外 short 不足</td><td class="num">5.00</td><td>2026-10-16</td><td>配送 伊藤</td><td>—（未確認）</td><td>—</td><td>済</td></tr>
+          <tr data-show="disp" class="er"><td>2</td><td>例外 short 不足</td><td class="num">5.00</td><td>2026-10-16</td><td>配送 伊藤</td><td>配送 伊藤 06:10</td><td><span class="badge dk">係争中</span></td><td>済</td></tr>
+          <tr data-show="off" class="hl"><td>2</td><td>引渡し</td><td class="num">20.00</td><td>2026-10-16</td><td>配送 伊藤</td><td>配送 伊藤</td><td>—</td><td><span class="badge">未同期</span> TMP-91c0e2aa</td></tr>
+          <tr data-show="done"><td>2</td><td>引渡し</td><td class="num">50.00</td><td>2026-10-16</td><td>配送 伊藤</td><td>配送 伊藤</td><td>—</td><td>済</td></tr>
+        </table></div>
+        <div class="hint" data-show="off">Queue IndexedDB; đồng bộ theo thứ tự lưu; ngày lưu không còn là ngày hiện tại → hòa giải (SCR-054) <i class="co" title="Bến giao mất mạng 3–5 lần/tuần → offline queue; client_ref UNIQUE">ADR-010</i></div>
+      </div>
+      <div class="rg"><span class="rl">6 NGOẠI LỆ MỞ / TRANH CHẤP CHƯA GIẢI QUYẾT</span>
+        <div data-show="norm exc flag block noday locked done" class="hint">なし / Không có</div>
+        <div data-show="conf off">
+          <div class="tw"><table class="t"><tr><th>#</th><th>種別</th><th class="num">数量</th><th>理由</th><th>係争</th></tr>
+            <tr><td>2</td><td>short 不足</td><td class="num">5.00</td><td>計量で5kg不足</td><td>—</td></tr></table></div>
+          <div class="f w3" style="margin-top:6px"><span class="lb">確認コメント<code class="id">F-11</code><span class="vi">Ý kiến xác nhận ngoại lệ ≤200 (không bắt buộc)</span></span><div class="ip ph">—</div></div>
+          <div class="acts"><span class="btn pri" data-show="conf">確認 <span class="perm">deliveries.record</span></span><span class="btn" data-show="conf">係争にする <span class="perm">deliveries.record</span></span><span class="btn pri dis" data-show="off">確認</span><span class="btn dis" data-show="off">係争にする</span><span class="msg" data-show="off">NET-01</span></div>
+          <div class="hint">確認 ghi confirmed_by / confirmed_at / confirm_comment; không đóng tranh chấp; người xác nhận khác người ghi chỉ khi exception_confirm_by_other = true (S) <i class="co" title="Ngoại lệ có lý do + người xác nhận">BC-56</i></div>
+        </div>
+        <div data-show="disp">
+          <div class="tw"><table class="t"><tr><th>#</th><th>種別</th><th class="num">数量</th><th>記録者</th><th>係争内容</th></tr>
+            <tr class="er"><td>2</td><td>short 不足</td><td class="num">5.00</td><td>配送 伊藤</td><td class="wrap">買受人が計量結果に異議あり</td></tr></table></div>
+          <div class="dlg"><h4>係争を解決 / Giải quyết tranh chấp</h4>
+            <div class="f w3"><span class="lb">解決コメント<em class="req">*</em><code class="id">F-07</code><span class="vi">Ý kiến giải quyết ≤500</span></span><div class="ip ta">再計量の結果、不足5kgで買受人合意</div><div class="hint">係争の解決にはコメントが必要です / Giải quyết tranh chấp phải có ý kiến</div></div>
+            <div class="acts"><span class="btn pri">係争を解決 <span class="perm">deliveries.record</span></span></div>
+            <div class="bn err">例外を記録した本人は係争を解決できません<span class="vi">Người ghi ngoại lệ không được tự giải quyết tranh chấp (hiện khi người bấm = 伊藤)</span></div>
+            <div class="hint">Ghi dispute_resolved_by / at / dispute_resolution_note; sau khi giải quyết + ngoại lệ đã xác nhận + còn lại = 0 → 引渡し完了 <i class="co" title="Tranh chấp do người khác người ghi quyết (4 điểm bắt buộc có người quyết, BC-29); SCR-026/027 đầy đủ để sau">BC-57</i></div>
+          </div>
+          <div class="hint">Chưa giải quyết → SCR-024 CK-5 (warn) đếm, dòng CSV kế toán <code>保留</code> <a href="#scr-024">SCR-024 →</a></div>
+        </div>
+        <div class="acts"><a class="btn" href="#scr-022">修正申請へ <span class="perm">corrections.request</span></a><span class="hint">khi ngoại lệ đã xác nhận làm đổi tiền → SCR-022 impact=delivery · không đổi trades.qty/tồn trực tiếp <i class="co" title="Bảng 9.2 delivery_exception_effects; ngoại lệ đóng được">G-12</i></span></div>
+      </div>
+    </div>
+  </div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-024 ============ -->
+<section class="blk scr" id="scr-024">
+  <h2>SCR-024/025 業務日開始・日次照合・締め — Mở ngày, đối soát & khóa sổ</h2>
+  <div class="meta"><code>/reconciliation?day=</code> · xem <code>recon.read</code> hoặc <code>days.open</code> · trạng thái ngày <code>open</code> / <code>closing</code> / <code>reopened</code> / <code>locked</code> <i class="co" title="Tối đa một ngày open; mở ngày mới khi ngày trước chưa khóa → ngày cũ thành closing (S)">ADR-009</i> · MFA theo phiên (M-06), không hỏi theo thao tác · Spec: <a href="../04-screen-specs/scr-024-reconciliation-and-day-lock.md">scr-024</a></div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="start">業務日開始</button><button data-v="startp">開始 (前日未締め)</button><button data-v="diff">開始 (推奨日と異なる)</button><button data-v="intake">intake 表示</button><button data-v="check">営業中・BLOCK</button><button data-v="closing">締め待ち closing</button><button data-v="lockdlg">締め確認</button><button data-v="locked">締め済 (未出力)</button><button data-v="pend">締め解除 承認待ち</button><button data-v="reop">締め解除中 reopened</button><button data-v="exp">出力済</button><button data-v="off">オフライン NET-01</button>
+  </div>
+  <div class="frame">
+    <div class="url"><span>/reconciliation?day=<span data-show="start diff intake">2026-10-15</span><span data-show="startp check lockdlg off">2026-10-16</span><span data-show="closing reop">2026-10-15</span><span data-show="locked pend exp">2026-10-15</span> (role: <span data-show="intake">intake</span><span data-show="pend">approver</span><span data-show="start startp diff check closing lockdlg locked reop exp off">settlement</span>)</span><span>p95 ≤ 2s</span></div>
+    <div class="rg"><span class="rl">1 HEADER</span>
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <b>日次照合・締め / Đối soát & khóa sổ</b>
+        <span>表示する業務日 <span class="ip sel" style="display:inline-block;min-height:32px;padding:4px 28px 4px 8px"><span data-show="startp check lockdlg off">2026/10/16 (金)</span><span data-show="start diff intake closing locked pend reop exp">2026/10/15 (木)</span></span> <span class="hint">2026/10/18 (日) 休業日</span> <i class="co" title="Lịch chợ market_calendar">BC-41</i></span>
+        <span class="badge" data-show="startp check lockdlg off">営業中 open</span><span class="badge dk" data-show="closing">締め待ち closing</span><span class="badge dk" data-show="start diff intake locked pend exp">締め済 locked</span><span class="badge dk" data-show="reop">締め解除中 reopened</span>
+        <span data-show="off"><span class="net off">● オフライン</span></span>
+      </div>
+      <div class="hint" data-show="start diff intake">Chưa có ngày open → mặc định xem ngày nghiệp vụ gần nhất; thẻ Mở ngày nổi bật</div>
+      <div class="hint" data-show="startp">Kịch bản: 2026/10/15 vẫn open khi muốn mở 2026/10/16 (màn hình đang xem 10/15 trước khi mở)</div>
+    </div>
+    <div class="bn err" data-show="off">この操作にはネットワーク接続が必要です。<span class="vi">Thao tác này cần có mạng. — mọi nút ghi khóa</span><code>NET-01</code> <i class="co" title="Bảng 9.6: thao tác ngày không chạy offline">BC-77</i></div>
+    <div class="bn warn" data-show="closing">締め待ち — 新しい記録は現在の業務日（2026/10/16）に入ります。この日は修正と締めのみ可能です。<span class="vi">closing: không nhận bản ghi mới; chỉ sửa và khóa</span></div>
+    <div class="bn warn" data-show="locked exp">締め済み。修正は修正申請（SCR-022）から<span class="vi">Đã khóa: sửa qua yêu cầu điều chỉnh</span> <a href="#scr-022">SCR-022 →</a></div>
+    <div class="bn warn" data-show="pend">締め解除申請が承認待ちです（申請者: 経理 田中 · 理由: 取引 T261015-0004 の取消漏れ）<span class="vi">Yêu cầu mở lại đang chờ duyệt</span></div>
+    <div class="bn err" data-show="reop">締め解除中 — 承認された申請に記載の修正のみ可能（現在の業務日ではありません）。再締めはチェックリスト必須。<span class="vi">reopened: chỉ nhận sửa trực tiếp nêu trong yêu cầu đã duyệt (audit kèm reopen_request_id); bản ghi mới vẫn vào ngày hiện tại</span></div>
+
+    <div class="rg" data-show="start startp diff intake"><span class="rl">2 THẺ 業務日開始 / MỞ NGÀY</span>
+      <div class="row">
+        <div class="f"><span class="lb">開始する業務日<em class="req">*</em><code class="id">F-01</code><span class="vi">Ngày cần mở — mặc định suggested_day (đồng hồ chỉ gợi ý)</span></span><div class="ip" data-show="start startp intake">2026/10/16 (金)</div><div class="ip bad" data-show="diff">2026/10/17 (土)</div>
+          <div class="hint">D chặn: {date}は市場休業日のため開始できません · {date}はすでに開始されています · {date}は最新の業務日より後の日付にしてください</div></div>
+        <div class="f w2" data-show="startp"><span class="lb">前日未締め理由<em class="req">*</em><code class="id">F-02</code><span class="vi">Lý do ngày trước chưa khóa</span></span><div class="ip ta bad"></div><div class="msg">前の業務日が未締めです。理由を入力してください / Ngày nghiệp vụ trước chưa khóa, hãy nhập lý do</div></div>
+        <span class="btn pri big">業務日を開始 <span class="perm">days.open</span></span>
+      </div>
+      <div data-show="diff"><div class="bn warn">2026/10/17は推奨日（2026/10/16）と異なります<span class="vi">2026/10/17 khác ngày gợi ý (2026/10/16) — chỉ cảnh báo, phải tích xác nhận (C, A); D không chặn</span></div><span class="chk"><span class="box"></span> 推奨日と異なる日付で開始することを確認しました</span></div>
+      <div class="bn warn" data-show="startp">開始すると 2026/10/15 は「締め待ち（closing）」になります<span class="vi">Mở xong: 10/16 open, 10/15 → closing; open_reason lưu + audit (previous_day_unlocked_policy = warn_with_reason, S; Q-024-3)</span></div>
+      <div class="hint" data-show="intake">intake chỉ có days.open (không recon.read): chỉ thấy thẻ này, ẩn mọi vùng khác</div>
+    </div>
+
+    <div data-show="check closing lockdlg locked pend reop exp off">
+      <div class="rg"><span class="rl">3 BỐN Ô SỐ (chưa thuế)</span>
+        <div class="kpi">
+          <div><small>相対 / Thỏa thuận</small><b>¥466,000</b><small>3件</small></div>
+          <div><small>せり / Đấu giá</small><b>¥1,065,000</b><small>2件</small></div>
+          <div><small>調整仕訳 / Bút toán điều chỉnh</small><b>−¥1,000</b><small>2行 (-R/-A ghi vào ngày này)</small> <i class="co" title="Dòng -R/-A ghi vào ngày hiện tại lúc duyệt">ADR-005</i></div>
+          <div><small>純額 / Tổng ròng</small><b>¥1,530,000</b><small>trừ cancelled</small></div>
+        </div>
+      </div>
+      <div class="rg"><span class="rl">4 THẺ GIAO HÀNG (SCR-029 §9.1)</span>
+        <div class="row"><span class="badge">完了 1</span><span class="badge">引渡し中 1</span><span class="badge">待機 2</span><span class="badge dk">例外 1</span> <a href="#scr-029">引渡し一覧 →</a></div>
+      </div>
+      <div class="rg" data-show="check closing lockdlg reop off"><span class="rl">5 CHECKLIST TRƯỚC KHÓA (fn_rule('lock_checklist') — mức là giả định S, sửa ở SCR-034)</span>
+        <div class="tw"><table class="t">
+          <tr><th>コード</th><th>項目 / Mục</th><th class="num">件数</th><th>レベル</th><th>確認 <code class="id">F-03</code></th><th>対応</th></tr>
+          <tr><td>CK-1</td><td>下書き・確認待ちの取引</td><td class="num">0</td><td>BLOCK</td><td>—</td><td>—</td></tr>
+          <tr data-show="check closing off" class="er"><td>CK-2</td><td>未同期・同期エラーのオフライン記録</td><td class="num">1</td><td><b>BLOCK</b></td><td>—</td><td><u>SCR-054</u></td></tr>
+          <tr data-show="lockdlg reop"><td>CK-2</td><td>未同期・同期エラーのオフライン記録</td><td class="num">0</td><td>BLOCK</td><td>—</td><td>—</td></tr>
+          <tr data-show="check closing off" class="er"><td>CK-3</td><td>未確認の引渡し例外</td><td class="num">1</td><td><b>BLOCK</b></td><td>—</td><td><a href="#scr-029">SCR-029</a></td></tr>
+          <tr data-show="lockdlg reop"><td>CK-3</td><td>未確認の引渡し例外</td><td class="num">0</td><td>BLOCK</td><td>—</td><td>—</td></tr>
+          <tr class="hl"><td>CK-4</td><td>引渡し未完了（待機・引渡し中）</td><td class="num">3</td><td>WARN</td><td><span class="box" data-show="lockdlg">✓</span><span class="box" data-show="check closing reop off"></span></td><td><a href="#scr-029">SCR-029</a></td></tr>
+          <tr class="hl"><td>CK-5</td><td>未解決の係争（引渡し例外 disputed）</td><td class="num">1</td><td>WARN</td><td><span class="box" data-show="lockdlg">✓</span><span class="box" data-show="check closing reop off"></span></td><td><a href="#scr-029">SCR-029</a></td></tr>
+          <tr class="hl"><td>CK-6</td><td>処理中の修正申請</td><td class="num">1</td><td>WARN</td><td><span class="box" data-show="lockdlg">✓</span><span class="box" data-show="check closing reop off"></span></td><td><a href="#scr-022">SCR-022</a></td></tr>
+          <tr class="hl"><td>CK-7</td><td>在庫が残るロット（情報）</td><td class="num">3</td><td>WARN</td><td><span class="box" data-show="lockdlg">✓</span><span class="box" data-show="check closing reop off"></span></td><td><a href="#scr-012">SCR-012</a></td></tr>
+        </table></div>
+        <div class="hint">CK-5 = ngoại lệ disputed = true, dispute_resolved_at is null (SCR-029) <i class="co" title="Không có module tranh chấp trong bộ lõi; chỉ cờ trên ngoại lệ giao hàng">BC-57</i> · chạy lại ở D khi khóa <i class="co" title="Checklist đối soát trước khóa">BC-49</i> <i class="co" title="Snapshot checklist lưu ở business_days.lock_checklist_snapshot">G-08</i></div>
+      </div>
+      <div class="rg"><span class="rl">6 THẺ KHÓA / MỞ LẠI / XUẤT</span>
+        <div data-show="check closing"><span class="btn pri big dis">締める… <span class="perm">recon.lock</span></span> <span class="msg">締め前チェックに未解決の項目があります（2件）/ Còn 2 mục chặn trong checklist</span> <span class="hint">· 会計CSV出力: <b>ẩn</b> khi open / closing / reopened</span> <i class="co" title="Không xuất kế toán trước khi khóa (bẫy T20)">BC-71</i></div>
+        <div data-show="reop"><span class="btn pri big">締める… <span class="perm">recon.lock</span></span> <span class="hint">khóa lại bắt buộc · xuất ẩn</span></div>
+        <div data-show="off"><span class="btn pri big dis">締める… <span class="perm">recon.lock</span></span></div>
+        <div class="dlg" data-show="lockdlg"><h4>締め確認 / Xác nhận khóa sổ — 2026/10/16</h4>
+          <div>BLOCK 0件 · WARN 4件（すべて確認済 F-03 ✓）</div>
+          <div class="f w3" style="margin-top:6px"><span class="lb">締め時コメント<em class="req">*</em><code class="id">F-04</code><span class="vi">Ghi chú khi khóa (bắt buộc khi có WARN)</span></span><div class="ip ta">引渡し未完了3件は翌日引渡し予定。係争1件は継続対応（保留で出力）</div><div class="hint">thiếu → 警告がある状態で締める場合はコメントが必要です · chưa tích → 未確認の警告があります</div></div>
+          <div class="acts"><span class="btn pri big">締める <span class="perm">recon.lock</span></span><span class="btn">キャンセル</span><span class="hint">→ locked; lock_comment, lock_checklist_snapshot; audit lock_day</span> <i class="co" title="Khóa theo 業務日 JST; sau khóa chỉ sửa qua SCR-022">BC-43</i></div>
+        </div>
+        <div data-show="locked">
+          <div class="acts"><span class="btn pri big">会計CSV出力 <span class="perm">reports.export</span></span><span class="btn">締め解除を申請 <span class="perm">recon.reopen.request</span></span></div>
+          <div class="dlg"><h4>締め解除を申請 / Yêu cầu mở lại</h4>
+            <div class="f w3"><span class="lb">締め解除理由<em class="req">*</em><code class="id">F-05</code><span class="vi">Lý do mở lại (ghi rõ việc cần sửa)</span></span><div class="ip ta ph">—</div><div class="hint">締め解除の理由を入力してください</div></div>
+            <div class="acts"><span class="btn pri">申請 <span class="perm">recon.reopen.request</span></span><span class="hint">chỉ khi exported=false</span> <i class="co" title="Mở lại sổ có người duyệt (Q12)">BC-48</i> <i class="co" title="day_reopen_requests + day_reopen_decisions(level), trạng thái reopened">G-09</i></div>
+          </div>
+        </div>
+        <div data-show="pend" class="dlg"><h4>締め解除の承認 / Duyệt mở lại (approver)</h4>
+          <div class="f w3"><span class="lb">承認コメント<code class="id">F-06</code><span class="vi">Ý kiến (bắt buộc khi 却下)</span></span><div class="ip ta ph">—</div><div class="hint">却下する場合はコメントが必要です</div></div>
+          <div class="acts"><span class="btn pri">承認 <span class="perm">recon.reopen.approve</span></span><span class="btn">却下 <span class="perm">recon.reopen.approve</span></span><span class="hint">cấp duyệt theo approval_levels (dùng chung Q11)</span></div>
+          <div class="bn err">申請者本人は承認できません<span class="vi">Người yêu cầu không được tự duyệt (hiện khi người duyệt = người yêu cầu)</span> <i class="co" title="maker ≠ checker">BC-88</i></div>
+        </div>
+        <div data-show="exp">
+          <div class="acts"><span class="btn">再ダウンロード ACC-261015-01 <span class="perm">reports.export</span></span><span class="btn dis">締め解除を申請 <span class="perm">recon.reopen.request</span></span></div>
+          <div class="msg">会計連携済みのため締め解除できません。修正申請を使用してください / Đã xuất kế toán, không mở lại được; hãy dùng yêu cầu điều chỉnh</div>
+          <div class="hint">CSV IF-ACC-01: header batch_code, business_date, generated_at (JST), run_by; accounting_export_lines theo người tham gia, line_status ∈ {確認済み, 調整済み, <b>保留</b> = giao dịch có ngoại lệ disputed chưa giải quyết}; mã hóa fn_setting('accounting_csv_encoding') (UTF-8-BOM, S, Q20) <i class="co" title="accounting_exports + accounting_export_lines">G-21</i> <i class="co" title="Nội dung CSV kế toán">BC-72</i></div>
+        </div>
+      </div>
+      <div class="cols">
+        <div class="rg"><span class="rl">7 要対応 / CẦN XỬ LÝ</span>
+          <div class="tw"><table class="t"><tr><th>種別</th><th>対象</th><th>状態</th></tr>
+            <tr><td>引渡し例外</td><td><a href="#scr-029">T261016-0001</a></td><td>未確認</td></tr>
+            <tr><td>係争</td><td><a href="#scr-029">T261016-0007</a></td><td>係争中</td></tr>
+            <tr><td>修正申請</td><td><a href="#scr-022">T261015-0012</a></td><td>申請中</td></tr>
+            <tr><td>未同期</td><td>TMP-b72e0d14</td><td>同期エラー</td></tr></table></div>
+        </div>
+        <div class="rg"><span class="rl">8 LỊCH SỬ NGÀY</span>
+          <div class="tw"><table class="t"><tr><th>時刻</th><th>操作</th><th>担当</th></tr>
+            <tr><td>02:03</td><td>open_day</td><td>経理 田中</td></tr>
+            <tr data-show="closing reop"><td>(10/16) 02:04</td><td>→ closing (翌日開始, 理由あり)</td><td>経理 田中</td></tr>
+            <tr data-show="locked pend reop exp"><td>09:48</td><td>lock_day (snapshot)</td><td>経理 田中</td></tr>
+            <tr data-show="exp"><td>10:05</td><td>export ACC-261015-01</td><td>経理 田中</td></tr>
+            <tr data-show="pend reop"><td>11:20</td><td>reopen_request</td><td>経理 田中</td></tr>
+            <tr data-show="reop"><td>11:42</td><td>reopen 承認 (1/1)</td><td>承認者 山田</td></tr></table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-022 ============ -->
+<section class="blk scr" id="scr-022">
+  <h2>SCR-022/023 確定後修正申請・承認 — Yêu cầu điều chỉnh & phê duyệt</h2>
+  <div class="meta"><code>/corrections/new?trade_id=</code>, <code>/corrections?status=</code>, <code>/corrections/{id}</code> · bản gốc giữ nguyên tới khi duyệt <i class="co" title="Không ghi đè; duyệt cấp cuối sinh -R/-A ở ngày hiện tại">BC-44</i> · MFA theo phiên (M-06) · Spec: <a href="../04-screen-specs/scr-022-correction-request-and-approval.md">scr-022</a></div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="req">申請: 証跡必須</button><button data-v="reqn">申請: 影響なし</button><button data-v="appr">承認者ビュー</button><button data-v="cfm">確認ダイアログ (却下)</button><button data-v="self">本人申請 (maker=checker)</button><button data-v="need">追加情報依頼 → 再申請</button><button data-v="done">承認済 -R/-A</button><button data-v="noday">業務日なし</button><button data-v="off">オフライン NET-01</button>
+  </div>
+  <div class="frame">
+    <div class="url"><span><span data-show="req reqn">/corrections/new?trade_id=… (role: settlement)</span><span data-show="appr cfm self noday done off">/corrections/{id} (role: approver, AAL2)</span><span data-show="need">/corrections/{id} (role: settlement, người tạo)</span></span><span>approval_levels = 1 (S)</span></div>
+    <div class="rg"><span class="rl">1 HEADER + BỘ LỌC</span>
+      <div class="row">
+        <b style="align-self:center">修正申請 / Yêu cầu điều chỉnh</b>
+        <div class="f"><span class="lb">状態</span><div class="ip sel">申請中 pending</div><div class="hint">申請中 · 追加情報待ち · 承認済 · 却下 · すべて</div></div>
+        <div class="f"><span class="lb">元業務日</span><div class="ip sel">すべて</div></div>
+        <div class="f"><span class="lb">取引番号</span><div class="ip ph">T…</div></div>
+        <span data-show="off"><span class="net off">● オフライン</span></span>
+      </div>
+    </div>
+    <div class="bn err" data-show="off">この操作にはネットワーク接続が必要です。<span class="vi">Thao tác này cần có mạng. — 申請 / 承認 / 却下 / 追加情報依頼 khóa</span><code>NET-01</code> <i class="co" title="Bảng 9.6">BC-77</i></div>
+
+    <div class="rg" data-show="req reqn need"><span class="rl">2 FORM YÊU CẦU (SCR-022)</span>
+      <div class="bn warn" data-show="req need">締め済 — 修正は-R/-A仕訳で反映<span class="vi">Đã khóa — điều chỉnh ghi bằng bút toán -R/-A</span></div>
+      <div class="bn" data-show="reqn">元業務日は営業中です — 取引詳細（/trades/{id}, SCR-018）で取消して再入力も可能です<span class="vi">Ngày gốc còn mở: có thể hủy và nhập lại (SCR-018, chưa có spec)</span></div>
+      <div class="bn warn" data-show="need">追加情報依頼（承認者 山田）: 計量伝票の写しを添付してください<span class="vi">Người duyệt yêu cầu thêm thông tin — bổ sung rồi 再申請</span></div>
+      <div class="row">
+        <div class="f"><span class="lb">取引番号<em class="req">*</em><code class="id">F-01</code><span class="vi">Mã giao dịch (chỉ đọc)</span></span><div class="ip ro" data-show="req need">T261015-0012</div><div class="ip ro" data-show="reqn">T261016-0002</div></div>
+        <div class="f"><span class="lb">業務日<em class="req">*</em><code class="id">F-02</code><span class="vi">Ngày gốc (chỉ đọc)</span></span><div class="ip ro" data-show="req need">2026/10/15 · 締め済</div><div class="ip ro" data-show="reqn">2026/10/16 · 営業中</div></div>
+        <div class="f"><span class="lb">現在<span class="vi">Hiện tại</span></span><div class="ip ro" data-show="req need">100.00 kg × ¥1,000 = ¥100,000</div><div class="ip ro" data-show="reqn">40.00 kg × ¥2,700 = ¥108,000</div></div>
+        <div class="f n"><span class="lb">引渡し累計<span class="vi">Đã giao ròng (cả chuỗi)</span></span><div class="ip ro" data-show="req need">95.00 kg</div><div class="ip ro" data-show="reqn">0.00 kg</div><i class="co" title="Lũy kế trên chuỗi reverses_id (gốc + -A, bỏ -R)">ADR-005</i></div>
+      </div>
+      <div class="row" style="margin-top:6px">
+        <div class="f n"><span class="lb">修正後数量<em class="req">*</em><code class="id">F-03</code><span class="vi">Số lượng mới &gt;0</span></span><div class="ip" data-show="req need">90.00</div><div class="ip" data-show="reqn">36.00</div></div>
+        <div class="f n"><span class="lb">修正後単価 (¥)<em class="req">*</em><code class="id">F-04</code><span class="vi">Đơn giá mới ≥0</span></span><div class="ip" data-show="req need">1100</div><div class="ip" data-show="reqn">3000</div></div>
+        <div class="f"><span class="lb">差額<span class="vi">Chênh lệch (C xem, D tính lại)</span></span><div class="ip ro" data-show="req need">¥99,000 − ¥100,000 = <b>−¥1,000</b></div><div class="ip ro" data-show="reqn"><b>¥0</b></div></div>
+        <div class="f w2"><span class="lb">影響範囲<code class="id">F-06</code><span class="vi">Ảnh hưởng — hệ thống tick sẵn, chỉ thêm không bớt</span></span>
+          <div data-show="req need"><span class="chk"><span class="box">✓</span> 精算 (tự suy, khóa)</span> <span class="chk"><span class="box">✓</span> 引渡し (tự suy, khóa)</span></div>
+          <div data-show="reqn"><span class="chk"><span class="box"></span> 精算</span> <span class="chk"><span class="box"></span> 引渡し</span> <span class="hint">không tự suy (tiền không đổi, chưa giao)</span></div>
+        </div>
+      </div>
+      <div class="bn warn" data-show="req need">修正後数量が引渡し累計を下回ります<span class="vi">Số lượng mới nhỏ hơn số đã giao (90 &lt; 95) — cảnh báo, không chặn</span></div>
+      <div class="hint">F-05 (ràng buộc chung): ít nhất một giá trị khác hiện tại → 現在の値と同じです</div>
+      <div class="row" style="margin-top:6px">
+        <div class="f w2"><span class="lb">修正理由<em class="req">*</em><code class="id">F-07</code><span class="vi">Lý do 1–500</span></span><div class="ip ta">再計量で5kg減、単価は相対で再合意</div></div>
+        <div class="f w2"><span class="lb">証跡<em class="req" data-show="req need">*</em><code class="id">F-08</code><span class="vi">Bằng chứng jpg/png/pdf ≤10MB ×5 <span data-show="req need">— bắt buộc: F-06 ∈ correction_evidence_required_when (mặc định 精算, 引渡し)</span><span data-show="reqn">— không bắt buộc (không có ảnh hưởng)</span></span></span>
+          <div class="ip" data-show="req">［ファイル追加］ (0) <span class="perm">attachments.upload</span></div><div class="ip" data-show="need">📄 計量伝票.pdf (1)</div><div class="ip" data-show="reqn">［ファイル追加］ (0)</div>
+          <div class="msg" data-show="req">精算・引渡しに影響する修正には証跡の添付が必要です / Điều chỉnh ảnh hưởng quyết toán / giao hàng phải đính kèm bằng chứng</div>
+          <i class="co" title="Phiếu FORM-CORR-01: bằng chứng khi ảnh hưởng quyết toán/giao hàng; khóa correction_evidence_required_when (ADR-008)">BC-45</i> <i class="co" title="attachments, impact_*, need_info mới">G-10</i></div>
+      </div>
+      <div class="acts">
+        <span class="btn pri" data-show="req reqn">申請 <span class="perm">corrections.request</span></span>
+        <span class="btn pri" data-show="need">再申請 <span class="perm">corrections.request</span></span>
+        <span class="hint">1 yêu cầu đang xử lý / giao dịch (S): この取引には処理中の修正申請があります <i class="co" title="Partial unique index pending/need_info">G-17</i> · Không có nút rút yêu cầu (Q-022-2)</span>
+      </div>
+    </div>
+
+    <div class="rg"><span class="rl">3 HÀNG ĐỢI</span>
+      <div class="tw"><table class="t">
+        <tr><th>取引</th><th>現在</th><th>申請</th><th class="num">差額</th><th>理由</th><th>申請者</th><th>状態</th><th>段階</th></tr>
+        <tr class="hl"><td>T261015-0012</td><td>100 × ¥1,000</td><td>90 × ¥1,100</td><td class="num">−¥1,000</td><td>再計量…</td><td><span data-show="self">山田（あなた）</span><span data-show="req reqn appr cfm need done noday off">経理 田中</span></td><td><span data-show="req reqn appr cfm self noday off">申請中</span><span data-show="need">追加情報待ち</span><span data-show="done">承認済</span></td><td>1/1</td></tr>
+        <tr><td>T261015-0004</td><td>30 × ¥5,200</td><td>30 × ¥5,000</td><td class="num">−¥6,000</td><td>単価誤り</td><td>経理 田中</td><td>申請中</td><td>0/1</td></tr>
+      </table></div>
+    </div>
+
+    <div class="rg" data-show="appr cfm self done noday off"><span class="rl">4 CHI TIẾT (SCR-023)</span>
+      <div class="cols">
+        <div><div class="tw"><table class="t"><tr><th></th><th>前 / Trước</th><th>後 / Sau</th></tr>
+          <tr><td>数量</td><td>100.00 kg</td><td>90.00 kg</td></tr><tr><td>単価</td><td>¥1,000</td><td>¥1,100</td></tr><tr><td>金額</td><td>¥100,000</td><td>¥99,000</td></tr><tr><td>影響</td><td colspan="2">精算 · 引渡し (累計95kg, cả chuỗi)</td></tr></table></div></div>
+        <div><div class="qr" style="width:100%;height:90px">証跡プレビュー 計量伝票.pdf</div><div class="hint">retention EVIDENCE_3Y_COLD <i class="co" title="Lưu chứng cứ 3 năm">BC-82</i></div>
+          <div class="hint">決定履歴: 10/16 10:12 経理 田中 申請</div></div>
+      </div>
+      <div class="dlg" data-show="appr cfm noday off"><h4>判断 / Quyết định — ba nút, mỗi nút mở hộp xác nhận (không có radio)</h4>
+        <div class="f w3"><span class="lb">コメント<code class="id">F-12</code><span class="vi">Ý kiến ≤500 — bắt buộc khi 却下 / 追加情報依頼</span></span><div class="ip ta" data-show="cfm">数量の根拠が不足しています</div><div class="ip ta ph" data-show="appr noday off">—</div><div class="hint">却下・追加情報依頼にはコメントが必要です</div></div>
+        <div class="acts">
+          <span class="btn pri" data-show="appr cfm">承認… <span class="perm">corrections.approve</span></span><span class="btn pri dis" data-show="noday off">承認… <span class="perm">corrections.approve</span></span>
+          <span class="btn" data-show="appr cfm noday">却下… <span class="perm">corrections.approve</span></span><span class="btn dis" data-show="off">却下…</span>
+          <span class="btn" data-show="appr cfm noday">追加情報依頼… <span class="perm">corrections.approve</span></span><span class="btn dis" data-show="off">追加情報依頼…</span>
+        </div>
+        <div class="msg" data-show="noday">修正仕訳を記帳する業務日が開始されていません / Không có ngày nghiệp vụ đang mở để ghi bút toán điều chỉnh — chỉ chặn 承認 cấp cuối; 却下 / 追加情報依頼 vẫn được (Q-009-1)</div>
+        <div class="dlg" data-show="cfm"><h4>確認 / Xác nhận</h4>
+          <div>却下してよろしいですか？<span class="hint"> / Xác nhận từ chối?</span></div>
+          <div class="hint">コメント: 数量の根拠が不足しています</div>
+          <div class="acts"><span class="btn pri">却下する</span><span class="btn">キャンセル</span></div>
+        </div>
+        <div class="hint">Duyệt cấp cuối: gốc → reversed, thêm -R (SL âm, giá cũ) và -A ở <b>ngày nghiệp vụ hiện tại</b>; tăng SL kiểm tồn: ロットの在庫が不足しています（不足{n}） <i class="co" title="Bút toán đảo + giá trị mới, không ghi đè">ADR-005</i> <i class="co" title="Kỳ đã khóa không đổi tổng; chênh lệch hiện ở ngày ghi">BC-69</i></div>
+      </div>
+      <div class="bn err" data-show="self">ご自身の申請は承認できません<span class="vi">Bạn là người tạo — không được tự duyệt (vùng quyết định bị thay; API: 申請者本人は承認できません)</span> <i class="co" title="Người soạn ≠ người duyệt (bẫy T19)">BC-88</i></div>
+      <div class="hint" data-show="self">Đã duyệt cấp trước → この申請は承認済みです（{n}次） · API: 同一承認者が複数段階を承認することはできません <i class="co" title="Nhiều cấp duyệt cấu hình (Q11), correction_decisions(level)">BC-46</i></div>
+      <div data-show="done">
+        <div class="bn ok">承認済 — 記帳日 2026/10/16<span class="vi">Đã duyệt — ngày ghi sổ = ngày nghiệp vụ hiện tại lúc duyệt cấp cuối</span></div>
+        <div class="tw"><table class="t"><tr><th>取引番号</th><th>業務日</th><th class="num">数量</th><th class="num">単価</th><th class="num">金額</th><th>状態</th></tr>
+          <tr><td>T261015-0012</td><td>2026-10-15</td><td class="num">100.00</td><td class="num">¥1,000</td><td class="num">¥100,000</td><td>reversed</td></tr>
+          <tr><td><u>T261015-0012-R</u></td><td>2026-10-16</td><td class="num">−100.00</td><td class="num">¥1,000</td><td class="num">−¥100,000</td><td>調整済み</td></tr>
+          <tr><td><u>T261015-0012-A</u></td><td>2026-10-16</td><td class="num">90.00</td><td class="num">¥1,100</td><td class="num">¥99,000</td><td>調整済み</td></tr></table></div>
+        <div class="hint">Không tự xuất lại CSV ngày gốc; -R/-A vào batch ngày ghi <i class="co" title="doc_counters chỉ đếm dòng gốc">G-18</i></div>
+      </div>
+      <div class="hint">Phiên chưa AAL2 → 401 M-06 (SCR-001); thiếu quyền → 403 AUTH-403 <i class="co" title="MFA theo phiên cho approver, settlement">G-19</i></div>
+    </div>
+  </div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<!-- ============ SCR-034 ============ -->
+<section class="blk scr" id="scr-034">
+  <h2>SCR-034/035 規則・料率のバージョン管理 — Quy tắc vận hành chợ & phiên bản</h2>
+  <div class="meta"><code>/rules</code>, <code>/rules/{id}</code>, <code>/rules/{id}/edit</code>, <code>/rules/diff</code> · <code>rules.read</code> / <code>rules.draft</code> / <code>rules.approve</code> · đổi quy tắc không deploy <i class="co" title="Demo đổi quy tắc bằng phiên bản mới là tiêu chí nghiệm thu (NFR-OPS-02)">BC-19</i> · khóa bảo mật (<code>system_settings</code>) <b>không</b> hiện ở đây <i class="co" title="system_settings: sys_admin, hiệu lực ngay, không tính 4 lần/năm">ADR-008</i> · Spec: <a href="../04-screen-specs/scr-034-market-rule-versions.md">scr-034</a></div>
+  <div class="vbar" role="group" aria-label="Variant"><span>Variant:</span>
+    <button data-v="list">一覧 (rule_admin)</button><button data-v="ro">閲覧のみ (settlement)</button><button data-v="sim">日付で適用版を確認</button><button data-v="edit">下書き編集 (SCR-035)</button><button data-v="limit">年4回上限</button><button data-v="rb">ロールバック下書き</button><button data-v="appr">承認待ち (approver)</button><button data-v="self">作成者本人</button><button data-v="past">適用開始日経過</button><button data-v="off">オフライン NET-01</button>
+  </div>
+  <div class="frame">
+    <div class="url"><span><span data-show="list ro sim off">/rules</span><span data-show="edit limit rb">/rules/{v5}/edit (role: rule_admin)</span><span data-show="appr self past">/rules/{v5} (role: approver, AAL2)</span><span data-show="ro"> (role: settlement)</span></span><span>ngày tham chiếu = 2026/10/16 (ngày hiện tại; khi chưa mở → ngày gần nhất)</span></div>
+    <div class="rg"><span class="rl">1 HEADER</span>
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <span><b>規則・料率</b> <span class="sub">/ Quy tắc & tỷ lệ</span></span>
+        <span>適用中 <b>v3</b> · 業務日 2026/10/16 <i class="co" title="適用中 = bản fn_rule_set chọn cho ngày tham chiếu; suy ra, không lưu">BC-17</i></span>
+        <span>承認済（2026/11/01から）<b>v4</b></span>
+        <span class="badge" data-show="list ro sim edit rb appr self past off">2026年: 3/4 回</span><span class="badge dk" data-show="limit">2026年: 4/4 回</span> <i class="co" title="Tối đa ~4 lần duyệt / năm; đếm theo năm JST của effective_from (S, Q-034-1)">BC-15</i>
+        <span data-show="off"><span class="net off">● オフライン</span></span>
+      </div>
+    </div>
+    <div class="bn err" data-show="off">この操作にはネットワーク接続が必要です。<span class="vi">Thao tác này cần có mạng. — mọi nút ghi khóa (không có hàng đợi)</span><code>NET-01</code></div>
+    <div class="bn warn" data-show="limit">2026年の変更は既に4回です（上限4回）<span class="vi">Năm 2026 đã đổi 4 lần (giới hạn 4) — F-04 hiện ra; không chặn, audit over_limit = true</span> <i class="co" title="Vượt giới hạn: chỉ cảnh báo + lý do (Q-034-2)">ADR-008</i></div>
+
+    <div class="rg" data-show="list ro sim off"><span class="rl">2 THANH HÀNH ĐỘNG</span>
+      <div class="acts" data-show="list">
+        <span class="btn dis">新規下書き <span class="perm">rules.draft</span></span><span class="btn dis">ロールバック <span class="perm">rules.draft</span></span><span class="btn">比較 <span class="perm">read</span></span><span class="btn">CSV出力 (RPT-12)</span>
+        <span class="msg">処理中の下書き（v5）があります / Đang có bản nháp v5 chưa xử lý xong</span>
+      </div>
+      <div class="acts" data-show="ro sim"><span class="btn">比較</span><span class="btn">CSV出力 (RPT-12)</span><span class="hint" data-show="ro">rules.read: ẩn mọi nút ghi</span></div>
+      <div class="acts" data-show="off"><span class="btn dis">新規下書き</span><span class="btn dis">ロールバック</span><span class="btn">比較</span></div>
+    </div>
+
+    <div class="rg" data-show="list ro sim"><span class="rl">3 THẺ MÔ PHỎNG — 日付で適用版を確認</span>
+      <div class="row">
+        <div class="f n"><span class="lb">確認する業務日<em class="req">*</em><code class="id">F-31</code><span class="vi">Ngày cần kiểm</span></span><div class="ip" data-show="list ro">2026/10/16</div><div class="ip" data-show="sim">2026/12/05</div></div>
+        <div class="f" data-show="list sim"><span class="lb">下書き・承認待ちを含める<code class="id">F-32</code><span class="vi">Tính cả bản nháp / chờ duyệt (chỉ rules.draft / approve)</span></span><span class="chk"><span class="box" data-show="sim">✓</span><span class="box" data-show="list"></span> 含める</span></div>
+        <span class="btn">確認</span>
+      </div>
+      <div class="bn" data-show="list ro">2026/10/16 → <b>v3</b>（2026/07/01〜2026/10/31）</div>
+      <div class="bn warn" data-show="sim">2026/12/05 → <b>v5</b>（未承認のため実際には適用されません）<span class="vi">(chưa duyệt — thực tế không áp dụng). Không tick F-32 → v4.</span> <i class="co" title="draft / submitted không bao giờ được fn_rule chọn">BC-16</i></div>
+    </div>
+
+    <div class="cols" data-show="list ro sim off">
+      <div class="rg"><span class="rl">4 BẢNG PHIÊN BẢN</span>
+        <div class="tw"><table class="t">
+          <tr><th>版</th><th>状態</th><th>適用期間</th><th>作成 / 承認</th><th>理由</th><th class="num">使用件数</th></tr>
+          <tr><td>v5</td><td>下書き</td><td>2026/12/01〜</td><td>規則 森 / —</td><td>期限警告を14日へ</td><td class="num">0</td></tr>
+          <tr><td>v4</td><td>承認済（11/01から）</td><td>2026/11/01〜</td><td>規則 森 / 山田</td><td>税率改定</td><td class="num">0</td></tr>
+          <tr><td>v3</td><td><b>適用中</b></td><td>2026/07/01〜2026/10/31</td><td>規則 森 / 山田</td><td>締めチェック見直し</td><td class="num">9,812</td></tr>
+          <tr><td>v2</td><td>過去</td><td>2026/04/01〜2026/06/30</td><td>規則 森 / 山田</td><td>等級追加</td><td class="num">11,240</td></tr>
+          <tr><td>v1</td><td>過去</td><td>2025/04/01〜2026/03/31</td><td>初期版</td><td>—</td><td class="num">40,102</td></tr>
+        </table></div>
+        <div class="hint">使用件数 = count(trades.rule_set_id) — bản ghi đã chốt giữ rule_set_id, không tính lại <i class="co" title="Không sửa lịch sử; approved bất biến (trigger)">BC-14</i></div>
+      </div>
+      <div class="rg"><span class="rl">5 LỊCH SỬ ÁP DỤNG (RPT-12)</span>
+        <div class="tl"><div>v1<br>2025/04/01〜</div><div>v2<br>2026/04/01〜</div><div class="cur">v3 適用中<br>2026/07/01〜10/31</div><div class="fut">v4<br>2026/11/01〜</div></div>
+        <div class="hint">Mỗi đoạn [effective_from, effective_from kế tiếp) <i class="co" title="Lịch sử phiên bản nào áp dụng từ ngày nào">BC-20</i></div>
+      </div>
+    </div>
+
+    <div data-show="edit limit rb appr self past">
+      <div class="rg"><span class="rl">6a THÔNG TIN CHUNG (SCR-035)</span>
+        <div class="bn" data-show="rb">v2 の復元（rollback_of = v2）<span class="vi">Rollback = bản nháp mới mang nội dung v2; đi tiếp luồng duyệt, đếm như một lần đổi</span> <i class="co" title="Rollback là phát hành phiên bản mới, không sửa bản cũ">BC-18</i></div>
+        <div class="row">
+          <div class="f n"><span class="lb">適用開始日<em class="req">*</em><code class="id">F-01</code><span class="vi">Ngày hiệu lực &gt; ngày tham chiếu</span></span><div class="ip" data-show="edit rb appr self">2026/12/01 (火)</div><div class="ip" data-show="limit">2026/12/15 (火)</div><div class="ip bad" data-show="past">2026/10/16 (金)</div><div class="hint">適用開始日は翌業務日以降を指定してください (kiểm lúc gửi và lúc duyệt) · F-02: 指定日は休市日です (cảnh báo)</div></div>
+          <div class="f w2"><span class="lb">変更理由<em class="req">*</em><code class="id">F-03</code><span class="vi">Lý do thay đổi 1–500</span></span><div class="ip ta"><span data-show="edit limit appr self past">期限警告を14日へ短縮、買出人のせり参加を停止</span><span data-show="rb">v3 の締めチェック変更を取り消す</span></div></div>
+          <div class="f n"><span class="lb">元バージョン<code class="id">F-05</code><span class="vi">Phiên bản gốc</span></span><div class="ip ro"><span data-show="edit limit appr self past">v3 (適用中)</span><span data-show="rb">v2</span></div></div>
+        </div>
+        <div class="f w3" data-show="limit" style="margin-top:6px"><span class="lb">上限超過の理由<em class="req">*</em><code class="id">F-04</code><span class="vi">Lý do vượt 4 lần / năm</span></span><div class="ip ta bad"></div><div class="msg">年間変更回数の上限（4回）を超えます。理由を入力してください</div></div>
+        <div class="bn warn" data-show="appr">同日適用の承認済み版（v{n}）を置き換えます — chỉ hiện khi có bản approved cùng effective_from (S)</div>
+      </div>
+
+      <div class="rg" data-show="edit limit rb"><span class="rl">6b GIÁ TRỊ QUY TẮC — trình sửa theo kiểu (D: fn_validate_rule_value)</span>
+        <div class="cols">
+          <div>
+            <div class="f"><span class="lb">期限警告日数 <code>expiry_warning_days</code><code class="id">F-11</code><span class="chg" data-show="edit limit">変更あり</span><span class="vi">Số ngày cảnh báo hết hạn — số nguyên 1–365</span></span><div class="row"><div class="ip" style="flex:1"><span data-show="edit limit">14</span><span data-show="rb">30</span></div><span class="btn">元に戻す</span></div></div>
+            <div class="f" style="margin-top:8px"><span class="lb">等級 <code>grades</code><code class="id">F-12</code><span class="vi">Hạng — thêm / xóa / kéo đổi thứ tự, không trùng</span></span><div class="ip">≡ A ✕ · ≡ B ✕ · ≡ C ✕ · ［＋追加］</div><div class="hint">等級が重複しています</div></div>
+            <div class="f" style="margin-top:8px"><span class="lb">取引区分マトリクス <code>trade_kind_matrix</code><code class="id">F-13</code><span class="chg" data-show="edit limit">変更あり</span><span class="vi">Ma trận nhóm mua × loại giao dịch</span></span>
+              <div class="tw"><table class="t"><tr><th>買手区分</th><th>相対</th><th>せり</th></tr>
+                <tr><td>仲卸</td><td>✓</td><td>✓</td></tr><tr><td>売買参加者</td><td>✓</td><td>✓</td></tr><tr><td>買出人</td><td>✓</td><td><span data-show="edit limit">☐</span><span data-show="rb">✓</span></td></tr></table></div>
+              <div class="hint">卸売業者 là bên bán, không có hàng · mỗi cột ≥ 1 ✓: 各取引区分に少なくとも1つの買手区分を許可してください <i class="co" title="Mặc định 3 nhóm bên mua được cả 相対 và せり (TBL-ACTOR-01); SCR-016/019 đọc qua fn_rule">ADR-008</i></div></div>
+            <div class="row" style="margin-top:8px">
+              <div class="f"><span class="lb">失効後の引渡し <code>delivery_expired_policy</code><code class="id">F-14</code><span class="vi">allow_with_flag / block</span></span><div class="ip sel">allow_with_flag</div></div>
+              <div class="f n"><span class="lb">承認段階数 <code>approval_levels</code><code class="id">F-15</code><span class="vi">1–3</span></span><div class="ip">1</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="f"><span class="lb">締めチェック項目 <code>lock_checklist</code><code class="id">F-16</code><span class="vi">Mã CK-1..7 (SCR-024) × mức</span></span>
+              <div class="tw"><table class="t"><tr><th>CK</th><th>レベル</th></tr><tr><td>CK-1 / CK-2 / CK-3</td><td>block ▾</td></tr><tr><td>CK-4 / CK-5 / CK-6 / CK-7</td><td>warn ▾</td></tr></table></div><div class="hint">チェック項目が不正です</div></div>
+            <div class="f" style="margin-top:8px"><span class="lb">完納奨励金料率 <code>incentive_rate_tiers</code><code class="id">F-17</code><span class="vi">Bậc tỷ lệ khuyến khích (min_ratio %, rate %)</span></span>
+              <div class="tw"><table class="t"><tr><th class="num">下限比率 %</th><th class="num">料率 %</th><th></th></tr><tr><td class="num">0</td><td class="num">0</td><td>✕</td></tr><tr><td colspan="3">［＋段階を追加］</td></tr></table></div>
+              <div class="bn warn" style="margin:4px 0">仮データ（Q16回答待ち）/ Dữ liệu giả — chờ Q16</div><div class="hint">下限比率は昇順で入力してください · bậc đầu = 0 <i class="co" title="Cấu trúc bảng tỷ lệ khuyến khích chưa có (Q16)">BC-23</i></div></div>
+            <div class="f" style="margin-top:8px"><span class="lb">品目別税率 <code>item_tax_rates</code><code class="id">F-18</code><span class="vi">Thuế suất theo mặt hàng của phiên bản</span></span>
+              <div class="tw"><table class="t"><tr><th>コード</th><th>品目</th><th>単位</th><th class="num">税率</th></tr><tr><td>MAGURO</td><td>本マグロ</td><td>kg</td><td class="num">8 %</td></tr><tr><td>SALMON</td><td>サーモン</td><td>kg</td><td class="num">8 %</td></tr></table></div>
+              <div class="hint">mã/tên/đơn vị chỉ đọc (items, không phiên bản); 税率は0〜100%で入力してください <i class="co" title="items + item_tax_rates theo phiên bản">BC-22</i></div></div>
+            <div class="f" style="margin-top:8px"><span class="lb">その他のキー（JSON）<span class="vi">seller_registration_check, qualification_valid_to_inclusive, allow_trade_on_previous_day_lots, auction_confirmer_must_differ, delivery_exception_effects, exception_confirm_by_other, max_deliveries_per_trade, correction_evidence_required_when, previous_day_unlocked_policy</span></span><div class="ip ta" style="font-family:monospace;font-size:11px">{ "seller_registration_check": "suspension_only", … }</div><div class="hint">schema ở D; khóa ngoài danh mục → 未定義の規則キーです</div></div>
+          </div>
+        </div>
+        <div class="acts">
+          <span class="btn">保存 <span class="perm">rules.draft</span></span>
+          <span class="btn pri">承認依頼 <span class="perm">rules.draft</span></span>
+          <span class="btn">下書き削除 <span class="perm">rules.draft</span></span>
+          <span class="hint">không có khác biệt → 変更内容がありません</span>
+        </div>
+      </div>
+
+      <div class="rg" data-show="appr self past"><span class="rl">6c SO SÁNH v3 → v5 (chỉ khóa / ô khác nhau)</span>
+        <div class="tw"><table class="t"><tr><th>キー</th><th>項目</th><th>v3（旧）</th><th>v5（新）</th></tr>
+          <tr><td>expiry_warning_days</td><td>—</td><td>30</td><td>14</td></tr>
+          <tr><td>trade_kind_matrix</td><td>買出人 × せり</td><td>✓</td><td>☐</td></tr></table></div>
+      </div>
+      <div class="rg" data-show="appr self past"><span class="rl">6d VÙNG DUYỆT</span>
+        <div data-show="appr past">
+          <div class="f w3"><span class="lb">判断<em class="req">*</em><code class="id">F-21</code><span class="vi">Quyết định (spec: radio)</span></span><span class="chk"><span class="box">●</span> 承認 approve</span> <span class="chk"><span class="box"></span> 差戻し return</span></div>
+          <div class="f w3" style="margin-top:6px"><span class="lb">コメント<code class="id">F-22</code><span class="vi">Ý kiến — bắt buộc khi 差戻し</span></span><div class="ip ta ph">—</div><div class="hint">差戻しにはコメントが必要です</div></div>
+          <div class="acts"><span class="btn pri" data-show="appr">承認 <span class="perm">rules.approve</span></span><span class="btn pri dis" data-show="past">承認 <span class="perm">rules.approve</span></span><span class="btn">差戻し <span class="perm">rules.approve</span></span></div>
+          <div class="msg" data-show="past">適用開始日が過ぎています。差戻してください / Ngày hiệu lực đã qua — hãy trả lại để sửa</div>
+        </div>
+        <div class="bn err" data-show="self">ご自身の下書きは承認できません<span class="vi">Bạn là người soạn — không được tự duyệt (API: 作成者本人は承認できません)</span> <i class="co" title="maker ≠ checker (CHECK + kiểm trong hàm)">BC-88</i></div>
+        <div class="hint">Duyệt → approved, bất biến; bản cũ → superseded khi bản mới bắt đầu áp dụng · phiên chưa AAL2 → 401 M-06 · thiếu quyền 403 AUTH-403 <i class="co" title="Không có màn hình/bảng quy tắc ở prototype">G-05</i></div>
+      </div>
+    </div>
+  </div>
+  <details class="notes" open><summary>注記 / Chú thích</summary><ol></ol></details>
+</section>
+
+<footer class="sub" style="padding:8px 0 24px">Wireframe low-fi · không phải thiết kế giao diện cuối · mọi thay đổi quy tắc sửa ở spec trước, wireframe theo sau.</footer>
+</main>
+<script>
+(function () {
+  // Variant switching: [data-show="a b"] visible only when the screen's active variant is listed.
+  function setVariant(sec, v) {
+    sec.dataset.active = v;
+    sec.querySelectorAll('.vbar button[data-v]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.v === v));
+    });
+    sec.querySelectorAll('[data-show]').forEach(function (el) {
+      el.hidden = el.dataset.show.split(/\s+/).indexOf(v) === -1;
+    });
+  }
+  document.querySelectorAll('.scr').forEach(function (sec) {
+    var bar = sec.querySelector('.vbar');
+    if (bar) {
+      bar.addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-v]');
+        if (b) setVariant(sec, b.dataset.v);
+      });
+      setVariant(sec, bar.querySelector('button[data-v]').dataset.v);
+    }
+    // Number callouts per screen and build the trace list from their title attributes.
+    var list = sec.querySelector('.notes ol'), n = 0;
+    sec.querySelectorAll('.co').forEach(function (c) {
+      n += 1;
+      var code = c.textContent.trim(), note = c.getAttribute('title') || '';
+      var host = c.closest('[data-show]');
+      c.insertAdjacentHTML('afterbegin', '<b>' + n + '</b>');
+      c.setAttribute('aria-label', 'callout ' + n + ' ' + code + ': ' + note);
+      if (list) {
+        var li = document.createElement('li');
+        li.value = n;
+        li.innerHTML = '<code></code> <span></span>' + (host ? ' <span class="hint">[variant: ' + host.dataset.show + ']</span>' : '');
+        li.firstChild.textContent = code;
+        li.children[1].textContent = note;
+        list.appendChild(li);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
