@@ -46,3 +46,6 @@ next-env.d.ts
 
 # keep the template, never the real values
 !.env.example
+
+# python
+__pycache__/

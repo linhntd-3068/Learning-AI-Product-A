@@ -1,0 +1,1031 @@
+{
+ "E-FND": {
+  "number": 1,
+  "id": 5887470014,
+  "node_id": "I_kwDOVKsXoM8AAAABXuupvg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/1",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTDqc"
+ },
+ "E-AUD": {
+  "number": 2,
+  "id": 5887471882,
+  "node_id": "I_kwDOVKsXoM8AAAABXuuxCg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/2",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTDxA"
+ },
+ "E-RULE": {
+  "number": 3,
+  "id": 5887474030,
+  "node_id": "I_kwDOVKsXoM8AAAABXuu5bg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/3",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTD4A"
+ },
+ "E-BDAY": {
+  "number": 4,
+  "id": 5887476058,
+  "node_id": "I_kwDOVKsXoM8AAAABXuvBWg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/4",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTD_A"
+ },
+ "E-QUAL": {
+  "number": 5,
+  "id": 5887478112,
+  "node_id": "I_kwDOVKsXoM8AAAABXuvJYA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/5",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTEFk"
+ },
+ "E-SEC": {
+  "number": 6,
+  "id": 5887480103,
+  "node_id": "I_kwDOVKsXoM8AAAABXuvRJw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/6",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTENc"
+ },
+ "E-LOT": {
+  "number": 7,
+  "id": 5887481711,
+  "node_id": "I_kwDOVKsXoM8AAAABXuvXbw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/7",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTETc"
+ },
+ "E-TRADE": {
+  "number": 8,
+  "id": 5887483686,
+  "node_id": "I_kwDOVKsXoM8AAAABXuvfJg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/8",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTEaQ"
+ },
+ "E-AUC": {
+  "number": 9,
+  "id": 5887485562,
+  "node_id": "I_kwDOVKsXoM8AAAABXuvmeg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/9",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTEgo"
+ },
+ "E-DEL": {
+  "number": 10,
+  "id": 5887487457,
+  "node_id": "I_kwDOVKsXoM8AAAABXuvt4Q",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/10",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTEm4"
+ },
+ "E-LOCK": {
+  "number": 11,
+  "id": 5887489559,
+  "node_id": "I_kwDOVKsXoM8AAAABXuv2Fw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/11",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTEvM"
+ },
+ "E-ACC": {
+  "number": 12,
+  "id": 5887491476,
+  "node_id": "I_kwDOVKsXoM8AAAABXuv9lA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/12",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTE2Q"
+ },
+ "E-OFF": {
+  "number": 13,
+  "id": 5887493615,
+  "node_id": "I_kwDOVKsXoM8AAAABXuwF7w",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/13",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTE_E"
+ },
+ "E-INC": {
+  "number": 14,
+  "id": 5887495860,
+  "node_id": "I_kwDOVKsXoM8AAAABXuwOtA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/14",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTFG0"
+ },
+ "T-FND-01": {
+  "number": 15,
+  "id": 5887497428,
+  "node_id": "I_kwDOVKsXoM8AAAABXuwU1A",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/15",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTFOc"
+ },
+ "T-FND-02": {
+  "number": 16,
+  "id": 5887500469,
+  "node_id": "I_kwDOVKsXoM8AAAABXuwgtQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/16",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTFas"
+ },
+ "T-FND-03": {
+  "number": 17,
+  "id": 5887503123,
+  "node_id": "I_kwDOVKsXoM8AAAABXuwrEw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/17",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTFkI"
+ },
+ "T-FND-04": {
+  "number": 18,
+  "id": 5887505752,
+  "node_id": "I_kwDOVKsXoM8AAAABXuw1WA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/18",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTFso"
+ },
+ "T-FND-05": {
+  "number": 19,
+  "id": 5887532837,
+  "node_id": "I_kwDOVKsXoM8AAAABXuyfJQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/19",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTHEw"
+ },
+ "T-FND-06": {
+  "number": 20,
+  "id": 5887535326,
+  "node_id": "I_kwDOVKsXoM8AAAABXuyo3g",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/20",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTHNc"
+ },
+ "T-FND-07": {
+  "number": 21,
+  "id": 5887537766,
+  "node_id": "I_kwDOVKsXoM8AAAABXuyyZg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/21",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTHWk"
+ },
+ "T-FND-08": {
+  "number": 22,
+  "id": 5887540264,
+  "node_id": "I_kwDOVKsXoM8AAAABXuy8KA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/22",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTHhI"
+ },
+ "T-FND-09": {
+  "number": 23,
+  "id": 5887542826,
+  "node_id": "I_kwDOVKsXoM8AAAABXuzGKg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/23",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTHrk"
+ },
+ "T-FND-10": {
+  "number": 24,
+  "id": 5887546029,
+  "node_id": "I_kwDOVKsXoM8AAAABXuzSrQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/24",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTH5M"
+ },
+ "T-FND-11": {
+  "number": 25,
+  "id": 5887549450,
+  "node_id": "I_kwDOVKsXoM8AAAABXuzgCg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/25",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTIFY"
+ },
+ "T-FND-12": {
+  "number": 26,
+  "id": 5887552134,
+  "node_id": "I_kwDOVKsXoM8AAAABXuzqhg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/26",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTIPw"
+ },
+ "T-AUD-01": {
+  "number": 27,
+  "id": 5887555287,
+  "node_id": "I_kwDOVKsXoM8AAAABXuz21w",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/27",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTIc8"
+ },
+ "T-AUD-02": {
+  "number": 28,
+  "id": 5887558415,
+  "node_id": "I_kwDOVKsXoM8AAAABXu0DDw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/28",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTIrQ"
+ },
+ "T-AUD-03": {
+  "number": 29,
+  "id": 5887561337,
+  "node_id": "I_kwDOVKsXoM8AAAABXu0OeQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/29",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTI1s"
+ },
+ "T-AUD-04": {
+  "number": 30,
+  "id": 5887564668,
+  "node_id": "I_kwDOVKsXoM8AAAABXu0bfA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/30",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTJB8"
+ },
+ "T-RULE-01": {
+  "number": 31,
+  "id": 5887567784,
+  "node_id": "I_kwDOVKsXoM8AAAABXu0nqA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/31",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTJMA"
+ },
+ "T-RULE-02": {
+  "number": 32,
+  "id": 5887571264,
+  "node_id": "I_kwDOVKsXoM8AAAABXu01QA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/32",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTJWk"
+ },
+ "T-RULE-03": {
+  "number": 33,
+  "id": 5887574283,
+  "node_id": "I_kwDOVKsXoM8AAAABXu1BCw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/33",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTJgA"
+ },
+ "T-RULE-04": {
+  "number": 34,
+  "id": 5887578062,
+  "node_id": "I_kwDOVKsXoM8AAAABXu1Pzg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/34",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTJts"
+ },
+ "T-RULE-05": {
+  "number": 35,
+  "id": 5887581316,
+  "node_id": "I_kwDOVKsXoM8AAAABXu1chA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/35",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTJ6E"
+ },
+ "T-RULE-06": {
+  "number": 36,
+  "id": 5887584454,
+  "node_id": "I_kwDOVKsXoM8AAAABXu1oxg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/36",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTKDs"
+ },
+ "T-RULE-07": {
+  "number": 37,
+  "id": 5887587248,
+  "node_id": "I_kwDOVKsXoM8AAAABXu1zsA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/37",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTKNo"
+ },
+ "T-RULE-08": {
+  "number": 38,
+  "id": 5887590190,
+  "node_id": "I_kwDOVKsXoM8AAAABXu1_Lg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/38",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTKXY"
+ },
+ "T-RULE-09": {
+  "number": 39,
+  "id": 5887593089,
+  "node_id": "I_kwDOVKsXoM8AAAABXu2KgQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/39",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTKic"
+ },
+ "T-RULE-10": {
+  "number": 40,
+  "id": 5887596209,
+  "node_id": "I_kwDOVKsXoM8AAAABXu2WsQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/40",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTKtA"
+ },
+ "T-RULE-11": {
+  "number": 41,
+  "id": 5887598929,
+  "node_id": "I_kwDOVKsXoM8AAAABXu2hUQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/41",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTK38"
+ },
+ "T-RULE-12": {
+  "number": 42,
+  "id": 5887601906,
+  "node_id": "I_kwDOVKsXoM8AAAABXu2s8g",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/42",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTLCI"
+ },
+ "T-RULE-13": {
+  "number": 43,
+  "id": 5887604810,
+  "node_id": "I_kwDOVKsXoM8AAAABXu24Sg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/43",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTLMM"
+ },
+ "T-RULE-14": {
+  "number": 44,
+  "id": 5887608077,
+  "node_id": "I_kwDOVKsXoM8AAAABXu3FDQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/44",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTLZs"
+ },
+ "T-RULE-15": {
+  "number": 45,
+  "id": 5887611362,
+  "node_id": "I_kwDOVKsXoM8AAAABXu3R4g",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/45",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTLnw"
+ },
+ "T-BDAY-01": {
+  "number": 46,
+  "id": 5887614039,
+  "node_id": "I_kwDOVKsXoM8AAAABXu3cVw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/46",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTLzw"
+ },
+ "T-BDAY-02": {
+  "number": 47,
+  "id": 5887617291,
+  "node_id": "I_kwDOVKsXoM8AAAABXu3pCw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/47",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTMCs"
+ },
+ "T-BDAY-03": {
+  "number": 48,
+  "id": 5887620254,
+  "node_id": "I_kwDOVKsXoM8AAAABXu30ng",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/48",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTMOw"
+ },
+ "T-BDAY-04": {
+  "number": 49,
+  "id": 5887623458,
+  "node_id": "I_kwDOVKsXoM8AAAABXu4BIg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/49",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTMck"
+ },
+ "T-BDAY-05": {
+  "number": 50,
+  "id": 5887626347,
+  "node_id": "I_kwDOVKsXoM8AAAABXu4Maw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/50",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTMmo"
+ },
+ "T-BDAY-06": {
+  "number": 51,
+  "id": 5887629542,
+  "node_id": "I_kwDOVKsXoM8AAAABXu4Y5g",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/51",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTM18"
+ },
+ "T-BDAY-07": {
+  "number": 52,
+  "id": 5887632587,
+  "node_id": "I_kwDOVKsXoM8AAAABXu4kyw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/52",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTNCg"
+ },
+ "T-BDAY-08": {
+  "number": 53,
+  "id": 5887635582,
+  "node_id": "I_kwDOVKsXoM8AAAABXu4wfg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/53",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTNR8"
+ },
+ "T-QUAL-01": {
+  "number": 54,
+  "id": 5887638529,
+  "node_id": "I_kwDOVKsXoM8AAAABXu48AQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/54",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTNdI"
+ },
+ "T-QUAL-02": {
+  "number": 55,
+  "id": 5887641921,
+  "node_id": "I_kwDOVKsXoM8AAAABXu5JQQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/55",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTNpI"
+ },
+ "T-QUAL-03": {
+  "number": 56,
+  "id": 5887645284,
+  "node_id": "I_kwDOVKsXoM8AAAABXu5WZA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/56",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTN2o"
+ },
+ "T-QUAL-04": {
+  "number": 57,
+  "id": 5887648330,
+  "node_id": "I_kwDOVKsXoM8AAAABXu5iSg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/57",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTOB8"
+ },
+ "T-QUAL-05": {
+  "number": 58,
+  "id": 5887651175,
+  "node_id": "I_kwDOVKsXoM8AAAABXu5tZw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/58",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTOOM"
+ },
+ "T-QUAL-06": {
+  "number": 59,
+  "id": 5887653929,
+  "node_id": "I_kwDOVKsXoM8AAAABXu54KQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/59",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTOaE"
+ },
+ "T-QUAL-07": {
+  "number": 60,
+  "id": 5887656807,
+  "node_id": "I_kwDOVKsXoM8AAAABXu6DZw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/60",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTOkc"
+ },
+ "T-QUAL-08": {
+  "number": 61,
+  "id": 5887659349,
+  "node_id": "I_kwDOVKsXoM8AAAABXu6NVQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/61",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTOwE"
+ },
+ "T-QUAL-09": {
+  "number": 62,
+  "id": 5887662024,
+  "node_id": "I_kwDOVKsXoM8AAAABXu6XyA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/62",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTO6o"
+ },
+ "T-QUAL-10": {
+  "number": 63,
+  "id": 5887664782,
+  "node_id": "I_kwDOVKsXoM8AAAABXu6ijg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/63",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTPFM"
+ },
+ "T-QUAL-11": {
+  "number": 64,
+  "id": 5887667757,
+  "node_id": "I_kwDOVKsXoM8AAAABXu6uLQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/64",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTPQI"
+ },
+ "T-SEC-01": {
+  "number": 65,
+  "id": 5887670695,
+  "node_id": "I_kwDOVKsXoM8AAAABXu65pw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/65",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTPeM"
+ },
+ "T-SEC-02": {
+  "number": 66,
+  "id": 5887673425,
+  "node_id": "I_kwDOVKsXoM8AAAABXu7EUQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/66",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTPsA"
+ },
+ "T-SEC-03": {
+  "number": 67,
+  "id": 5887676113,
+  "node_id": "I_kwDOVKsXoM8AAAABXu7O0Q",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/67",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTP5Y"
+ },
+ "T-SEC-04": {
+  "number": 68,
+  "id": 5887678774,
+  "node_id": "I_kwDOVKsXoM8AAAABXu7ZNg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/68",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTQDo"
+ },
+ "T-SEC-05": {
+  "number": 69,
+  "id": 5887681368,
+  "node_id": "I_kwDOVKsXoM8AAAABXu7jWA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/69",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTQNY"
+ },
+ "T-SEC-06": {
+  "number": 70,
+  "id": 5887683944,
+  "node_id": "I_kwDOVKsXoM8AAAABXu7taA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/70",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTQVU"
+ },
+ "T-SEC-07": {
+  "number": 71,
+  "id": 5887686349,
+  "node_id": "I_kwDOVKsXoM8AAAABXu72zQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/71",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTQdM"
+ },
+ "T-SEC-08": {
+  "number": 72,
+  "id": 5887689278,
+  "node_id": "I_kwDOVKsXoM8AAAABXu8CPg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/72",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTQoU"
+ },
+ "T-SEC-09": {
+  "number": 73,
+  "id": 5887691813,
+  "node_id": "I_kwDOVKsXoM8AAAABXu8MJQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/73",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTQyw"
+ },
+ "T-SEC-10": {
+  "number": 74,
+  "id": 5887694449,
+  "node_id": "I_kwDOVKsXoM8AAAABXu8WcQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/74",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTQ7Q"
+ },
+ "T-SEC-11": {
+  "number": 75,
+  "id": 5887697163,
+  "node_id": "I_kwDOVKsXoM8AAAABXu8hCw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/75",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTRG8"
+ },
+ "T-LOT-01": {
+  "number": 76,
+  "id": 5887699780,
+  "node_id": "I_kwDOVKsXoM8AAAABXu8rRA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/76",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTRTo"
+ },
+ "T-LOT-02": {
+  "number": 77,
+  "id": 5887702468,
+  "node_id": "I_kwDOVKsXoM8AAAABXu81xA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/77",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTRek"
+ },
+ "T-LOT-03": {
+  "number": 78,
+  "id": 5887704984,
+  "node_id": "I_kwDOVKsXoM8AAAABXu8_mA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/78",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTRqY"
+ },
+ "T-LOT-04": {
+  "number": 79,
+  "id": 5887707269,
+  "node_id": "I_kwDOVKsXoM8AAAABXu9IhQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/79",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTRz4"
+ },
+ "T-LOT-05": {
+  "number": 80,
+  "id": 5887709675,
+  "node_id": "I_kwDOVKsXoM8AAAABXu9R6w",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/80",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTR-I"
+ },
+ "T-LOT-06": {
+  "number": 81,
+  "id": 5887712155,
+  "node_id": "I_kwDOVKsXoM8AAAABXu9bmw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/81",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTSHQ"
+ },
+ "T-TRADE-01": {
+  "number": 82,
+  "id": 5887714523,
+  "node_id": "I_kwDOVKsXoM8AAAABXu9k2w",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/82",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTSQ8"
+ },
+ "T-TRADE-02": {
+  "number": 83,
+  "id": 5887717204,
+  "node_id": "I_kwDOVKsXoM8AAAABXu9vVA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/83",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTSdw"
+ },
+ "T-TRADE-03": {
+  "number": 84,
+  "id": 5887720230,
+  "node_id": "I_kwDOVKsXoM8AAAABXu97Jg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/84",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTSsg"
+ },
+ "T-TRADE-04": {
+  "number": 85,
+  "id": 5887722749,
+  "node_id": "I_kwDOVKsXoM8AAAABXu-E_Q",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/85",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTS2c"
+ },
+ "T-TRADE-05": {
+  "number": 86,
+  "id": 5887724859,
+  "node_id": "I_kwDOVKsXoM8AAAABXu-NOw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/86",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTTBw"
+ },
+ "T-TRADE-06": {
+  "number": 87,
+  "id": 5887727333,
+  "node_id": "I_kwDOVKsXoM8AAAABXu-W5Q",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/87",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTTNQ"
+ },
+ "T-TRADE-07": {
+  "number": 88,
+  "id": 5887730084,
+  "node_id": "I_kwDOVKsXoM8AAAABXu-hpA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/88",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTTXk"
+ },
+ "T-TRADE-08": {
+  "number": 89,
+  "id": 5887732497,
+  "node_id": "I_kwDOVKsXoM8AAAABXu-rEQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/89",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTTi8"
+ },
+ "T-AUC-01": {
+  "number": 90,
+  "id": 5887735197,
+  "node_id": "I_kwDOVKsXoM8AAAABXu-1nQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/90",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTTxE"
+ },
+ "T-AUC-02": {
+  "number": 91,
+  "id": 5887738054,
+  "node_id": "I_kwDOVKsXoM8AAAABXu_Axg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/91",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTT_Y"
+ },
+ "T-AUC-03": {
+  "number": 92,
+  "id": 5887740576,
+  "node_id": "I_kwDOVKsXoM8AAAABXu_KoA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/92",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTULE"
+ },
+ "T-AUC-04": {
+  "number": 93,
+  "id": 5887743111,
+  "node_id": "I_kwDOVKsXoM8AAAABXu_Uhw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/93",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTUTg"
+ },
+ "T-AUC-05": {
+  "number": 94,
+  "id": 5887745708,
+  "node_id": "I_kwDOVKsXoM8AAAABXu_erA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/94",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTUgA"
+ },
+ "T-DEL-01": {
+  "number": 95,
+  "id": 5887748092,
+  "node_id": "I_kwDOVKsXoM8AAAABXu_n_A",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/95",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTUqw"
+ },
+ "T-DEL-02": {
+  "number": 96,
+  "id": 5887751022,
+  "node_id": "I_kwDOVKsXoM8AAAABXu_zbg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/96",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTU5U"
+ },
+ "T-DEL-03": {
+  "number": 97,
+  "id": 5887753570,
+  "node_id": "I_kwDOVKsXoM8AAAABXu_9Yg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/97",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTVGg"
+ },
+ "T-DEL-04": {
+  "number": 98,
+  "id": 5887755893,
+  "node_id": "I_kwDOVKsXoM8AAAABXvAGdQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/98",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTVRE"
+ },
+ "T-DEL-05": {
+  "number": 99,
+  "id": 5887758442,
+  "node_id": "I_kwDOVKsXoM8AAAABXvAQag",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/99",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTVcU"
+ },
+ "T-DEL-06": {
+  "number": 100,
+  "id": 5887761071,
+  "node_id": "I_kwDOVKsXoM8AAAABXvAarw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/100",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTVpw"
+ },
+ "T-DEL-07": {
+  "number": 101,
+  "id": 5887763305,
+  "node_id": "I_kwDOVKsXoM8AAAABXvAjaQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/101",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTVzo"
+ },
+ "T-DEL-08": {
+  "number": 102,
+  "id": 5887766114,
+  "node_id": "I_kwDOVKsXoM8AAAABXvAuYg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/102",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTWBU"
+ },
+ "T-LOCK-01": {
+  "number": 103,
+  "id": 5887768557,
+  "node_id": "I_kwDOVKsXoM8AAAABXvA37Q",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/103",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTWLg"
+ },
+ "T-LOCK-02": {
+  "number": 104,
+  "id": 5887771400,
+  "node_id": "I_kwDOVKsXoM8AAAABXvBDCA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/104",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTWVs"
+ },
+ "T-LOCK-03": {
+  "number": 105,
+  "id": 5887774016,
+  "node_id": "I_kwDOVKsXoM8AAAABXvBNQA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/105",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTWfM"
+ },
+ "T-LOCK-04": {
+  "number": 106,
+  "id": 5887776927,
+  "node_id": "I_kwDOVKsXoM8AAAABXvBYnw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/106",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTWps"
+ },
+ "T-LOCK-05": {
+  "number": 107,
+  "id": 5887779512,
+  "node_id": "I_kwDOVKsXoM8AAAABXvBiuA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/107",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTW1M"
+ },
+ "T-LOCK-06": {
+  "number": 108,
+  "id": 5887782421,
+  "node_id": "I_kwDOVKsXoM8AAAABXvBuFQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/108",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTXC0"
+ },
+ "T-LOCK-07": {
+  "number": 109,
+  "id": 5887784901,
+  "node_id": "I_kwDOVKsXoM8AAAABXvB3xQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/109",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTXKc"
+ },
+ "T-LOCK-08": {
+  "number": 110,
+  "id": 5887787011,
+  "node_id": "I_kwDOVKsXoM8AAAABXvCAAw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/110",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTXU0"
+ },
+ "T-LOCK-09": {
+  "number": 111,
+  "id": 5887789492,
+  "node_id": "I_kwDOVKsXoM8AAAABXvCJtA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/111",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTXgM"
+ },
+ "T-LOCK-10": {
+  "number": 112,
+  "id": 5887791863,
+  "node_id": "I_kwDOVKsXoM8AAAABXvCS9w",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/112",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTXpg"
+ },
+ "T-LOCK-11": {
+  "number": 113,
+  "id": 5887794248,
+  "node_id": "I_kwDOVKsXoM8AAAABXvCcSA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/113",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTX1k"
+ },
+ "T-LOCK-12": {
+  "number": 114,
+  "id": 5887796735,
+  "node_id": "I_kwDOVKsXoM8AAAABXvCl_w",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/114",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTYAs"
+ },
+ "T-LOCK-13": {
+  "number": 115,
+  "id": 5887799318,
+  "node_id": "I_kwDOVKsXoM8AAAABXvCwFg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/115",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTYL8"
+ },
+ "T-LOCK-14": {
+  "number": 116,
+  "id": 5887801905,
+  "node_id": "I_kwDOVKsXoM8AAAABXvC6MQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/116",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTYXY"
+ },
+ "T-ACC-01": {
+  "number": 117,
+  "id": 5887804656,
+  "node_id": "I_kwDOVKsXoM8AAAABXvDE8A",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/117",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTYlU"
+ },
+ "T-ACC-02": {
+  "number": 118,
+  "id": 5887807120,
+  "node_id": "I_kwDOVKsXoM8AAAABXvDOkA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/118",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTYv4"
+ },
+ "T-ACC-03": {
+  "number": 119,
+  "id": 5887809673,
+  "node_id": "I_kwDOVKsXoM8AAAABXvDYiQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/119",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTY6s"
+ },
+ "T-ACC-04": {
+  "number": 120,
+  "id": 5887811941,
+  "node_id": "I_kwDOVKsXoM8AAAABXvDhZQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/120",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTZFg"
+ },
+ "T-ACC-05": {
+  "number": 121,
+  "id": 5887814373,
+  "node_id": "I_kwDOVKsXoM8AAAABXvDq5Q",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/121",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTZRw"
+ },
+ "T-OFF-01": {
+  "number": 122,
+  "id": 5887816844,
+  "node_id": "I_kwDOVKsXoM8AAAABXvD0jA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/122",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTZcg"
+ },
+ "T-OFF-02": {
+  "number": 123,
+  "id": 5887819528,
+  "node_id": "I_kwDOVKsXoM8AAAABXvD_CA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/123",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTZnA"
+ },
+ "T-OFF-03": {
+  "number": 124,
+  "id": 5887822751,
+  "node_id": "I_kwDOVKsXoM8AAAABXvELnw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/124",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTZxU"
+ },
+ "T-OFF-04": {
+  "number": 125,
+  "id": 5887825697,
+  "node_id": "I_kwDOVKsXoM8AAAABXvEXIQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/125",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTZ80"
+ },
+ "T-OFF-05": {
+  "number": 126,
+  "id": 5887828000,
+  "node_id": "I_kwDOVKsXoM8AAAABXvEgIA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/126",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTaHE"
+ },
+ "T-OFF-06": {
+  "number": 127,
+  "id": 5887830399,
+  "node_id": "I_kwDOVKsXoM8AAAABXvEpfw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/127",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTaR8"
+ },
+ "T-OFF-07": {
+  "number": 128,
+  "id": 5887833206,
+  "node_id": "I_kwDOVKsXoM8AAAABXvE0dg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/128",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTaeg"
+ },
+ "T-OFF-08": {
+  "number": 129,
+  "id": 5887835556,
+  "node_id": "I_kwDOVKsXoM8AAAABXvE9pA",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/129",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTaoQ"
+ },
+ "T-INC-01": {
+  "number": 130,
+  "id": 5887837805,
+  "node_id": "I_kwDOVKsXoM8AAAABXvFGbQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/130",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTaxk"
+ },
+ "T-INC-02": {
+  "number": 131,
+  "id": 5887840858,
+  "node_id": "I_kwDOVKsXoM8AAAABXvFSWg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/131",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTa70"
+ },
+ "T-INC-03": {
+  "number": 132,
+  "id": 5887843213,
+  "node_id": "I_kwDOVKsXoM8AAAABXvFbjQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/132",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTbEs"
+ },
+ "T-INC-04": {
+  "number": 133,
+  "id": 5887845526,
+  "node_id": "I_kwDOVKsXoM8AAAABXvFklg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/133",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTbOM"
+ },
+ "T-INC-05": {
+  "number": 134,
+  "id": 5887848382,
+  "node_id": "I_kwDOVKsXoM8AAAABXvFvvg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/134",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTbZo"
+ },
+ "T-INC-06": {
+  "number": 135,
+  "id": 5887850970,
+  "node_id": "I_kwDOVKsXoM8AAAABXvF52g",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/135",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTbi0"
+ },
+ "T-INC-07": {
+  "number": 136,
+  "id": 5887853671,
+  "node_id": "I_kwDOVKsXoM8AAAABXvGEZw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/136",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTbtU"
+ },
+ "T-INC-08": {
+  "number": 137,
+  "id": 5887856350,
+  "node_id": "I_kwDOVKsXoM8AAAABXvGO3g",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/137",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTb5M"
+ },
+ "T-INC-09": {
+  "number": 138,
+  "id": 5887859118,
+  "node_id": "I_kwDOVKsXoM8AAAABXvGZrg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/138",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTcFU"
+ },
+ "T-INC-10": {
+  "number": 139,
+  "id": 5887861547,
+  "node_id": "I_kwDOVKsXoM8AAAABXvGjKw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/139",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTcQk"
+ },
+ "T-INC-11": {
+  "number": 140,
+  "id": 5887864070,
+  "node_id": "I_kwDOVKsXoM8AAAABXvGtBg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/140",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTcdM"
+ },
+ "T-INC-12": {
+  "number": 141,
+  "id": 5887866395,
+  "node_id": "I_kwDOVKsXoM8AAAABXvG2Gw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/141",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTcsI"
+ },
+ "T-INC-13": {
+  "number": 142,
+  "id": 5887869115,
+  "node_id": "I_kwDOVKsXoM8AAAABXvHAuw",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/142",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTc5E"
+ },
+ "T-INC-14": {
+  "number": 143,
+  "id": 5887871857,
+  "node_id": "I_kwDOVKsXoM8AAAABXvHLcQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/143",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTdFg"
+ },
+ "T-INC-15": {
+  "number": 144,
+  "id": 5887874260,
+  "node_id": "I_kwDOVKsXoM8AAAABXvHU1A",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/144",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTdQo"
+ },
+ "T-INC-16": {
+  "number": 145,
+  "id": 5887876893,
+  "node_id": "I_kwDOVKsXoM8AAAABXvHfHQ",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/145",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTdfM"
+ },
+ "T-INC-17": {
+  "number": 146,
+  "id": 5887879526,
+  "node_id": "I_kwDOVKsXoM8AAAABXvHpZg",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/146",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTdsk"
+ },
+ "T-INC-18": {
+  "number": 147,
+  "id": 5887882228,
+  "node_id": "I_kwDOVKsXoM8AAAABXvHz9A",
+  "url": "https://github.com/linhntd-3068/Learning-AI-Product-A/issues/147",
+  "item_id": "PVTI_lAHOBjxYIs4BnYAUzhBTd6g"
+ }
+}

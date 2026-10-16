@@ -1,0 +1,4531 @@
+{
+ "project": "Product A – 桜水産市場 業務支援システム",
+ "source": "LAB-4 design set (docs/design)",
+ "team": {
+  "members": {
+   "BrSE": 1,
+   "BE": 2,
+   "FE": 2,
+   "QA": 1
+  },
+  "sprint_length_weeks": 2,
+  "working_days_per_sprint": 10,
+  "hours_per_day": 8,
+  "focus_factor": 0.7,
+  "capacity_hours_per_person": 56.0,
+  "capacity_hours_by_role": {
+   "BrSE": 56.0,
+   "BE": 112.0,
+   "FE": 112.0,
+   "QA": 56.0
+  },
+  "capacity_hours_total": 336.0,
+  "note": "Infra-layer work assigned to BE (no dedicated Infra member)."
+ },
+ "sp_hour_guide": {
+  "rule": "SP derived from honest hour estimate (AI-assisted, tests included); max 8 SP / 16 h, larger must be split",
+  "bands": [
+   {
+    "story_points": 1,
+    "hours": "1-2"
+   },
+   {
+    "story_points": 2,
+    "hours": "3-4"
+   },
+   {
+    "story_points": 3,
+    "hours": "5-7"
+   },
+   {
+    "story_points": 5,
+    "hours": "8-11"
+   },
+   {
+    "story_points": 8,
+    "hours": "12-16"
+   }
+  ],
+  "approx": "1 SP ≈ 2 h"
+ },
+ "epics": [
+  {
+   "id": "E-FND",
+   "title": "Nền tảng dữ liệu, phân quyền & spec chung",
+   "goal": "Có danh mục mặt hàng, FK người làm, vai trò/quyền mới, mã lỗi JP+VI, đính kèm và bộ dữ liệu test chung để mọi epic dựng trên đó.",
+   "scope": "items, FK profiles, seed rule_admin + mã quyền, doc_counters, trạng thái lô suy ra, ràng buộc DB (G-17), attachments, app shell, dữ liệu test.",
+   "special_constraint": "—",
+   "task_count": 12,
+   "total_story_points": 46,
+   "total_hours": 83
+  },
+  {
+   "id": "E-AUD",
+   "title": "Audit nghiệp vụ trong cùng giao dịch (ADR-006)",
+   "goal": "Không thao tác nào thành công mà thiếu vết; lần bị chặn ở ngày khóa luôn có dòng blocked_edit (KPI-03 ≥ 98%).",
+   "scope": "audit_logs chỉ thêm, fn_audit trong hàm, fn_log_blocked_edit, test KPI-03.",
+   "special_constraint": "—",
+   "task_count": 4,
+   "total_story_points": 16,
+   "total_hours": 28
+  },
+  {
+   "id": "E-RULE",
+   "title": "Quy tắc chợ có phiên bản & tham số hệ thống (ADR-008, SCR-034)",
+   "goal": "Đổi quy tắc/tỷ lệ bằng phiên bản có maker–checker, ngày hiệu lực tương lai, rollback, ≤ 4 lần/năm, không deploy; tham số bảo mật hiệu lực ngay.",
+   "scope": "rule_sets, rule_values, fn_rule/fn_rule_set, item_tax_rates, system_settings/fn_setting, luồng soạn–duyệt, màn hình SCR-034.",
+   "special_constraint": "Quy tắc phiên bản",
+   "task_count": 15,
+   "total_story_points": 66,
+   "total_hours": 118
+  },
+  {
+   "id": "E-BDAY",
+   "title": "Ngày nghiệp vụ JST & mở ngày (ADR-009)",
+   "goal": "Một định nghĩa 業務日 duy nhất theo JST; mọi ghi chép kiểm theo ngày hiện tại, không theo đồng hồ/UTC.",
+   "scope": "Trạng thái business_days, market_calendar, fn_current_business_date, fn_assert_*, fn_open_day, bỏ ngày UTC ở UI.",
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "task_count": 8,
+   "total_story_points": 26,
+   "total_hours": 47
+  },
+  {
+   "id": "E-QUAL",
+   "title": "Tư cách tham gia theo căn cứ 登録/許可/承認 (ADR-007, SCR-010)",
+   "goal": "Tách tư cách theo căn cứ, vòng đời tạm dừng/gỡ riêng cho từng nhóm, thông báo từ chối đúng loại căn cứ (tránh loại hồ sơ 12-06).",
+   "scope": "party_kinds/party_kind_basis, participant_qualifications, qualification_events, 3 hàm fn_qualification_*, migrate, API + màn hình SCR-010.",
+   "special_constraint": "許可/承認",
+   "task_count": 11,
+   "total_story_points": 51,
+   "total_hours": 93
+  },
+  {
+   "id": "E-SEC",
+   "title": "Đăng nhập, MFA, khóa tạm & timeout (SCR-001)",
+   "goal": "MFA theo phiên (AAL2) cho vai trò quản trị/duyệt; khóa tạm khi sai nhiều lần; timeout theo system_settings.",
+   "scope": "API login/MFA/logout, guard AAL2, khóa tạm, timeout, màn hình đăng nhập, màn hình cài đặt hệ thống.",
+   "special_constraint": "MFA/Bảo mật",
+   "task_count": 11,
+   "total_story_points": 33,
+   "total_hours": 63
+  },
+  {
+   "id": "E-LOT",
+   "title": "Tiếp nhận & đánh giá lô (SCR-012/013)",
+   "goal": "Tiếp nhận lô theo 業務日 hiện tại với mặt hàng chuẩn; đánh giá qua hàm, chặn ngày khóa, người quyết định là người.",
+   "scope": "fn_create_lot, fn_inspect_lot, API lots, UI tiếp nhận/đánh giá, test SCR-012.",
+   "special_constraint": "—",
+   "task_count": 6,
+   "total_story_points": 23,
+   "total_hours": 40
+  },
+  {
+   "id": "E-TRADE",
+   "title": "Chốt giao dịch 相対 & hủy (SCR-016/018)",
+   "goal": "Chốt giao dịch đúng thứ tự kiểm 01 §9.1, mã RJ-xx JP+VI, tồn không âm, lưu rule_set_id; hủy có người/lý do.",
+   "scope": "fn_confirm_trade, API trades, UI nhập bằng bàn phím, fn_cancel_trade + SCR-018, test chức năng và tải.",
+   "special_constraint": "—",
+   "task_count": 8,
+   "total_story_points": 41,
+   "total_hours": 70
+  },
+  {
+   "id": "E-AUC",
+   "title": "Ghi kết quả せり có người xác nhận (SCR-019)",
+   "goal": "Chỉ ghi kết quả cuối do người nhập, có 確認者 chọn tường minh và 落札時刻 — không phải hệ thống đấu giá.",
+   "scope": "trades.result_at/recorded_by/confirmed_by, API users theo quyền, UI SCR-019, test.",
+   "special_constraint": "せり xác nhận",
+   "task_count": 5,
+   "total_story_points": 16,
+   "total_hours": 29
+  },
+  {
+   "id": "E-DEL",
+   "title": "Ghi giao hàng, ngoại lệ & tranh chấp (SCR-029)",
+   "goal": "Giao nhiều lần theo ngày giao, kiểm tư cách lại lúc giao, ngoại lệ có người xác nhận, tranh chấp do người khác giải quyết.",
+   "scope": "Cột deliveries mới, fn_record_delivery, hiệu ứng ngoại lệ, xác nhận/tranh chấp, UI SCR-029, test.",
+   "special_constraint": "—",
+   "task_count": 8,
+   "total_story_points": 40,
+   "total_hours": 66
+  },
+  {
+   "id": "E-LOCK",
+   "title": "Đối soát, khóa sổ, mở lại & điều chỉnh -R/-A (SCR-022/024)",
+   "goal": "Ngày đã khóa không sửa trực tiếp; điều chỉnh có bằng chứng và duyệt nhiều cấp; khóa sổ theo checklist; mở lại có duyệt.",
+   "scope": "corrections/correction_decisions, fn_request/decide_correction, checklist CK-1…7, fn_lock_day, mở lại, UI SCR-022/024.",
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "task_count": 14,
+   "total_story_points": 72,
+   "total_hours": 119
+  },
+  {
+   "id": "E-ACC",
+   "title": "Xuất kế toán IF-ACC-01 sau khóa sổ",
+   "goal": "CSV kế toán chỉ cho ngày đã khóa, có batch code, metadata và trạng thái dòng 保留/確認済み/調整済み.",
+   "scope": "accounting_exports(+lines), hàm sinh batch, API CSV theo mã hóa, nút trên SCR-024, test.",
+   "special_constraint": "Kế toán IF-ACC-01",
+   "task_count": 5,
+   "total_story_points": 21,
+   "total_hours": 35
+  },
+  {
+   "id": "E-OFF",
+   "title": "Offline cho tiếp nhận lô & giao hàng (ADR-010)",
+   "goal": "Khu tiếp nhận và bến giao làm việc tiếp khi mất mạng ngắn, không nhập trùng; chốt giao dịch luôn cần mạng.",
+   "scope": "Phát hiện mạng, hàng đợi IndexedDB, client_ref, đồng bộ, màn hình hòa giải, nháp cục bộ, test giả lập mất mạng.",
+   "special_constraint": "Offline",
+   "task_count": 8,
+   "total_story_points": 33,
+   "total_hours": 60
+  },
+  {
+   "id": "E-INC",
+   "title": "完納奨励金 — khuyến khích thanh toán đủ đúng hạn",
+   "goal": "Tính 完納奨励金 = floor(eligible × rate × 110/100) chỉ cho khoản trả đủ trong 支払期日 (JST, không ân hạn), có phiên bản, append-only, báo cáo RPT-07.",
+   "scope": "Bậc tỷ lệ theo phiên bản, 支払期日, ghi nhận thanh toán (tay + CSV), kiểm đúng hạn, tính & làm tròn, rule_set_id, delta kỳ sau, RPT-07, test vector, UAT. Không có trong 9 spec lõi → nhiều giả định (S).",
+   "special_constraint": "完納奨励金",
+   "task_count": 18,
+   "total_story_points": 72,
+   "total_hours": 130
+  }
+ ],
+ "tasks": [
+  {
+   "id": "T-FND-01",
+   "epic": "E-FND",
+   "title": "Tạo danh mục `items` và chuyển `lots.item/unit` sang `item_code`",
+   "description": "Bảng items(code PK, name, unit) không phiên bản; lots.item_code FK items.code; migrate text tự do sang mã. Đơn vị cố định theo mặt hàng (BC-37).",
+   "subtasks": [
+    "DB: migration items + seed danh mục mẫu",
+    "DB: thêm lots.item_code, map dữ liệu cũ, bỏ lots.item/unit sau khi map",
+    "API: GET /api/items (tìm kiếm)",
+    "Test: FK từ chối mã không có"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-15",
+    "BC-37",
+    "BC-70",
+    "SCR-012 §5.1 F-04/F-05",
+    "03 §2"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Lô mới chỉ nhận item_code có trong items; đơn vị lấy từ items.unit; dữ liệu cũ map hết, không còn cột text tự do.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-FND-02",
+   "epic": "E-FND",
+   "title": "Thêm FK `profiles(id)` cho mọi cột người làm",
+   "description": "Mọi cột *_by/actor/maker_id/checker_id hiện có trỏ FK profiles(id); kiểm dữ liệu mồ côi trước khi thêm ràng buộc.",
+   "subtasks": [
+    "DB: script tìm uuid mồ côi",
+    "DB: migration thêm FK",
+    "Test: insert uuid lạ bị từ chối"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-14",
+    "BC-81"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P2",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Mọi cột người làm có FK; insert actor không tồn tại bị DB từ chối.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-FND-03",
+   "epic": "E-FND",
+   "title": "Seed vai trò `rule_admin` và các mã quyền mới",
+   "description": "Thêm vai trò rule_admin (giữ market_ops, ghi giả định S) và các quyền: qualifications.approve, days.open, recon.reopen.request/approve, rules.draft/approve/read, attachments.upload; cấp participants.read cho approver.",
+   "subtasks": [
+    "DB: seed roles + permissions + role_permissions",
+    "API: guard nhận mã quyền mới",
+    "Doc: cập nhật bảng quyền ADR-004 trong ghi chú triển khai"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-16",
+    "ADR-004",
+    "BC-87",
+    "06 Mục 1 §4.1"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Có 9 vai trò; mỗi mã quyền 06 §4.1 tồn tại và được cấp đúng vai trò đích; vai trò thiếu quyền nhận 403 AUTH-403.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-FND-04",
+   "epic": "E-FND",
+   "title": "Tạo `doc_counters(day, kind)` và thay mã chứng từ `count(*)+1`",
+   "description": "Mã lô/giao dịch lấy từ bộ đếm theo ngày, khóa dòng khi tăng; dòng -R/-A không tăng bộ đếm.",
+   "subtasks": [
+    "DB: bảng doc_counters + hàm fn_next_doc_no",
+    "DB: đổi fn_create_lot, fn_confirm_trade, fn_decide_correction dùng bộ đếm",
+    "Test: 2 phiên song song không trùng mã; -R/-A không đếm"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-18",
+    "BC-31",
+    "SCR-012 §11",
+    "SCR-016 §11",
+    "SCR-022 §11"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-LOT-01",
+    "T-TRADE-01",
+    "T-LOCK-03"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Mã L<YYMMDD>-NNN / T<YYMMDD>-NNNN liên tục theo ngày, không trùng khi chạy song song; -R/-A giữ mã gốc + hậu tố.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-FND-05",
+   "epic": "E-FND",
+   "title": "Suy ra trạng thái lô từ tồn thay vì lưu cứng `lots.status`",
+   "description": "Trạng thái lô (受付/販売中/完売…) tính từ available_qty và giao dịch; bỏ cập nhật cứng để duyệt điều chỉnh không làm lệch.",
+   "subtasks": [
+    "DB: view/hàm fn_lot_status",
+    "API: trả trạng thái suy ra",
+    "Test: duyệt điều chỉnh tăng/giảm SL đổi trạng thái đúng"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-13",
+    "BC-38"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P2",
+   "depends_on": [
+    "T-LOCK-03"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Sau duyệt điều chỉnh, trạng thái lô hiển thị khớp tồn mà không cần cập nhật tay.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-FND-06",
+   "epic": "E-FND",
+   "title": "Chuyển các quy tắc chỉ có ở API vào DB",
+   "description": "Partial unique index một yêu cầu điều chỉnh đang xử lý (pending, need_info) mỗi giao dịch; CHECK lý do khi từ chối; CHECK hạng thuộc danh sách qua tham số hàm.",
+   "subtasks": [
+    "DB: partial unique index trên corrections",
+    "DB: CHECK note khi reject/need_info",
+    "Test: gọi thẳng SQL vẫn bị chặn"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-17",
+    "ADR-003",
+    "SCR-022 AC9"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P2",
+   "depends_on": [
+    "T-LOCK-01"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Bỏ qua API, ghi thẳng DB vẫn bị chặn đúng 3 quy tắc; SCR-022 AC9 đạt.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-FND-07",
+   "epic": "E-FND",
+   "title": "Dựng bảng `attachments` và API `POST /api/attachments`",
+   "description": "Lưu file Supabase Storage, metadata owner_type/owner_id, retention_class BUSINESS_7Y | EVIDENCE_3Y_COLD; chỉ PDF/JPG/PNG ≤ 10 MB; quyền attachments.upload.",
+   "subtasks": [
+    "DB: bảng attachments + FK uploaded_by",
+    "API: upload, kiểm loại/dung lượng, quyền",
+    "Infra: bucket private + signed URL đọc",
+    "Test: E-06 khi sai loại/quá 10 MB"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-10",
+    "BC-45",
+    "BC-82",
+    "SCR-010 A-07",
+    "SCR-022 F-08",
+    "SCR-029 F-06",
+    "06 Mục 1 §4.1"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-FND-03"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Upload hợp lệ trả attachment_id; sai loại/quá 10 MB trả E-06; thiếu quyền 403; file không đọc được công khai.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-FND-08",
+   "epic": "E-FND",
+   "title": "Viết spec khung ứng dụng (menu, header, nhãn 業務日 và mạng)",
+   "description": "Spec app shell còn thiếu: menu theo quyền, header hiện 業務日 hiện tại + trạng thái, nhãn オフライン, thông báo trong app, M-06 dùng chung.",
+   "subtasks": [
+    "Doc: spec theo mẫu 04-screen-specs",
+    "Doc: wireframe biến thể có/không có ngày mở",
+    "Doc: review với lead"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "06 Mục 4 #10",
+    "ADR-009 §1",
+    "ADR-010"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BrSE",
+   "definition_of_done": "Spec app shell được lead NHẬN; có §5/§7/§10 như các spec khác.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-FND-09",
+   "epic": "E-FND",
+   "title": "Dựng khung ứng dụng theo spec app shell",
+   "description": "Layout chung: menu ẩn/hiện theo quyền, header lấy 業務日 từ server, chỗ hiển thị nhãn mạng và thông báo.",
+   "subtasks": [
+    "UI: layout + menu theo quyền",
+    "UI: header gọi /api/business-days/current",
+    "Test: vai trò intake không thấy menu 規則・料率"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "06 Mục 4 #10",
+    "G-02"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P1",
+   "depends_on": [
+    "T-FND-08",
+    "T-BDAY-03"
+   ],
+   "special_constraint": "—",
+   "role": "FE",
+   "definition_of_done": "Mọi trang dùng chung shell; header hiện đúng 業務日 JST hoặc 「業務日未開始」; menu đúng quyền.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-FND-10",
+   "epic": "E-FND",
+   "title": "Thống nhất bộ dữ liệu test chung và fixture factory",
+   "description": "Một bộ dữ liệu (M-002, W-001/W-002, B-003, R-003…) dùng cho mọi AC; factory dựng Given cho từng tiêu chí, không phụ thuộc seed.",
+   "subtasks": [
+    "Test: bảng dữ liệu chuẩn trong tài liệu test",
+    "Test: factory tạo người tham gia/tư cách/lô/ngày",
+    "Doc: hướng dẫn dùng cho dev"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "06 Mục 4 #8",
+    "04 README"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "QA",
+   "definition_of_done": "Mọi test AC của 9 spec dựng dữ liệu bằng factory; tên mẫu thống nhất giữa các spec.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-FND-11",
+   "epic": "E-FND",
+   "title": "Chuẩn hóa danh mục mã lỗi `{error, code}` với câu JP + VI",
+   "description": "Module dùng chung dịch mã raise từ DB (RJ-xx, E-xx, V0xx-xx, M-xx, LOCKED_DAY…) sang câu JP + VI; UI nhãn tiếng Nhật (BC-89).",
+   "subtasks": [
+    "API: module error-catalog + hàm map lỗi Postgres",
+    "API: áp vào route hiện có",
+    "Test: mã chưa khai báo trả lỗi chung có log"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-24",
+    "BC-89",
+    "SCR-016 §9"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Mọi lỗi nghiệp vụ trả {error, code}; câu JP + VI đúng bảng spec; không còn câu chỉ tiếng Việt.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-FND-12",
+   "epic": "E-FND",
+   "title": "Dựng khung test tích hợp DB và E2E Playwright chạy trong CI",
+   "description": "Supabase local cho test tích hợp hàm fn_*, Playwright cho E2E (kể cả chế độ offline), chạy trên CI mỗi PR; dùng fixture của T-FND-10.",
+   "subtasks": [
+    "Infra: Supabase local + reset DB mỗi bộ test",
+    "Test: cấu hình Playwright + giả lập offline",
+    "Infra: job CI chạy test + báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "04 README",
+    "ADR-010",
+    "KPI-03"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "QA",
+   "definition_of_done": "PR chạy được test tích hợp DB và E2E trên CI; một test mẫu cho mỗi loại xanh.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-AUD-01",
+   "epic": "E-AUD",
+   "title": "Chặn UPDATE/DELETE `audit_logs` và thêm index tra cứu",
+   "description": "Trigger chặn sửa/xóa kể cả service_role; index (action, entity_id, at) để đếm lần đăng nhập sai và tra theo mã.",
+   "subtasks": [
+    "DB: trigger BEFORE UPDATE/DELETE raise",
+    "DB: index (action, entity_id, at)",
+    "Test: UPDATE bằng service_role bị chặn"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-06",
+    "ADR-006",
+    "BC-81",
+    "03 §2"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Mọi UPDATE/DELETE trên audit_logs bị lỗi; truy vấn đếm login_failed 15 phút dùng index.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-AUD-02",
+   "epic": "E-AUD",
+   "title": "Viết `fn_log_blocked_edit` và helper API bắt mã `LOCKED_DAY`",
+   "description": "Hàm ghi action=blocked_edit trong giao dịch riêng; helper API bắt LOCKED_DAY từ mọi RPC rồi gọi hàm này, không dùng dblink.",
+   "subtasks": [
+    "DB: fn_log_blocked_edit(p_actor, p_entity, p_entity_id, p_day, p_payload)",
+    "API: wrapper rpc() bắt LOCKED_DAY",
+    "Test: thao tác bị chặn vẫn có đúng 1 dòng blocked_edit"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-06",
+    "G-03",
+    "ADR-006",
+    "BC-43"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-AUD-01",
+    "T-FND-11"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "Thao tác vào ngày đã khóa trả 400 và có đúng một dòng blocked_edit (entity, ngày, actor).",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-AUD-03",
+   "epic": "E-AUD",
+   "title": "Chuyển ghi audit vào trong các hàm `fn_*` (cùng giao dịch)",
+   "description": "Helper fn_audit(actor, action, entity, id, before, after, reason); các hàm as-built nhận p_reason và tự ghi; bỏ writeAuditLog() sau thao tác.",
+   "subtasks": [
+    "DB: fn_audit + đổi chữ ký fn_create_lot/fn_confirm_trade/fn_record_delivery/fn_lock_day/fn_decide_correction",
+    "API: bỏ writeAuditLog, truyền reason",
+    "Test: lỗi ghi audit → rollback cả thao tác"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-06",
+    "ADR-006",
+    "BC-81",
+    "KPI-03"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-AUD-01"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Không còn lời gọi writeAuditLog sau thao tác; mỗi thao tác ghi có đúng 1 dòng audit cùng giao dịch.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-AUD-04",
+   "epic": "E-AUD",
+   "title": "Kiểm thử KPI-03: đủ trước/sau, người làm cho mọi thao tác ghi",
+   "description": "Test tích hợp quét mọi hàm ghi: có before/after/actor/reason; lỗi audit làm rollback; blocked_edit ghi được.",
+   "subtasks": [
+    "Test: bộ test tích hợp theo danh sách hàm ghi",
+    "Test: truy vấn tỉ lệ dòng đủ trường ≥ 98%",
+    "Doc: báo cáo kết quả"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "G-06",
+    "KPI-03",
+    "BC-81",
+    "SCR-010 AC8"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-AUD-02",
+    "T-AUD-03",
+    "T-FND-12"
+   ],
+   "special_constraint": "—",
+   "role": "QA",
+   "definition_of_done": "SCR-010 AC8 đạt; tỉ lệ dòng giao dịch có đủ trước/sau + người làm = 100% trên dữ liệu test.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-RULE-01",
+   "epic": "E-RULE",
+   "title": "Tạo `rule_sets` và `rule_values` với trigger bất biến",
+   "description": "rule_sets(version_no, effective_from, status draft|submitted|approved|superseded, maker_id, checker_id <> maker, change_reason, over_limit_reason, rollback_of); rule_values(rule_set_id, key, value jsonb).",
+   "subtasks": [
+    "DB: migration 2 bảng + CHECK maker<>checker",
+    "DB: trigger chặn UPDATE/DELETE bản approved/superseded",
+    "Test: sửa rule_values của bản đã duyệt bị chặn"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-05",
+    "ADR-008",
+    "BC-14",
+    "BC-16",
+    "BC-18"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BE",
+   "definition_of_done": "SCR-034 AC5 phần DB: mọi UPDATE vào rule_values của bản approved bị trigger chặn.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-RULE-02",
+   "epic": "E-RULE",
+   "title": "Viết `fn_validate_rule_value` theo danh mục khóa ADR-008",
+   "description": "Kiểm kiểu/miền cho từng khóa (expiry_warning_days, grades, trade_kind_matrix, lock_checklist, incentive_rate_tiers…); từ chối khóa ngoài danh mục.",
+   "subtasks": [
+    "DB: hàm kiểm theo key",
+    "DB: gắn vào insert/update rule_values",
+    "Test: khóa hệ thống như session_idle_timeout_min bị từ chối"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-05",
+    "ADR-008 danh mục khóa",
+    "SCR-034 AC8",
+    "SCR-034 AC11"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-01"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BE",
+   "definition_of_done": "SCR-034 AC11: gửi khóa ngoài danh mục → 400 「未定義の規則キーです」; ma trận rỗng một cột → 400.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-RULE-03",
+   "epic": "E-RULE",
+   "title": "Viết `fn_rule_set(date)`, `fn_rule(key, date)` và seed phiên bản v1",
+   "description": "Chọn bản approved có effective_from lớn nhất ≤ ngày (trùng ngày lấy version_no lớn nhất); seed v1 bằng giá trị mặc định danh mục.",
+   "subtasks": [
+    "DB: 2 hàm resolver",
+    "DB: seed v1 (gồm incentive_rate_tiers dữ liệu giả)",
+    "Test: draft/submitted không bao giờ được chọn"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-05",
+    "ADR-008 §4",
+    "BC-17",
+    "SCR-034 AC4"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-02"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BE",
+   "definition_of_done": "SCR-034 AC4: mô phỏng ngày không tick F-32 trả bản approved mới nhất, không phải bản submitted.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-RULE-04",
+   "epic": "E-RULE",
+   "title": "Tạo `item_tax_rates` thuế suất theo phiên bản",
+   "description": "item_tax_rates(item_code, rule_set_id, tax_rate 0..1); bản nháp mới sao chép thuế suất của bản gốc (Q29, Plan A).",
+   "subtasks": [
+    "DB: bảng + CHECK 0..1",
+    "DB: sao chép khi tạo nháp",
+    "Test: thuế suất cũ giữ nguyên cho giao dịch cũ"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-22",
+    "BC-70",
+    "Q29",
+    "ADR-008 §3"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-01",
+    "T-FND-01"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BE",
+   "definition_of_done": "Thuế suất đọc theo (item_code, fn_rule_set(業務日)); giá trị ngoài 0..1 bị từ chối.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-RULE-05",
+   "epic": "E-RULE",
+   "title": "Tạo `system_settings` và `fn_setting(key)`",
+   "description": "Tham số bảo mật/vận hành hiệu lực ngay, không phiên bản; mfa_required_roles luôn chứa sys_admin, rule_admin, approver; seed 8 khóa.",
+   "subtasks": [
+    "DB: bảng + hàm đọc + kiểm theo key",
+    "DB: ràng buộc mfa_required_roles",
+    "DB: ghi audit before/after khi sửa (cùng giao dịch)"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "ADR-008 §9",
+    "BC-85",
+    "BC-86",
+    "G-23"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-AUD-03"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BE",
+   "definition_of_done": "Đổi khóa có hiệu lực từ request kế tiếp, rule_sets không đổi; gỡ sys_admin khỏi mfa_required_roles bị từ chối.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-RULE-06",
+   "epic": "E-RULE",
+   "title": "Thay hằng số hardcode ở API/UI bằng `fn_rule`",
+   "description": "Bỏ EXPIRY_WARNING_DAYS (api/dashboard), danh sách đơn vị, A/B/C, chặn wholesaler mua cứng; đọc qua fn_rule theo 業務日.",
+   "subtasks": [
+    "API: dashboard đọc expiry_warning_days",
+    "UI: bỏ danh sách đơn vị/hạng cứng",
+    "Test: grep không còn hằng số quy tắc"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-05",
+    "BC-19",
+    "SCR-010 §11",
+    "SCR-012 §11"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-RULE-03"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "FE",
+   "definition_of_done": "Không còn hằng số quy tắc trong src/; đổi phiên bản thì dashboard đổi theo, không deploy.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-RULE-07",
+   "epic": "E-RULE",
+   "title": "Viết hàm soạn phiên bản: tạo nháp, lưu nháp, gửi duyệt",
+   "description": "fn_create_rule_draft (sao chép, rollback_of), fn_save_rule_draft, fn_submit_rule_set: ≥1 khác biệt, effective_from > ngày tham chiếu, đếm 4 lần/năm JST, over_limit_reason từ lần 5.",
+   "subtasks": [
+    "DB: 3 hàm + audit theo khóa",
+    "DB: một bản nháp mở tại một thời điểm (409)",
+    "Test: lần thứ 5 thiếu lý do → 400"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "ADR-008 §6-7",
+    "BC-15",
+    "BC-17",
+    "SCR-034 §7",
+    "SCR-034 AC3",
+    "SCR-034 AC7"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-03",
+    "T-AUD-03",
+    "T-BDAY-02"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BE",
+   "definition_of_done": "SCR-034 AC3 và AC7 đạt ở tầng hàm; rollback tạo bản nháp có rollback_of.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-RULE-08",
+   "epic": "E-RULE",
+   "title": "Viết `fn_approve_rule_set` duyệt / trả lại",
+   "description": "Duyệt: checker ≠ maker, effective_from vẫn > ngày lúc duyệt, gán version_no, approved_at; trả lại về draft giữ lịch sử quyết định.",
+   "subtasks": [
+    "DB: hàm duyệt/trả lại + audit",
+    "DB: superseded khi bản mới có hiệu lực",
+    "Test: maker tự duyệt → 400"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "ADR-008",
+    "BC-16",
+    "BC-88",
+    "SCR-034 AC2",
+    "SCR-034 AC6"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-07"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BE",
+   "definition_of_done": "SCR-034 AC2, AC6 đạt: maker tự duyệt bị chặn; rollback v1 sinh v3 với rollback_of = v1, v1/v2 không đổi.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-RULE-09",
+   "epic": "E-RULE",
+   "title": "Dựng API ghi `/api/rules` (nháp, lưu, gửi, duyệt, trả lại, xóa nháp)",
+   "description": "Route theo SCR-034 §7 với quyền rules.draft/rules.approve; duyệt cần phiên AAL2 (M-06 qua guard); map lỗi JP + VI.",
+   "subtasks": [
+    "API: POST/PUT/DELETE /api/rules, POST submit, POST decision",
+    "API: kiểm quyền + maker",
+    "Test: settlement POST → 403"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "SCR-034 §7",
+    "ADR-004",
+    "G-16",
+    "SCR-034 AC10"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-08",
+    "T-FND-03"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BE",
+   "definition_of_done": "Mọi nút SCR-034 §7 có API; SCR-034 AC10 (settlement chỉ đọc, trade 403) đạt.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-RULE-10",
+   "epic": "E-RULE",
+   "title": "Dựng API đọc: so sánh, mô phỏng ngày, xuất lịch sử RPT-12",
+   "description": "GET /api/rules/diff, /api/rules/resolve?date=&include_pending= (ghi rõ chưa duyệt), /api/rules/history.csv.",
+   "subtasks": [
+    "API: diff theo khóa/ô/dòng mặt hàng",
+    "API: resolve + nhãn 未承認",
+    "API: CSV lịch sử + kỳ áp dụng"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "SCR-034 §7",
+    "SCR-034 AC9",
+    "BC-74",
+    "RPT-12"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-03"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "FE",
+   "definition_of_done": "SCR-034 AC9: so sánh v1–v3 chỉ liệt kê khác biệt cũ → mới; CSV có kỳ áp dụng từng phiên bản.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-RULE-11",
+   "epic": "E-RULE",
+   "title": "Dựng màn hình SCR-034: danh sách, lịch sử, so sánh, mô phỏng ngày",
+   "description": "Danh sách phiên bản với trạng thái và kỳ áp dụng, so sánh 2 bản, mô phỏng ngày; chỉ đọc cho settlement.",
+   "subtasks": [
+    "UI: danh sách + nhãn 適用中",
+    "UI: so sánh + mô phỏng ngày",
+    "UI: phân quyền ẩn nút ghi"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-034 §5",
+    "SCR-034 §7",
+    "SCR-034 AC1",
+    "SCR-034 AC9"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-10"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "FE",
+   "definition_of_done": "SCR-034 AC1 (demo đổi quy tắc không deploy) trình diễn được trên màn hình; AC9 hiển thị đúng.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-RULE-12",
+   "epic": "E-RULE",
+   "title": "Dựng trình sửa phiên bản theo kiểu khóa (SCR-034 edit)",
+   "description": "Trình sửa có kiểu: ma trận trade_kind (F-13), bậc khuyến khích tăng dần (F-17), thuế suất hiển thị % lưu 0–1 (F-18), lý do thay đổi, ngày hiệu lực.",
+   "subtasks": [
+    "UI: editor theo kiểu từng khóa",
+    "UI: validation client trùng D",
+    "UI: lưu nháp, xóa nháp"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-034 §5",
+    "SCR-034 AC8",
+    "06 Mục 4 #6"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-09",
+    "T-RULE-14"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "FE",
+   "definition_of_done": "SCR-034 AC8: bỏ hết せり → 400 câu JP; min_ratio 50 rồi 30 → 400; thuế suất nhập 8 hiển thị 8% lưu 0.08.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-RULE-13",
+   "epic": "E-RULE",
+   "title": "Dựng thao tác gửi duyệt / duyệt / trả lại có hộp xác nhận",
+   "description": "Nút 承認依頼, 承認, 差戻し với hộp xác nhận (bỏ radio F-21); ô over_limit_reason khi vượt 4 lần.",
+   "subtasks": [
+    "UI: hộp xác nhận + ý kiến",
+    "UI: cảnh báo vượt giới hạn năm",
+    "UI: xử lý 401 M-06 khi chưa AAL2"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-034 §7",
+    "06 Mục 4 #1",
+    "SCR-034 AC2",
+    "SCR-034 AC7"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-12"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "FE",
+   "definition_of_done": "Luồng draft → submitted → approved/return chạy hết trên UI; không còn radio F-21.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-RULE-14",
+   "epic": "E-RULE",
+   "title": "Chỉnh spec SCR-034: bỏ F-21 và thống nhất thuế suất 0–1 hiển thị %",
+   "description": "Hai điểm tồn đọng Mục 4 #1, #6: bỏ radio F-21 giữ nút có hộp xác nhận như SCR-022; F-18 lưu 0–1, màn hình và câu lỗi theo %.",
+   "subtasks": [
+    "Doc: sửa §5, §7, câu lỗi",
+    "Doc: cập nhật wireframe biến thể",
+    "Doc: ghi vào nhật ký review"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "06 Mục 4 #1",
+    "06 Mục 4 #6",
+    "SCR-034"
+   ],
+   "story_points": 1,
+   "hours": 2,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "BrSE",
+   "definition_of_done": "Spec SCR-034 không còn F-21; F-18 ghi rõ lưu 0–1 / hiển thị %.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-RULE-15",
+   "epic": "E-RULE",
+   "title": "Kiểm thử SCR-034 AC1–AC11",
+   "description": "Chạy đủ 11 tiêu chí, gồm demo BC-19 không deploy, maker ≠ checker, ngày hiệu lực tương lai, rollback, 4 lần/năm.",
+   "subtasks": [
+    "Test: tích hợp API theo AC",
+    "Test: E2E demo AC1 (đổi expiry_warning_days 30 → 14)",
+    "Test: báo cáo kết quả"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-034 §10",
+    "BC-19"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-13",
+    "T-RULE-11"
+   ],
+   "special_constraint": "Quy tắc phiên bản",
+   "role": "QA",
+   "definition_of_done": "SCR-034 AC1–AC11 đạt; có bằng chứng demo đổi quy tắc không deploy.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-BDAY-01",
+   "epic": "E-BDAY",
+   "title": "Mở rộng `business_days` theo trạng thái và thêm `market_calendar`",
+   "description": "status open|closing|reopened|locked, partial unique một ngày open; opened_at, open_reason, lock_comment, lock_checklist_snapshot, exported; bảng market_calendar.",
+   "subtasks": [
+    "DB: migration cột + partial unique index",
+    "DB: map trạng thái cũ",
+    "DB: bảng market_calendar"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-07",
+    "ADR-009 §1-2",
+    "ADR-009 §7",
+    "BC-41",
+    "03 §2"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "BE",
+   "definition_of_done": "Insert ngày open thứ hai bị DB từ chối; dữ liệu cũ map đúng trạng thái.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-BDAY-02",
+   "epic": "E-BDAY",
+   "title": "Viết hàm ngày nghiệp vụ: `fn_current_business_date`, `fn_business_date`, `fn_assert_*`",
+   "description": "fn_current_business_date() = ngày open duy nhất hoặc NULL; fn_business_date(ts) theo Asia/Tokyo − business_day_start_time (chỉ cảnh báo/gợi ý); fn_assert_current_day / fn_assert_day_editable raise LOCKED_DAY / DAY_NOT_OPEN / NOT_CURRENT_DAY.",
+   "subtasks": [
+    "DB: 4 hàm",
+    "DB: thay fn_assert_day_open as-built",
+    "Test: biên 00:00–02:00 JST và lệch UTC"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-02",
+    "ADR-009 §1-4",
+    "BC-39",
+    "BC-40"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-BDAY-01",
+    "T-RULE-05"
+   ],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "BE",
+   "definition_of_done": "Lúc 07:30 JST (22:30 UTC hôm trước) ngày trả về là ngày open; khi không có ngày open trả NULL, không suy từ đồng hồ.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-BDAY-03",
+   "epic": "E-BDAY",
+   "title": "Dựng API `GET /api/business-days/current` và danh sách theo trạng thái",
+   "description": "Trả {day, status} hoặc {day:null, suggested_day}; GET /api/business-days?status= cho SCR-016/019/024.",
+   "subtasks": [
+    "API: 2 route",
+    "API: cache ngắn an toàn",
+    "Test: không có ngày open → day null + suggested_day"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "ADR-009 §1",
+    "06 Mục 1 §4.2",
+    "G-02"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [
+    "T-BDAY-02"
+   ],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "FE",
+   "definition_of_done": "Màn hình không tự tính 'hôm nay'; API trả đúng 2 dạng theo ADR-009 §1.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-BDAY-04",
+   "epic": "E-BDAY",
+   "title": "Viết `fn_open_day` và API `POST /api/business-days`",
+   "description": "Chặn ngày nghỉ, ngày đã có, ngày không lớn hơn ngày mới nhất; ngày trước chưa khóa: warn_with_reason (lý do bắt buộc) hoặc block; ngày open cũ → closing trong cùng giao dịch; audit open_day.",
+   "subtasks": [
+    "DB: fn_open_day(p_day, p_actor, p_reason)",
+    "API: route + quyền days.open",
+    "Test: SCR-024 AC1, AC2"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-07",
+    "ADR-009 §5",
+    "BC-41",
+    "SCR-024 §7",
+    "SCR-024 AC1",
+    "SCR-024 AC2"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-BDAY-02",
+    "T-RULE-03",
+    "T-AUD-03",
+    "T-FND-03"
+   ],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "BE",
+   "definition_of_done": "SCR-024 AC1 (ngày nghỉ → 400) và AC2 (thiếu lý do → 400; có lý do → 15 closing, 16 open, chỉ một ngày open) đạt.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-BDAY-05",
+   "epic": "E-BDAY",
+   "title": "Thay ngày UTC ở UI bằng 業務日 từ server",
+   "description": "Bỏ toISOString()/BusinessDayPicker; mọi form và dashboard lấy ngày từ /api/business-days/current; cờ hết hạn do server tính.",
+   "subtasks": [
+    "UI: hook useBusinessDay dùng chung",
+    "UI: bỏ bộ chọn ngày ở form nhập",
+    "Test: grep không còn toISOString().slice(0,10)"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-02",
+    "G-07",
+    "ADR-009",
+    "SCR-016 §11",
+    "SCR-019 §11"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-BDAY-03"
+   ],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "FE",
+   "definition_of_done": "Lúc 00:00–09:00 JST màn hình không còn hiện ngày hôm trước; không còn bộ chọn ngày ở màn hình nhập.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-BDAY-06",
+   "epic": "E-BDAY",
+   "title": "Nạp lịch chợ `market_calendar` và import CSV ngày nghỉ",
+   "description": "Seed lịch chợ 2026–2027 (6 ngày/tuần + ngày nghỉ, giả định S chờ khách cung cấp); API import CSV cho settlement.",
+   "subtasks": [
+    "DB: seed lịch",
+    "API: import CSV có kiểm trùng",
+    "Test: ngày nghỉ được fn_open_day chặn"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "BC-41",
+    "ADR-009 §7",
+    "G-07"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P1",
+   "depends_on": [
+    "T-BDAY-01"
+   ],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "FE",
+   "definition_of_done": "Lịch 2026–2027 có trong DB; import lại cùng file không tạo trùng.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-BDAY-07",
+   "epic": "E-BDAY",
+   "title": "Kiểm thử ngày nghiệp vụ JST và mở ngày",
+   "description": "Test biên JST/UTC, một ngày open, closing, không gán ngày theo đồng hồ khi chưa mở ngày.",
+   "subtasks": [
+    "Test: unit fn_business_date biên 01:59/02:00 JST",
+    "Test: SCR-010 AC1, SCR-029 AC10 phần ngày",
+    "Test: SCR-024 AC1–AC2"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "ADR-009",
+    "SCR-029 AC10",
+    "SCR-010 AC1",
+    "SCR-024 AC1",
+    "SCR-024 AC2"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-BDAY-04"
+   ],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "QA",
+   "definition_of_done": "Các AC liệt kê đạt; không có thao tác ghi nào dựa vào đồng hồ.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-BDAY-08",
+   "epic": "E-BDAY",
+   "title": "Chỉnh spec RJ-11: câu riêng khi chưa mở ngày",
+   "description": "RJ-11 dùng {day} nhưng khi không có ngày open thì null; thêm câu riêng 「業務日が開始されていません」.",
+   "subtasks": [
+    "Doc: sửa bảng RJ ở SCR-016/019",
+    "Doc: ghi nhật ký review"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "06 Mục 4 #2",
+    "SCR-016 §9"
+   ],
+   "story_points": 1,
+   "hours": 1,
+   "priority": "P1",
+   "depends_on": [],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "BrSE",
+   "definition_of_done": "Spec có câu RJ cho trường hợp chưa mở ngày, không dùng {day} null.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-QUAL-01",
+   "epic": "E-QUAL",
+   "title": "Tạo `party_kinds` và `party_kind_basis` (suspend_policy)",
+   "description": "4 nhóm 卸売業者/仲卸/売買参加者/買出人 và căn cứ hợp lệ market_registration/permit/approval/point_registration với suspend_policy approval|conditional|re_review|direct.",
+   "subtasks": [
+    "DB: 2 bảng + seed theo 03 §3",
+    "DB: FK participants.kind",
+    "Test: (middleman, approval) không tồn tại"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-01",
+    "ADR-007 §1-2",
+    "BC-01",
+    "BC-02",
+    "BC-03",
+    "BC-04",
+    "BC-05",
+    "03 §3"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "許可/承認",
+   "role": "BE",
+   "definition_of_done": "Bảng 03 §3 có trong DB; không thể gán căn cứ sai nhóm.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-QUAL-02",
+   "epic": "E-QUAL",
+   "title": "Tạo `participant_qualifications` và `qualification_events`",
+   "description": "Bản ghi tư cách theo căn cứ (số hiệu, cơ quan cấp, hiệu lực, status, conditions chỉ permit, updated_at làm version) + sự kiện vòng đời với payload jsonb.",
+   "subtasks": [
+    "DB: 2 bảng + FK (kind, basis_type)",
+    "DB: exclusion constraint khoảng hiệu lực cùng căn cứ (S)",
+    "DB: CHECK conditions chỉ permit; valid_to bắt buộc trừ market_registration (S)"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-01",
+    "ADR-007 §1",
+    "SCR-010 §5",
+    "06 Mục 1 §4.4"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-01"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "BE",
+   "definition_of_done": "SCR-010 AC6 ở tầng DB: (仲卸, approval) bị FK từ chối; khoảng trùng → E-08.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-QUAL-03",
+   "epic": "E-QUAL",
+   "title": "Migrate tư cách từ `participants` sang bảng mới rồi bỏ cột cũ",
+   "description": "Ánh xạ buyer→participant_buyer, retail_buyer→point_buyer, license→permit, registration theo nhóm; sinh sự kiện apply/approve lịch sử; script rollback.",
+   "subtasks": [
+    "DB: migration dữ liệu theo 03 §3",
+    "DB: bỏ participants.basis/status/valid_* sau đối chiếu",
+    "Test: đếm khớp trước/sau, không mất bản ghi"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-01",
+    "G-24",
+    "03 §3",
+    "ADR-007 Hệ quả"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-02"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "BE",
+   "definition_of_done": "100% người tham gia có bản ghi tư cách đúng căn cứ; registration của 卸売業者 và 買出人 tách đúng.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-QUAL-04",
+   "epic": "E-QUAL",
+   "title": "Viết `fn_qualification_state(qid, business_date)`",
+   "description": "Trả valid | not_started | suspended | re_review | expired theo ngày nghiệp vụ; mốc hạn theo khóa qualification_valid_to_inclusive.",
+   "subtasks": [
+    "DB: hàm + test bảng giá trị",
+    "DB: dùng ngày tham chiếu khi không có ngày open (ADR-009 §3)",
+    "Test: SCR-010 AC1 lệch UTC"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-01",
+    "G-02",
+    "ADR-007 §3",
+    "SCR-010 AC1"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-03",
+    "T-RULE-03"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "BE",
+   "definition_of_done": "SCR-010 AC1: lúc 08:30 JST ngày 2026-10-16, 許可 hết 2026-10-15 trả expired (không phải theo ngày UTC).",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-QUAL-05",
+   "epic": "E-QUAL",
+   "title": "Viết `fn_qualification_block_reason(party, day, purpose)` theo căn cứ",
+   "description": "sell/buy trả NULL hoặc RJ-01…RJ-08a riêng theo căn cứ (許可/承認/取引地点登録/市場登録, seller_registration_check); deliver trả {block|allow_with_flag|allow, code} theo delivery_expired_policy.",
+   "subtasks": [
+    "DB: hàm + bảng mã RJ",
+    "DB: thay fn_participant_block_reason ở mọi chỗ gọi",
+    "Test: mỗi căn cứ × mỗi trạng thái ra đúng mã"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-01",
+    "G-24",
+    "ADR-007 §3",
+    "ADR-007 §6",
+    "BC-06",
+    "BC-62",
+    "Q33",
+    "SCR-016 §9"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-04",
+    "T-FND-11"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "BE",
+   "definition_of_done": "SCR-016 AC2/AC3/AC4/AC14 ở tầng hàm: 許可 hết hạn → RJ-01, 承認 再審査 → RJ-05, 買出人 hết hạn → RJ-06, chưa hiệu lực → RJ-01a.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-QUAL-06",
+   "epic": "E-QUAL",
+   "title": "Viết `fn_qualification_event` rẽ nhánh theo suspend_policy",
+   "description": "apply/approve/suspend/lift/re_review/expire: 承認 không gỡ trực tiếp (E-13); 市場登録 gỡ cần qualifications.approve và ≠ người tạm dừng (E-14/E-15); 許可 gỡ cần xác nhận điều kiện (E-10); ghi event + audit cùng giao dịch.",
+   "subtasks": [
+    "DB: hàm + máy trạng thái",
+    "DB: payload conditions_met_note/new_valid_to",
+    "Test: từng luồng gỡ theo căn cứ"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-01",
+    "ADR-007 §3-4",
+    "SCR-010 §7",
+    "SCR-010 §9"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-02",
+    "T-AUD-03",
+    "T-BDAY-02"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "BE",
+   "definition_of_done": "SCR-010 AC2–AC5 đạt ở tầng hàm; lift trên 承認 trả E-13 và không có qualification_events mới.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-QUAL-07",
+   "epic": "E-QUAL",
+   "title": "Dựng API tư cách cho SCR-010",
+   "description": "GET /api/participants/{id} (kèm state), POST …/qualifications, POST /api/qualifications/{qid}/events, PATCH /api/participants/{id} (lý do bắt buộc); version → 409 E-17.",
+   "subtasks": [
+    "API: 4 route + quyền participants.write / qualifications.approve",
+    "API: khóa lạc quan theo updated_at",
+    "Test: 403 khi thiếu quyền"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-01",
+    "SCR-010 §7",
+    "06 Mục 1 §4.2"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-06",
+    "T-QUAL-04"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "BE",
+   "definition_of_done": "Mọi nút SCR-010 §7 có API; hai người sửa cùng lúc → người sau 409 E-17.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-QUAL-08",
+   "epic": "E-QUAL",
+   "title": "Dựng API `GET /api/participants?purpose=sell|buy&day=` có cờ trạng thái",
+   "description": "Server lọc nhóm theo purpose và gắn cờ bằng fn_qualification_state; dùng cho SCR-012/016/019.",
+   "subtasks": [
+    "API: lọc + cờ",
+    "API: phân trang/tìm theo mã",
+    "Test: 卸売業者 không có trong purpose=buy"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-01",
+    "G-02",
+    "C-08",
+    "SCR-012 F-02",
+    "SCR-016 §11"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-04"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "FE",
+   "definition_of_done": "Danh sách chọn người có cờ do server tính theo 業務日 JST; đúng nhóm theo purpose.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-QUAL-09",
+   "epic": "E-QUAL",
+   "title": "Dựng màn hình SCR-010: thông tin, danh sách tư cách, cảnh báo hạn",
+   "description": "Huy hiệu trạng thái với nhãn JP đúng căn cứ, dải đỏ/vàng theo expiry_warning_days, lịch sử sự kiện; intake chỉ xem trạng thái.",
+   "subtasks": [
+    "UI: header + bảng tư cách",
+    "UI: lịch sử qualification_events",
+    "UI: phân quyền intake"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-01",
+    "G-24",
+    "SCR-010 §5",
+    "SCR-010 AC1",
+    "SCR-010 AC9"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-07"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "FE",
+   "definition_of_done": "SCR-010 AC1 (dải đỏ 「許可は2026/10/15に失効しています」) và AC9 (intake không thấy lịch sử/nút ghi) đạt.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-QUAL-10",
+   "epic": "E-QUAL",
+   "title": "Dựng form A/B/C/D của SCR-010 theo căn cứ",
+   "description": "Form đăng ký/gia hạn, tạm dừng, gỡ/再審査, liên hệ; nút hiện theo suspend_policy — không có 解除 cho 承認; C-02 hiện nguyên văn điều kiện.",
+   "subtasks": [
+    "UI: 4 hộp thoại + validation",
+    "UI: đính kèm bằng chứng",
+    "UI: xử lý E-01…E-17"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-01",
+    "SCR-010 §5",
+    "SCR-010 §7",
+    "SCR-010 AC2-AC5"
+   ],
+   "story_points": 8,
+   "hours": 14,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-09",
+    "T-FND-07"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "FE",
+   "definition_of_done": "SCR-010 AC2–AC5 đạt trên UI; 承認 bị tạm dừng chỉ có nút 再審査を開始.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-QUAL-11",
+   "epic": "E-QUAL",
+   "title": "Kiểm thử SCR-010 AC1–AC9",
+   "description": "Tập trung các điểm có thể bị loại hồ sơ: phân biệt 許可/承認, luồng 再審査, maker ≠ checker khi gỡ 市場登録.",
+   "subtasks": [
+    "Test: tích hợp API theo AC",
+    "Test: E2E AC1, AC2, AC4",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-010 §10",
+    "RFP 12-06"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-10"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "QA",
+   "definition_of_done": "SCR-010 AC1–AC9 đạt (AC10 offline kiểm ở T-OFF-08).",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-SEC-01",
+   "epic": "E-SEC",
+   "title": "Làm lại API đăng nhập với thông báo M-01…M-04 và audit",
+   "description": "Chuẩn hóa email, M-02 chung cho email không tồn tại/sai mật khẩu, M-04 tài khoản vô hiệu, chặn open redirect ?next, ghi login/login_failed/logout.",
+   "subtasks": [
+    "API: POST /api/auth/login, /api/auth/logout",
+    "API: kiểm next chỉ đường dẫn nội bộ",
+    "Test: AC5, AC6, AC9"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "SCR-001 §7",
+    "BC-86",
+    "G-06",
+    "SCR-001 AC5",
+    "SCR-001 AC6",
+    "SCR-001 AC9"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-AUD-01",
+    "T-FND-11"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "BE",
+   "definition_of_done": "SCR-001 AC1, AC5, AC6, AC9 đạt; login_failed lưu email đã chuẩn hóa, không lưu mật khẩu.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-SEC-02",
+   "epic": "E-SEC",
+   "title": "Khóa tạm tài khoản khi đăng nhập sai nhiều lần",
+   "description": "Đếm login_failed theo email trong login_failure_window_min; đạt login_max_failures thì khóa login_lock_min, trả 423 M-03 với giờ mở khóa JST, ghi account_locked.",
+   "subtasks": [
+    "API: bộ đếm từ audit_logs",
+    "API: 423 + giờ JST",
+    "Test: SCR-001 AC4"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-23",
+    "BC-86",
+    "SCR-001 AC4"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-SEC-01",
+    "T-RULE-05"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "BE",
+   "definition_of_done": "SCR-001 AC4: sai 5 lần trong 15 phút rồi đúng ở lần 6 vẫn 423 M-03; có account_locked.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-SEC-03",
+   "epic": "E-SEC",
+   "title": "Timeout phiên nhàn rỗi và tuyệt đối trong `proxy.ts`",
+   "description": "Cookie last_seen; hết session_idle_timeout_min hoặc session_absolute_hours thì hủy phiên, về /login?reason=timeout (M-07), ghi session_timeout.",
+   "subtasks": [
+    "API: proxy.ts kiểm last_seen (Next.js 16 proxy)",
+    "API: đọc fn_setting mỗi request",
+    "Test: SCR-001 AC7"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-23",
+    "BC-86",
+    "SCR-001 AC7",
+    "SCR-001 AC8"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-RULE-05",
+    "T-SEC-01"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "FE",
+   "definition_of_done": "SCR-001 AC7 đạt; đổi timeout 30 → 20 áp dụng từ request kế tiếp (AC8).",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-SEC-04",
+   "epic": "E-SEC",
+   "title": "Dựng API MFA TOTP: đăng ký và xác minh",
+   "description": "POST /api/auth/mfa/enroll và /verify qua Supabase MFA; sai mã M-05 tính vào bộ đếm; ghi mfa_enrolled/mfa_failed.",
+   "subtasks": [
+    "API: enroll (QR) + verify (challengeAndVerify)",
+    "API: nâng phiên AAL2",
+    "Test: AC3"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-19",
+    "BC-85",
+    "NFR-SEC-01",
+    "SCR-001 §7",
+    "SCR-001 AC3"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-SEC-01"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "BE",
+   "definition_of_done": "SCR-001 AC3: sys_admin chưa có factor phải đăng ký QR, chỉ vào được sau khi đạt AAL2.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-SEC-05",
+   "epic": "E-SEC",
+   "title": "Bắt buộc AAL2 trong `guard()` và `proxy.ts` cho vai trò cần MFA",
+   "description": "Vai trò trong system_settings.mfa_required_roles chưa đạt AAL2 → mọi /api/* có guard trả 401 M-06; không hỏi MFA lại theo thao tác.",
+   "subtasks": [
+    "API: guard đọc mfa_required_roles",
+    "API: proxy chuyển /login/mfa",
+    "Test: SCR-001 AC2"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-19",
+    "BC-85",
+    "SCR-001 AC2",
+    "SCR-022 §11",
+    "SCR-024 §11",
+    "SCR-034 §11"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-SEC-04",
+    "T-RULE-05"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "BE",
+   "definition_of_done": "SCR-001 AC2: approver chưa nhập mã gọi API có guard → 401 M-06.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-SEC-06",
+   "epic": "E-SEC",
+   "title": "Dựng màn hình đăng nhập và bước MFA (SCR-001)",
+   "description": "Bước 1 email/mật khẩu; bước 2 nhập mã hoặc đăng ký QR; quay lại hủy phiên AAL1; M-07 khi timeout, M-08 khi mất mạng, không gửi lặp.",
+   "subtasks": [
+    "UI: /login, /login/mfa",
+    "UI: thông báo M-01…M-08 JP + VI",
+    "UI: không có ô ghi nhớ thiết bị"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-19",
+    "SCR-001 §5",
+    "SCR-001 §7",
+    "SCR-001 AC10"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-SEC-04",
+    "T-SEC-09"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "FE",
+   "definition_of_done": "SCR-001 AC2, AC3, AC10 đạt trên UI.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-SEC-07",
+   "epic": "E-SEC",
+   "title": "Dựng API sửa `system_settings` (sys_admin, lý do bắt buộc)",
+   "description": "PUT /api/system-settings/{key} quyền settings.manage; kiểm giá trị theo key; audit before/after cùng giao dịch; hiệu lực ngay. Màn hình chưa có spec (S).",
+   "subtasks": [
+    "API: GET list + PUT",
+    "API: lý do bắt buộc",
+    "Test: AC8 audit before 30 / after 20"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "ADR-008 §9",
+    "SCR-001 AC8",
+    "G-23"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P1",
+   "depends_on": [
+    "T-RULE-05",
+    "T-SEC-05"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "BE",
+   "definition_of_done": "SCR-001 AC8: đổi timeout không tạo rule_sets mới, audit có before/after.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-SEC-08",
+   "epic": "E-SEC",
+   "title": "Dựng màn hình cài đặt hệ thống cho sys_admin",
+   "description": "Bảng khóa system_settings với giá trị, người/lúc sửa, form sửa có lý do; không có spec riêng — giả định (S) theo ADR-008 Hệ quả.",
+   "subtasks": [
+    "UI: bảng + form sửa",
+    "UI: cảnh báo khi gỡ settlement khỏi MFA",
+    "UI: phân quyền sys_admin"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "ADR-008 §9",
+    "ADR-008 Hệ quả"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-SEC-07"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "FE",
+   "definition_of_done": "sys_admin sửa được 8 khóa; vai trò khác không thấy menu.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-SEC-09",
+   "epic": "E-SEC",
+   "title": "Chỉnh spec M-06: tách câu chưa đăng ký / chưa xác minh",
+   "description": "M-06 hiện nói 'đăng ký app xác thực' cho cả người đã đăng ký nhưng chưa xác minh phiên; tách thành hai câu.",
+   "subtasks": [
+    "Doc: sửa bảng thông báo SCR-001",
+    "Doc: cập nhật README dùng chung"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "06 Mục 4 #4",
+    "SCR-001 §5"
+   ],
+   "story_points": 1,
+   "hours": 1,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "BrSE",
+   "definition_of_done": "Spec có M-06a (chưa đăng ký) và M-06b (chưa xác minh phiên này).",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-SEC-10",
+   "epic": "E-SEC",
+   "title": "Kiểm thử đăng nhập và MFA (SCR-001 AC1–AC3, AC5, AC6, AC9, AC10)",
+   "description": "Các tiêu chí đăng nhập/MFA/redirect/mất mạng.",
+   "subtasks": [
+    "Test: tích hợp API",
+    "Test: E2E luồng MFA với TOTP test",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-001 §10",
+    "G-19"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-SEC-06",
+    "T-SEC-05"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "QA",
+   "definition_of_done": "Các AC liệt kê của SCR-001 đạt.",
+   "sprint": "Sprint 6"
+  },
+  {
+   "id": "T-SEC-11",
+   "epic": "E-SEC",
+   "title": "Kiểm thử khóa tạm, timeout và cài đặt (SCR-001 AC4, AC7, AC8)",
+   "description": "Các tiêu chí phụ thuộc system_settings.",
+   "subtasks": [
+    "Test: AC4 khóa tạm",
+    "Test: AC7 timeout (giả lập thời gian)",
+    "Test: AC8 đổi tham số không deploy"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-001 §10",
+    "G-23"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P1",
+   "depends_on": [
+    "T-SEC-02",
+    "T-SEC-03",
+    "T-SEC-08"
+   ],
+   "special_constraint": "MFA/Bảo mật",
+   "role": "QA",
+   "definition_of_done": "SCR-001 AC4, AC7, AC8 đạt.",
+   "sprint": "Sprint 6"
+  },
+  {
+   "id": "T-LOT-01",
+   "epic": "E-LOT",
+   "title": "Sửa `fn_create_lot`: item_code, client_ref, ngày hiện tại, kiểm bên bán",
+   "description": "Lô chỉ vào ngày hiện tại (fn_assert_current_day), bên bán phải 卸売業者 không bị tạm dừng (purpose=sell), client_ref trùng trả bản ghi cũ, audit trong hàm.",
+   "subtasks": [
+    "DB: đổi chữ ký hàm + lots.client_ref UNIQUE",
+    "DB: thông báo JP + VI theo §5.1",
+    "Test: SCR-012 AC2–AC4"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "SCR-012 §5.1",
+    "G-02",
+    "G-15",
+    "G-20",
+    "BC-10",
+    "BC-31"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-FND-01",
+    "T-BDAY-02",
+    "T-QUAL-05",
+    "T-AUD-03"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "SCR-012 AC2 (W-002 tạm dừng → 400), AC3 (M-001 làm bên bán → 400), AC4 (ngày khóa → 400 + blocked_edit) đạt ở tầng hàm.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-LOT-02",
+   "epic": "E-LOT",
+   "title": "Viết `fn_inspect_lot` và API `POST /api/lots/{id}/inspection`",
+   "description": "Hạng thuộc fn_rule('grades'); chặn ngày locked (fn_assert_day_editable + blocked_edit); lý do bắt buộc khi lô đã có giao dịch (kể cả đã hủy); inspected_by = người bấm.",
+   "subtasks": [
+    "DB: fn_inspect_lot(p_lot, p_grade, p_note, p_reason, p_actor)",
+    "API: route + quyền lots.inspect",
+    "Test: SCR-012 AC7"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-04",
+    "BC-43",
+    "BC-47",
+    "BC-29",
+    "SCR-012 §5.2",
+    "SCR-012 AC7"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-BDAY-02",
+    "T-RULE-03",
+    "T-AUD-02"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "SCR-012 AC7: đổi A → B không lý do → 400; có lý do → 200 và audit before/after/reason.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-LOT-03",
+   "epic": "E-LOT",
+   "title": "Cập nhật API `POST /api/lots` (item_code, client_ref, mã lỗi)",
+   "description": "Nhận item_code, client_ref; trùng client_ref trả 200 cùng lots.id; map lỗi hàm sang JP + VI; giữ dữ liệu người dùng khi lỗi.",
+   "subtasks": [
+    "API: route + schema",
+    "API: idempotent 200/201",
+    "Test: AC5 tầng API"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "SCR-012 §7",
+    "G-20",
+    "ADR-010 §1",
+    "SCR-012 AC5"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOT-01"
+   ],
+   "special_constraint": "—",
+   "role": "FE",
+   "definition_of_done": "Gửi lại cùng client_ref trả 200 cùng id, không tạo lô thứ hai.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-LOT-04",
+   "epic": "E-LOT",
+   "title": "Dựng form tiếp nhận lô SCR-012",
+   "description": "業務日 chỉ đọc từ server, bên bán purpose=sell, mặt hàng có tìm kiếm, đơn vị chỉ đọc từ items, client_ref sinh khi mở form, nhập bằng bàn phím.",
+   "subtasks": [
+    "UI: form + validation C",
+    "UI: bảng lô trong ngày",
+    "UI: thông báo lỗi giữ dữ liệu"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-012 §5.1",
+    "SCR-012 §7",
+    "SCR-012 AC1",
+    "G-15"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOT-03",
+    "T-QUAL-08",
+    "T-BDAY-05"
+   ],
+   "special_constraint": "—",
+   "role": "FE",
+   "definition_of_done": "SCR-012 AC1: nhập 120 → lô L261016-NNN, đơn vị kg lấy từ items.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-LOT-05",
+   "epic": "E-LOT",
+   "title": "Dựng màn hình đánh giá lô SCR-013 và in nhãn",
+   "description": "Hạng từ fn_rule, ô lý do hiện khi lô đã có giao dịch, không gợi ý hạng tự động; in nhãn lô có mã chính thức.",
+   "subtasks": [
+    "UI: form đánh giá",
+    "UI: in nhãn",
+    "UI: chặn khi ngày locked"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-012 §5.2",
+    "SCR-012 AC8",
+    "BC-29",
+    "G-04"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOT-02"
+   ],
+   "special_constraint": "—",
+   "role": "FE",
+   "definition_of_done": "SCR-012 AC8: không có nút/ô đề xuất hạng; inspected_by = người bấm Lưu.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-LOT-06",
+   "epic": "E-LOT",
+   "title": "Kiểm thử SCR-012 AC1–AC4, AC7–AC9",
+   "description": "Các tiêu chí tiếp nhận/đánh giá online (AC5–AC6 offline kiểm ở T-OFF-08).",
+   "subtasks": [
+    "Test: tích hợp",
+    "Test: E2E AC1, AC7",
+    "Test: AC9 chưa đánh giá vẫn bán được"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-012 §10"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOT-04",
+    "T-LOT-05"
+   ],
+   "special_constraint": "—",
+   "role": "QA",
+   "definition_of_done": "SCR-012 AC1–AC4, AC7–AC9 đạt.",
+   "sprint": "Sprint 6"
+  },
+  {
+   "id": "T-TRADE-01",
+   "epic": "E-TRADE",
+   "title": "Viết lại `fn_confirm_trade` theo thứ tự kiểm 01 §9.1",
+   "description": "trade_kind_matrix → tư cách bên mua theo căn cứ → bên bán → tồn (khóa dòng lô) → ngày; lô phải thuộc ngày hiện tại (allow_trade_on_previous_day_lots); lưu rule_set_id, recorded_by; client_ref idempotent; audit trong hàm.",
+   "subtasks": [
+    "DB: hàm mới + mã RJ-xx",
+    "DB: trades.rule_set_id, recorded_by, client_ref UNIQUE",
+    "Test: AC2–AC9, AC13, AC14 tầng hàm"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-24",
+    "G-01",
+    "BC-06",
+    "BC-33",
+    "01 §9.1",
+    "ADR-009 §3",
+    "SCR-016 §9"
+   ],
+   "story_points": 8,
+   "hours": 14,
+   "priority": "P0",
+   "depends_on": [
+    "T-QUAL-05",
+    "T-RULE-03",
+    "T-BDAY-02",
+    "T-AUD-03"
+   ],
+   "special_constraint": "許可/承認",
+   "role": "BE",
+   "definition_of_done": "SCR-016 AC8: M-004 tạm dừng + thiếu tồn → báo RJ-02 (đúng thứ tự); AC6 hai máy cùng chốt chỉ một thành công, tồn không âm.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-TRADE-02",
+   "epic": "E-TRADE",
+   "title": "Cập nhật API `POST /api/trades`: đọc body một lần, quyền theo kind, mã RJ",
+   "description": "Kiểm kind trước rồi guard (auction.record / trades.create), bỏ request.clone(); map RJ-xx JP + VI; LOCKED_DAY → blocked_edit.",
+   "subtasks": [
+    "API: route + schema",
+    "API: wrapper blocked_edit",
+    "Test: AC7, AC11"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "SCR-016 §7",
+    "SCR-019 §7",
+    "ADR-006",
+    "SCR-016 AC7",
+    "SCR-016 AC11"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-TRADE-01",
+    "T-AUD-02"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "SCR-016 AC7 (ngày khóa giữa chừng → RJ-10 + đúng 1 blocked_edit) và AC11 (gửi lại client_ref → cùng giao dịch, trừ tồn một lần) đạt.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-TRADE-03",
+   "epic": "E-TRADE",
+   "title": "Dựng màn hình nhập 相対 SCR-016 thao tác bằng bàn phím",
+   "description": "Tab/Enter, phím tắt Alt+L/B/Q, cờ tư cách do server tính, thông báo RJ, focus về 数量 sau khi chốt, bảng gần đây lọc 業務日 hiện tại limit 15.",
+   "subtasks": [
+    "UI: form + phím tắt",
+    "UI: hiển thị RJ và focus ô lỗi",
+    "UI: bảng gần đây"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-016 §5",
+    "SCR-016 §7",
+    "SCR-016 AC1",
+    "SCR-016 AC5",
+    "G-02",
+    "G-07"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-TRADE-02",
+    "T-QUAL-08",
+    "T-BDAY-05"
+   ],
+   "special_constraint": "—",
+   "role": "FE",
+   "definition_of_done": "SCR-016 AC1 (chốt bằng bàn phím, focus về 数量) và AC5 (RJ-09 nêu 残数量, giữ field) đạt.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-TRADE-04",
+   "epic": "E-TRADE",
+   "title": "Thêm thông tin hủy và viết `fn_cancel_trade` + API",
+   "description": "cancelled_by/at/cancel_reason; chỉ khi ngày editable (open/closing/reopened, kèm reopen_request_id), trả tồn, audit; ngày locked → blocked_edit.",
+   "subtasks": [
+    "DB: cột + hàm",
+    "API: POST /api/trades/{id}/cancel quyền trades.cancel",
+    "Test: SCR-024 AC5, AC11 phần hủy"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-11",
+    "BC-47",
+    "BC-81",
+    "01 §9.3",
+    "SCR-024 AC5"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-BDAY-02",
+    "T-AUD-02"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "Hủy lưu người/lúc/lý do riêng (không nối note); hủy trên ngày locked → 400 + blocked_edit.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-TRADE-05",
+   "epic": "E-TRADE",
+   "title": "Viết spec SCR-018 chi tiết giao dịch và hủy",
+   "description": "Spec còn thiếu (README): xem giao dịch, lịch sử -R/-A, nút 取消 trước khóa sổ có lý do, liên kết SCR-022 sau khóa.",
+   "subtasks": [
+    "Doc: spec theo mẫu",
+    "Doc: wireframe",
+    "Doc: review lead"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "04 README SCR-018",
+    "01 §9.3"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P1",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BrSE",
+   "definition_of_done": "Spec SCR-018 được lead NHẬN.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-TRADE-06",
+   "epic": "E-TRADE",
+   "title": "Dựng màn hình chi tiết giao dịch SCR-018",
+   "description": "Hiển thị giao dịch + chuỗi -R/-A + giao hàng; nút 取消 có lý do khi ngày còn sửa được; nút sang SCR-022 khi đã khóa.",
+   "subtasks": [
+    "UI: trang /trades/{id}",
+    "UI: hộp hủy có lý do",
+    "Test: hủy rồi tồn được trả"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-11",
+    "04 README SCR-018"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P1",
+   "depends_on": [
+    "T-TRADE-04",
+    "T-TRADE-05"
+   ],
+   "special_constraint": "—",
+   "role": "FE",
+   "definition_of_done": "Hủy thành công trả tồn, hiển thị người/lúc/lý do hủy.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-TRADE-07",
+   "epic": "E-TRADE",
+   "title": "Kiểm thử SCR-016 AC1–AC9, AC11, AC13, AC14",
+   "description": "Gồm kiểm đồng thời 2 máy (AC6) và thứ tự kiểm (AC8); AC10 offline ở T-OFF-08, AC12 tải ở T-TRADE-08.",
+   "subtasks": [
+    "Test: tích hợp theo AC",
+    "Test: đồng thời bằng 2 kết nối",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-016 §10"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-TRADE-03"
+   ],
+   "special_constraint": "—",
+   "role": "QA",
+   "definition_of_done": "Các AC liệt kê của SCR-016 đạt.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-TRADE-08",
+   "epic": "E-TRADE",
+   "title": "Kiểm thử tải chốt giao dịch: p95 ≤ 2 giây",
+   "description": "Mô phỏng 1.200 lần chốt trong 2,5 giờ từ 10 máy trên dữ liệu ≥ mức BC-80 (600 lô cao điểm).",
+   "subtasks": [
+    "Test: kịch bản k6/Artillery",
+    "Test: dữ liệu tải",
+    "Test: báo cáo p95 + điểm nghẽn"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-016 AC12",
+    "BC-80",
+    "NFR-PERF-01"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P1",
+   "depends_on": [
+    "T-TRADE-02"
+   ],
+   "special_constraint": "—",
+   "role": "QA",
+   "definition_of_done": "SCR-016 AC12: p95 POST /api/trades ≤ 2 giây.",
+   "sprint": "Sprint 6"
+  },
+  {
+   "id": "T-AUC-01",
+   "epic": "E-AUC",
+   "title": "Thêm `trades.result_at`, `recorded_by` và bắt buộc 確認者 cho せり",
+   "description": "confirmed_by chọn tường minh, không mặc định người gọi API; kiểm 確認者 active và có auction.record (V019-08), result_at không ở tương lai (V019-06), auction_confirmer_must_differ.",
+   "subtasks": [
+    "DB: cột + CHECK kind=auction ⇒ confirmed_by, result_at",
+    "DB: kiểm trong fn_confirm_trade",
+    "Test: AC2–AC4, AC8"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-22",
+    "BC-28",
+    "BC-29",
+    "SCR-019 §5",
+    "SCR-019 AC2",
+    "SCR-019 AC3"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-TRADE-01"
+   ],
+   "special_constraint": "せり xác nhận",
+   "role": "BE",
+   "definition_of_done": "SCR-019 AC2: confirmed_by=Y, recorded_by=X, result_at 03:12 JST; AC3 thiếu confirmed_by → 400 V019-07.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-AUC-02",
+   "epic": "E-AUC",
+   "title": "Dựng API `GET /api/users?permission=&active=`",
+   "description": "Danh sách người dùng có quyền cho ô 確認者; chỉ người có auction.record gọi được.",
+   "subtasks": [
+    "API: route + lọc active",
+    "API: quyền",
+    "Test: vai trò delivery không có trong danh sách"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-22",
+    "SCR-019 §11",
+    "06 Mục 1 §4.2"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [
+    "T-FND-03"
+   ],
+   "special_constraint": "せり xác nhận",
+   "role": "FE",
+   "definition_of_done": "Chỉ trả user active có quyền yêu cầu; thiếu quyền → 403.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-AUC-03",
+   "epic": "E-AUC",
+   "title": "Dựng màn hình ghi kết quả せり SCR-019",
+   "description": "F-06 落札時刻, F-07 確認者 không mặc định và giữ sau mỗi dòng, không giữ lô; không có ảnh, giá hiện tại, bid hay WebSocket.",
+   "subtasks": [
+    "UI: tách component khỏi TradeEntryForm",
+    "UI: nút 記録 tắt khi F-07 trống",
+    "UI: thông báo V019/RJ"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-22",
+    "SCR-019 §5",
+    "SCR-019 §7",
+    "SCR-019 AC1",
+    "SCR-019 AC11",
+    "SCR-019 AC12"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-AUC-01",
+    "T-AUC-02",
+    "T-TRADE-03",
+    "T-AUC-04"
+   ],
+   "special_constraint": "せり xác nhận",
+   "role": "FE",
+   "definition_of_done": "SCR-019 AC1 (không có yếu tố đấu giá), AC11 (giữ F-07), AC12 (F-07 trống → không gửi) đạt.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-AUC-04",
+   "epic": "E-AUC",
+   "title": "Chỉnh spec SCR-019: nút 記録 tắt khi 確認者 trống",
+   "description": "§7 và AC12 mâu thuẫn; giữ nút tắt, V019-07 chỉ khi gửi bằng Enter/API.",
+   "subtasks": [
+    "Doc: sửa §7 và AC12",
+    "Doc: ghi nhật ký review"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "06 Mục 4 #3",
+    "SCR-019"
+   ],
+   "story_points": 1,
+   "hours": 1,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "せり xác nhận",
+   "role": "BrSE",
+   "definition_of_done": "SCR-019 §7 và §10 thống nhất.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-AUC-05",
+   "epic": "E-AUC",
+   "title": "Kiểm thử SCR-019 AC1–AC8, AC10–AC12",
+   "description": "Gồm chứng minh không phải hệ thống đấu giá (AC1) và 確認者 bắt buộc (AC3, AC12); AC9 offline ở T-OFF-08.",
+   "subtasks": [
+    "Test: tích hợp API",
+    "Test: E2E",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-019 §10",
+    "BC-29"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-AUC-03"
+   ],
+   "special_constraint": "せり xác nhận",
+   "role": "QA",
+   "definition_of_done": "Các AC liệt kê của SCR-019 đạt.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-DEL-01",
+   "epic": "E-DEL",
+   "title": "Mở rộng `deliveries`: ngày giao, client_ref, xác nhận, cờ tư cách, tranh chấp",
+   "description": "business_date FK, client_ref UK, recorded_by, confirmed_by/at/comment, qualification_flag, disputed (chỉ exception), dispute_note, dispute_resolved_by ≠ recorded_by, dispute_resolved_at/note.",
+   "subtasks": [
+    "DB: migration + CHECK",
+    "DB: map dữ liệu cũ business_date",
+    "Test: CHECK disputed chỉ với exception"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-12",
+    "BC-50",
+    "BC-56",
+    "BC-57",
+    "03 §2"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "Cột theo 03 §2 có trong DB; dữ liệu cũ có business_date.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-DEL-02",
+   "epic": "E-DEL",
+   "title": "Sửa `fn_record_delivery`: ngày hiện tại JST, chặn ngày khóa, kiểm tư cách lúc giao",
+   "description": "business_date = ngày hiện tại (không current_date UTC); ngày locked → LOCKED_DAY + blocked_edit; tư cách purpose=deliver (allow_with_flag thông báo settlement); max_deliveries_per_trade; lũy kế theo chuỗi reverses_id; client_ref.",
+   "subtasks": [
+    "DB: hàm mới + audit",
+    "DB: thông báo cho settlement khi gắn cờ",
+    "Test: SCR-029 AC5–AC10, AC13 tầng hàm"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-02",
+    "G-03",
+    "BC-50",
+    "BC-62",
+    "ADR-007 §6",
+    "SCR-029 AC5",
+    "SCR-029 AC7",
+    "SCR-029 AC10"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-DEL-01",
+    "T-QUAL-05",
+    "T-BDAY-02",
+    "T-AUD-02"
+   ],
+   "special_constraint": "Ngày nghiệp vụ JST",
+   "role": "BE",
+   "definition_of_done": "SCR-029 AC5 (hết hạn sau chốt → ghi + qualification_flag), AC7 (ngày khóa → 400 + blocked_edit), AC10 (07:30 JST → business_date ngày open) đạt.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-DEL-03",
+   "epic": "E-DEL",
+   "title": "Áp quy tắc tồn theo loại ngoại lệ và viết `fn_confirm_delivery_exception`",
+   "description": "delivery_exception_effects (over/short/return/partial_cancel) quyết định đổi SL giao dịch/tồn; ngoại lệ mở đến khi có người xác nhận (exception_confirm_by_other).",
+   "subtasks": [
+    "DB: hàm áp hiệu ứng theo rule",
+    "DB: fn_confirm_delivery_exception",
+    "Test: SCR-029 AC2, AC4"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-12",
+    "BC-56",
+    "BC-57",
+    "SCR-029 §9.2",
+    "SCR-029 AC4"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-DEL-01",
+    "T-RULE-03",
+    "T-AUD-03"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "SCR-029 AC4: xác nhận short 5 → còn lại 45, trades.qty và lots.available_qty không đổi.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-DEL-04",
+   "epic": "E-DEL",
+   "title": "Viết hàm tranh chấp và 3 API xác nhận / đánh dấu / giải quyết",
+   "description": "fn_flag_delivery_dispute, fn_resolve_delivery_dispute (người giải quyết ≠ recorded_by, ghi chú bắt buộc); POST /api/deliveries/{id}/confirm|dispute|resolve-dispute.",
+   "subtasks": [
+    "DB: 2 hàm + audit",
+    "API: 3 route quyền deliveries.record",
+    "Test: SCR-029 AC11, AC12"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-12",
+    "BC-57",
+    "SCR-029 §7",
+    "SCR-029 AC11",
+    "SCR-029 AC12"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-DEL-03"
+   ],
+   "special_constraint": "—",
+   "role": "BE",
+   "definition_of_done": "SCR-029 AC11: D1 tự giải quyết → 400; D2 có ghi chú → resolved; AC12: tranh chấp mở chặn 引渡し完了.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-DEL-05",
+   "epic": "E-DEL",
+   "title": "Dựng màn hình ghi giao hàng SCR-029",
+   "description": "Đã bán / Đã giao / Còn lại theo chuỗi, ghi giao và ngoại lệ (lý do bắt buộc), banner vàng nêu đúng căn cứ khi tư cách hết hạn sau chốt; trạng thái 引渡し中/引渡し完了/例外, không dùng chữ 完納.",
+   "subtasks": [
+    "UI: form + lũy kế",
+    "UI: banner cờ tư cách",
+    "UI: thông báo lỗi JP + VI"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-029 §5",
+    "SCR-029 AC1",
+    "SCR-029 AC2",
+    "SCR-029 AC3",
+    "BC-65"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-DEL-02",
+    "T-DEL-03",
+    "T-INC-02"
+   ],
+   "special_constraint": "—",
+   "role": "FE",
+   "definition_of_done": "SCR-029 AC1 (40 rồi 60 → 引渡し完了, không chỗ nào hiện 完納), AC2, AC3 đạt.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-DEL-06",
+   "epic": "E-DEL",
+   "title": "Dựng thao tác xác nhận ngoại lệ và tranh chấp trên SCR-029",
+   "description": "Nút 確認, 係争にする, 係争を解決 (ẩn với người ghi), 修正申請へ sang SCR-022 với impact=delivery.",
+   "subtasks": [
+    "UI: 3 hộp thoại",
+    "UI: điều hướng SCR-022",
+    "UI: làm mới lũy kế sau xác nhận"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-029 §7",
+    "SCR-029 AC11",
+    "SCR-029 AC12"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-DEL-04",
+    "T-DEL-05"
+   ],
+   "special_constraint": "—",
+   "role": "FE",
+   "definition_of_done": "Luồng ngoại lệ → xác nhận → tranh chấp → giải quyết chạy hết trên UI.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-DEL-07",
+   "epic": "E-DEL",
+   "title": "Chỉnh spec SCR-029 §11: ghi chú đổi nghĩa F-07 / F-11",
+   "description": "F-07 giờ là ghi chú giải quyết, F-11 là ghi chú xác nhận; ghi vào §11 để test/dev không dùng ID cũ.",
+   "subtasks": [
+    "Doc: sửa §11",
+    "Doc: ghi nhật ký review"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "06 Mục 4 #7",
+    "SCR-029"
+   ],
+   "story_points": 1,
+   "hours": 1,
+   "priority": "P2",
+   "depends_on": [],
+   "special_constraint": "—",
+   "role": "BrSE",
+   "definition_of_done": "SCR-029 §11 có dòng giải thích F-07/F-11.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-DEL-08",
+   "epic": "E-DEL",
+   "title": "Kiểm thử SCR-029 AC1–AC8, AC10–AC13",
+   "description": "AC9 (offline trùng) kiểm ở T-OFF-08.",
+   "subtasks": [
+    "Test: tích hợp",
+    "Test: E2E AC1, AC5, AC11",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-029 §10"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-DEL-06"
+   ],
+   "special_constraint": "—",
+   "role": "QA",
+   "definition_of_done": "Các AC liệt kê của SCR-029 đạt.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-LOCK-01",
+   "epic": "E-LOCK",
+   "title": "Mở rộng `corrections` và tạo `correction_decisions`",
+   "description": "impact_settlement, impact_delivery, status thêm need_info, current_level; bảng quyết định theo cấp (approve|reject|need_info, decided_by, note).",
+   "subtasks": [
+    "DB: migration",
+    "DB: FK decided_by",
+    "Test: CHECK trạng thái"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-10",
+    "BC-45",
+    "BC-46",
+    "06 Mục 1 §4.4"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "Cấu trúc theo 03 §2; lịch sử quyết định lưu theo cấp.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-LOCK-02",
+   "epic": "E-LOCK",
+   "title": "Viết `fn_request_correction` và API tạo / gửi lại yêu cầu",
+   "description": "Suy ra impact_*; bằng chứng bắt buộc theo correction_evidence_required_when; một yêu cầu đang xử lý mỗi giao dịch; lũy kế theo chuỗi; POST /api/corrections, PATCH /api/corrections/{id}.",
+   "subtasks": [
+    "DB: hàm + audit request/resubmit",
+    "API: 2 route + attachment_ids",
+    "Test: SCR-022 AC1, AC6, AC9, AC12"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-10",
+    "BC-45",
+    "SCR-022 §7",
+    "SCR-022 AC1",
+    "SCR-022 AC9"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOCK-01",
+    "T-FND-07",
+    "T-RULE-03",
+    "T-AUD-03"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "SCR-022 AC1: sửa SL ảnh hưởng quyết toán/giao hàng không file → 400 câu JP; AC9 yêu cầu thứ hai → 400.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-LOCK-03",
+   "epic": "E-LOCK",
+   "title": "Sửa `fn_decide_correction`: nhiều cấp, need_info, sinh -R/-A ở ngày hiện tại",
+   "description": "approval_levels; người duyệt ≠ người tạo và không duyệt 2 cấp; reject/need_info cần ý kiến; cấp cuối sinh -R/-A với business_day = ngày hiện tại (không có ngày open → 400), kiểm tồn khi tăng SL.",
+   "subtasks": [
+    "DB: hàm + correction_decisions",
+    "DB: -R/-A append-only, gốc reversed",
+    "Test: SCR-022 AC3, AC4, AC7, AC8, AC11"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-43",
+    "BC-44",
+    "BC-88",
+    "ADR-005",
+    "ADR-009 §3",
+    "SCR-022 AC4",
+    "SCR-022 AC7",
+    "SCR-022 AC11"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOCK-01",
+    "T-BDAY-02",
+    "T-AUD-03"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "SCR-022 AC4: duyệt sinh T261015-0012-R/-A ngày 2026-10-16, tổng ròng 2026-10-15 không đổi; AC11 chưa mở ngày → 400.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-LOCK-04",
+   "epic": "E-LOCK",
+   "title": "Dựng form yêu cầu điều chỉnh SCR-022",
+   "description": "Chọn giao dịch, SL/giá mới, lý do, ảnh hưởng thêm, đính kèm; gợi ý dùng hủy khi ngày gốc còn sửa được; gửi lại khi need_info.",
+   "subtasks": [
+    "UI: form + upload",
+    "UI: hiển thị lũy kế đã giao ròng",
+    "UI: gửi lại"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-022 §5",
+    "SCR-022 §7",
+    "SCR-022 AC6",
+    "SCR-022 AC12"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOCK-02"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "FE",
+   "definition_of_done": "SCR-022 AC6 (need_info → bổ sung → pending, giữ lịch sử) và AC12 hiển thị đúng.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-LOCK-05",
+   "epic": "E-LOCK",
+   "title": "Dựng màn hình duyệt điều chỉnh SCR-022",
+   "description": "Hàng chờ duyệt, chi tiết trước/sau, cấp hiện tại/tổng cấp; 承認/却下/追加情報依頼 có hộp xác nhận; thông báo trong app cho người tạo.",
+   "subtasks": [
+    "UI: hàng chờ + chi tiết",
+    "UI: 3 hộp quyết định",
+    "UI: ẩn nút với người tạo"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-022 §7",
+    "SCR-022 AC3",
+    "SCR-022 AC5",
+    "SCR-022 AC7"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOCK-03"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "FE",
+   "definition_of_done": "Duyệt nhiều cấp hiển thị (1/2), (2/2); từ chối không ý kiến bị chặn ở UI.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-LOCK-06",
+   "epic": "E-LOCK",
+   "title": "Kiểm thử SCR-022 AC1–AC9, AC11, AC12",
+   "description": "AC10 offline kiểm ở T-OFF-08.",
+   "subtasks": [
+    "Test: tích hợp",
+    "Test: E2E AC4, AC7",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-022 §10"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOCK-04",
+    "T-LOCK-05"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "QA",
+   "definition_of_done": "Các AC liệt kê của SCR-022 đạt.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-LOCK-07",
+   "epic": "E-LOCK",
+   "title": "Viết checklist khóa sổ CK-1…7 và API `GET …/{day}/lock-checklist`",
+   "description": "Đếm giao dịch chờ, bản ghi đồng bộ lỗi chưa hòa giải (S), ngoại lệ chưa xác nhận, giao hàng mở, tranh chấp chưa giải quyết…; mức block/warn theo lock_checklist.",
+   "subtasks": [
+    "DB: hàm fn_lock_checklist(day)",
+    "API: route",
+    "Test: SCR-024 AC3, AC12"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-08",
+    "BC-49",
+    "SCR-024 §9",
+    "SCR-024 AC3",
+    "SCR-024 AC12"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-03",
+    "T-BDAY-01",
+    "T-DEL-04"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "SCR-024 AC3: 1 ngoại lệ chưa xác nhận → block 1; AC12: tranh chấp mở → CK-5 = 1 mức warn.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-LOCK-08",
+   "epic": "E-LOCK",
+   "title": "Sửa `fn_lock_day` và API `POST …/{day}/lock`",
+   "description": "Nhận open/closing/reopened; chặn khi còn block; warn phải có trong acknowledged; lưu lock_comment, lock_checklist_snapshot, locked_by; audit lock_day kèm snapshot.",
+   "subtasks": [
+    "DB: hàm",
+    "API: route quyền recon.lock",
+    "Test: SCR-024 AC3, AC4"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-08",
+    "BC-43",
+    "BC-49",
+    "SCR-024 §7",
+    "SCR-024 AC4"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOCK-07",
+    "T-AUD-03"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "SCR-024 AC4: thiếu acknowledged/ghi chú → 400; đủ → locked với snapshot CK-4 = 3.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-LOCK-09",
+   "epic": "E-LOCK",
+   "title": "Tạo luồng mở lại ngày đã khóa có duyệt nhiều cấp",
+   "description": "day_reopen_requests, day_reopen_decisions, fn_decide_day_reopen (≠ người yêu cầu, approval_levels); chặn khi exported = true (dùng điều chỉnh); cấp cuối → reopened; API reopen-requests và decision.",
+   "subtasks": [
+    "DB: 2 bảng + hàm",
+    "API: 2 route quyền recon.reopen.*",
+    "Test: SCR-024 AC8, AC9"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-09",
+    "BC-48",
+    "Q12",
+    "SCR-024 §7",
+    "SCR-024 AC8",
+    "SCR-024 AC9"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P1",
+   "depends_on": [
+    "T-BDAY-01",
+    "T-RULE-03",
+    "T-AUD-03",
+    "T-FND-03"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BE",
+   "definition_of_done": "SCR-024 AC8: S1 tự duyệt → 400; A1 duyệt → reopened; AC9: đã xuất kế toán → 400.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-LOCK-10",
+   "epic": "E-LOCK",
+   "title": "Dựng màn hình SCR-024: mở ngày, checklist, khóa sổ",
+   "description": "Mở ngày (cảnh báo suggested_day, lý do khi ngày trước chưa khóa), checklist block/warn với ô tích, ghi chú khóa, hộp xác nhận.",
+   "subtasks": [
+    "UI: khu mở ngày",
+    "UI: checklist + khóa",
+    "UI: trạng thái ngày"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "SCR-024 §5",
+    "SCR-024 §7",
+    "G-07",
+    "G-08"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOCK-08",
+    "T-BDAY-04"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "FE",
+   "definition_of_done": "SCR-024 AC2–AC4 thực hiện được trên UI.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-LOCK-11",
+   "epic": "E-LOCK",
+   "title": "Dựng thao tác yêu cầu / duyệt mở lại ngày trên SCR-024",
+   "description": "Nút 締め解除を申請 (ẩn khi exported), hàng chờ duyệt mở lại với 承認/却下.",
+   "subtasks": [
+    "UI: hộp yêu cầu",
+    "UI: hàng chờ duyệt",
+    "UI: thông báo lỗi"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-09",
+    "SCR-024 §7"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-LOCK-09",
+    "T-LOCK-10"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "FE",
+   "definition_of_done": "Luồng yêu cầu → duyệt → reopened chạy trên UI.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-LOCK-12",
+   "epic": "E-LOCK",
+   "title": "Kiểm thử SCR-024 AC1–AC5, AC12",
+   "description": "Mở ngày, checklist, khóa, ghi vào ngày khóa bị chặn; AC10 offline ở T-OFF-08.",
+   "subtasks": [
+    "Test: tích hợp",
+    "Test: E2E khóa sổ",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-024 §10",
+    "BC-43"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-LOCK-10",
+    "T-TRADE-04"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "QA",
+   "definition_of_done": "SCR-024 AC1–AC5, AC12 đạt.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-LOCK-13",
+   "epic": "E-LOCK",
+   "title": "Kiểm thử mở lại ngày (SCR-024 AC8, AC9, AC11)",
+   "description": "Maker ≠ checker khi mở lại, chặn mở lại sau khi xuất kế toán, ngày reopened không phải ngày hiện tại.",
+   "subtasks": [
+    "Test: AC8",
+    "Test: AC9 (cần batch kế toán)",
+    "Test: AC11 có reopen_request_id"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-024 §10",
+    "BC-48"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P1",
+   "depends_on": [
+    "T-LOCK-11",
+    "T-ACC-03"
+   ],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "QA",
+   "definition_of_done": "SCR-024 AC8, AC9, AC11 đạt.",
+   "sprint": "Sprint 6"
+  },
+  {
+   "id": "T-LOCK-14",
+   "epic": "E-LOCK",
+   "title": "Chỉnh spec SCR-022: gợi ý 'ngày gốc còn mở' xét cả closing / reopened",
+   "description": "Bổ sung theo bảng trạng thái ADR-009 §2.",
+   "subtasks": [
+    "Doc: sửa §5/§9 SCR-022",
+    "Doc: ghi nhật ký review"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "06 Mục 4 #5",
+    "ADR-009 §2"
+   ],
+   "story_points": 1,
+   "hours": 1,
+   "priority": "P2",
+   "depends_on": [],
+   "special_constraint": "Ngày khóa & điều chỉnh",
+   "role": "BrSE",
+   "definition_of_done": "SCR-022 xét đủ open/closing/reopened.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-ACC-01",
+   "epic": "E-ACC",
+   "title": "Tạo `accounting_exports` và `accounting_export_lines`",
+   "description": "Header: batch_code UK, business_day FK, run_by, run_at, encoding; dòng: participant_id, amount, tax, line_status 保留/確認済み/調整済み.",
+   "subtasks": [
+    "DB: 2 bảng + FK",
+    "DB: CHECK line_status",
+    "Test: FK business_day"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-21",
+    "BC-71",
+    "BC-72",
+    "06 Mục 1 §4.4"
+   ],
+   "story_points": 3,
+   "hours": 5,
+   "priority": "P0",
+   "depends_on": [
+    "T-BDAY-01"
+   ],
+   "special_constraint": "Kế toán IF-ACC-01",
+   "role": "BE",
+   "definition_of_done": "Cấu trúc theo 03 §2; line_status ở dòng, không ở header.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-ACC-02",
+   "epic": "E-ACC",
+   "title": "Viết hàm sinh batch kế toán chỉ cho ngày đã khóa",
+   "description": "Chỉ ngày locked; gom theo người tham gia; tiền + thuế theo item_tax_rates của rule_set_id; gốc → 確認済み, -R/-A → 調整済み, tranh chấp mở → 保留; gọi lại trả cùng batch; set exported.",
+   "subtasks": [
+    "DB: fn_create_accounting_export(day, actor)",
+    "DB: sinh batch_code",
+    "Test: SCR-024 AC6, AC7"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "G-21",
+    "BC-70",
+    "BC-71",
+    "SCR-024 AC6",
+    "SCR-024 AC7"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P0",
+   "depends_on": [
+    "T-ACC-01",
+    "T-RULE-04",
+    "T-DEL-04",
+    "T-LOCK-03"
+   ],
+   "special_constraint": "Kế toán IF-ACC-01",
+   "role": "BE",
+   "definition_of_done": "SCR-024 AC6: ngày open → 400, không có accounting_exports; AC7: ba dòng 確認済み/調整済み/保留, lần hai cùng batch_code.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-ACC-03",
+   "epic": "E-ACC",
+   "title": "Dựng API xuất CSV kế toán và khóa CSV cũ cho ngày chưa khóa",
+   "description": "POST /api/accounting-exports, GET /api/accounting-exports/{batch_code}; header batch_code, business_date, generated_at, run_by; mã hóa theo accounting_csv_encoding (UTF-8-BOM | Shift_JIS); /api/reports/trades không còn xuất ngày chưa khóa cho mục đích kế toán.",
+   "subtasks": [
+    "API: 2 route quyền reports.export",
+    "API: encoder Shift_JIS/UTF-8 BOM",
+    "Test: mở file Shift_JIS đúng ký tự JP"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-21",
+    "BC-71",
+    "BC-72",
+    "Q20",
+    "SCR-024 §7"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-ACC-02",
+    "T-RULE-05"
+   ],
+   "special_constraint": "Kế toán IF-ACC-01",
+   "role": "BE",
+   "definition_of_done": "CSV có đủ metadata; tải lại cùng nội dung; không còn đường xuất kế toán cho ngày chưa khóa.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-ACC-04",
+   "epic": "E-ACC",
+   "title": "Thêm nút 会計CSV出力 / 再ダウンロード trên SCR-024",
+   "description": "Nút bật khi ngày locked; hiển thị batch đã xuất; tải lại không tạo batch mới.",
+   "subtasks": [
+    "UI: nút + trạng thái exported",
+    "UI: tải file",
+    "UI: thông báo lỗi ngày chưa khóa"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-21",
+    "SCR-024 §7"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [
+    "T-ACC-03",
+    "T-LOCK-10"
+   ],
+   "special_constraint": "Kế toán IF-ACC-01",
+   "role": "FE",
+   "definition_of_done": "Ngày chưa khóa không bấm được xuất; ngày đã xuất hiện batch_code.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-ACC-05",
+   "epic": "E-ACC",
+   "title": "Kiểm thử xuất kế toán (SCR-024 AC6, AC7, mã hóa)",
+   "description": "Kiểm chỉ xuất sau khóa, trạng thái dòng, idempotent, Shift_JIS.",
+   "subtasks": [
+    "Test: AC6, AC7",
+    "Test: đối chiếu tổng tiền/thuế với dữ liệu ngày",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "SCR-024 AC6",
+    "SCR-024 AC7",
+    "BC-71"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-ACC-04"
+   ],
+   "special_constraint": "Kế toán IF-ACC-01",
+   "role": "QA",
+   "definition_of_done": "SCR-024 AC6, AC7 đạt; tổng CSV khớp tổng ngày.",
+   "sprint": "Sprint 6"
+  },
+  {
+   "id": "T-OFF-01",
+   "epic": "E-OFF",
+   "title": "Dựng phát hiện mạng và nhãn オフライン dùng chung",
+   "description": "Hook trạng thái mạng + ping server; nhãn header; nút cần mạng (chốt, khóa, duyệt, đổi quy tắc, tư cách) disabled với NET-01.",
+   "subtasks": [
+    "UI: hook useOnline + ping",
+    "UI: component nút cần mạng",
+    "Infra: service worker cache shell"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-20",
+    "ADR-010 §3",
+    "BC-77",
+    "SCR-001 M-08"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P1",
+   "depends_on": [],
+   "special_constraint": "Offline",
+   "role": "FE",
+   "definition_of_done": "Mất mạng: các nút cần mạng tắt với nhãn オフライン, không phát request.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-OFF-02",
+   "epic": "E-OFF",
+   "title": "Dựng hàng đợi IndexedDB cho bản ghi offline",
+   "description": "Lưu payload + client_ref + 業務日 lúc lưu + thời điểm; thứ tự thời gian; nhãn 未同期; báo khi hết dung lượng.",
+   "subtasks": [
+    "UI: store IndexedDB",
+    "UI: API enqueue/dequeue",
+    "Test: đóng/mở trình duyệt không mất hàng đợi"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-20",
+    "ADR-010 §1",
+    "BC-75",
+    "BC-76"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P1",
+   "depends_on": [
+    "T-OFF-01"
+   ],
+   "special_constraint": "Offline",
+   "role": "FE",
+   "definition_of_done": "Bản ghi offline còn sau tải lại trang; hết dung lượng hiện 「端末に保存できません」.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-OFF-03",
+   "epic": "E-OFF",
+   "title": "Hỗ trợ đồng bộ phía server: audit `sync` và kiểm ngày lúc lưu",
+   "description": "API lots/deliveries nhận saved_business_date; nếu không còn là ngày hiện tại thì từ chối có mã để vào hòa giải (không tự chuyển ngày); ghi audit action=sync.",
+   "subtasks": [
+    "API: tham số saved_business_date",
+    "DB: audit sync",
+    "Test: SCR-012 AC6 tầng API"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "G-20",
+    "ADR-010 §4",
+    "ADR-009 §3",
+    "SCR-012 AC6"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-LOT-03",
+    "T-DEL-02",
+    "T-AUD-03"
+   ],
+   "special_constraint": "Offline",
+   "role": "BE",
+   "definition_of_done": "Đồng bộ vào ngày đã khóa bị từ chối với mã riêng; không tạo bản ghi ở ngày mới.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-OFF-04",
+   "epic": "E-OFF",
+   "title": "Đồng bộ lô offline: mã tạm TMP → mã chính thức",
+   "description": "Gửi lần lượt theo thời gian, idempotent bằng client_ref, đổi mã tạm sang L<YYMMDD>-NNN, lỗi → danh sách hòa giải, không xóa khỏi queue.",
+   "subtasks": [
+    "UI: worker đồng bộ",
+    "UI: cập nhật mã trên danh sách",
+    "Test: SCR-012 AC5"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-20",
+    "ADR-010 §2",
+    "SCR-012 §7",
+    "SCR-012 AC5"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P1",
+   "depends_on": [
+    "T-OFF-02",
+    "T-OFF-03",
+    "T-LOT-04"
+   ],
+   "special_constraint": "Offline",
+   "role": "FE",
+   "definition_of_done": "SCR-012 AC5: gửi lại cùng client_ref chỉ có 1 lô, nhãn 未同期 biến mất.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-OFF-05",
+   "epic": "E-OFF",
+   "title": "Đồng bộ giao hàng offline",
+   "description": "Queue giao hàng gửi theo thứ tự, idempotent; lũy kế không cộng đôi; lỗi giao vượt/ngày khóa vào hòa giải.",
+   "subtasks": [
+    "UI: tích hợp form SCR-029 với queue",
+    "UI: worker đồng bộ",
+    "Test: SCR-029 AC9"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-20",
+    "ADR-010",
+    "SCR-029 AC9"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-OFF-02",
+    "T-OFF-03",
+    "T-DEL-05"
+   ],
+   "special_constraint": "Offline",
+   "role": "FE",
+   "definition_of_done": "SCR-029 AC9: chỉ có 1 dòng deliveries, lũy kế không bị cộng đôi.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-OFF-06",
+   "epic": "E-OFF",
+   "title": "Dựng màn hình hòa giải bản ghi đồng bộ lỗi",
+   "description": "Liệt kê bản ghi lỗi (ngày khóa, giao vượt, bên bán tạm dừng) với lý do; thao tác bỏ/ghi lại thủ công vào ngày hiện tại có xác nhận; spec tối thiểu giả định (S).",
+   "subtasks": [
+    "UI: danh sách + chi tiết lỗi",
+    "UI: thao tác xử lý có xác nhận",
+    "API: đếm cho CK-2"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "G-20",
+    "ADR-010 §2",
+    "BC-75",
+    "SCR-012 AC6"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P1",
+   "depends_on": [
+    "T-OFF-04",
+    "T-OFF-05"
+   ],
+   "special_constraint": "Offline",
+   "role": "FE",
+   "definition_of_done": "SCR-012 AC6: lô offline của ngày đã khóa nằm trong hòa giải với lý do, không tự sang ngày mới.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-OFF-07",
+   "epic": "E-OFF",
+   "title": "Giữ nháp cục bộ cho chốt 相対 / せり khi mất mạng",
+   "description": "Enter khi offline không gửi request, hiện RJ-13 / V019-13; nháp localStorage còn sau tải lại; xóa nháp khi chốt thành công hoặc クリア.",
+   "subtasks": [
+    "UI: lưu/khôi phục nháp",
+    "UI: chặn gửi khi offline",
+    "Test: SCR-016 AC10, SCR-019 AC9"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "BC-77",
+    "ADR-010 §3",
+    "SCR-016 AC10",
+    "SCR-019 AC9"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P1",
+   "depends_on": [
+    "T-OFF-01",
+    "T-TRADE-03",
+    "T-AUC-03"
+   ],
+   "special_constraint": "Offline",
+   "role": "FE",
+   "definition_of_done": "SCR-016 AC10 và SCR-019 AC9 đạt.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-OFF-08",
+   "epic": "E-OFF",
+   "title": "Kiểm thử offline bằng giả lập mất mạng",
+   "description": "Gom mọi AC offline: SCR-012 AC5–AC6, SCR-029 AC9, SCR-016 AC10, SCR-019 AC9, SCR-010 AC10, SCR-022 AC10, SCR-024 AC10.",
+   "subtasks": [
+    "Test: Playwright offline mode",
+    "Test: mất phản hồi sau khi server đã nhận",
+    "Test: báo cáo"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "ADR-010",
+    "BC-75",
+    "BC-76",
+    "BC-77"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P1",
+   "depends_on": [
+    "T-OFF-06",
+    "T-OFF-07"
+   ],
+   "special_constraint": "Offline",
+   "role": "QA",
+   "definition_of_done": "Tất cả AC offline liệt kê đạt; không có bản ghi trùng.",
+   "sprint": "Sprint 6"
+  },
+  {
+   "id": "T-INC-01",
+   "epic": "E-INC",
+   "title": "Soạn spec nghiệp vụ 完納奨励金 và gửi câu hỏi Q16/Q17/Q29/Q30",
+   "description": "Không spec lõi nào có khuyến khích: viết spec màn hình xác nhận tiền về + RPT-07 + bảng quyết định 01 §9.4; đánh dấu giả định (S): kỳ = tháng, eligible_amount, mốc 支払期日, liên kết Q30.",
+   "subtasks": [
+    "Doc: spec SCR-INC (giả định S)",
+    "Doc: gói câu hỏi Q16/Q17/Q29/Q30 tiếng Nhật cho khách",
+    "Doc: review lead"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "BR-INC-01",
+    "FR-INC-01",
+    "FR-INC-02",
+    "FR-INC-03",
+    "BC-65",
+    "BC-66",
+    "BC-67",
+    "BC-68",
+    "BC-69",
+    "01 §9.4",
+    "Q16",
+    "Q17",
+    "Q29",
+    "Q30"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "完納奨励金",
+   "role": "BrSE",
+   "definition_of_done": "Spec được lead NHẬN; mỗi giả định ghi (S) kèm câu hỏi; câu hỏi đã gửi khách.",
+   "sprint": "Sprint 1"
+  },
+  {
+   "id": "T-INC-02",
+   "epic": "E-INC",
+   "title": "Tách tên trạng thái `payment_complete` và `delivery_complete` (bẫy T6)",
+   "description": "Hai trường/enum độc lập: thanh toán đủ (完納 theo nghĩa khuyến khích) và giao đủ (引渡し完了); không dùng chữ 完納 cho giao hàng; thêm vào glossary và kiểm tự động.",
+   "subtasks": [
+    "DB: enum/cột riêng cho khoản phải thu và giao hàng",
+    "Doc: glossary + quy ước đặt tên",
+    "Test: script grep chặn 完納 ở UI giao hàng"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-65",
+    "T6",
+    "FR-DEL-02",
+    "Q30",
+    "SCR-029 AC1"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Không có enum dùng chung cho thanh toán và giao hàng; UI giao hàng không có chữ 完納; kiểm grep chạy trong CI.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-INC-03",
+   "epic": "E-INC",
+   "title": "Định nghĩa bảng bậc tỷ lệ `incentive_rate_tiers` trong phiên bản quy tắc",
+   "description": "Khóa rule_values incentive_rate_tiers = [{min_ratio, rate}]; min_ratio tăng dần, rate Decimal 0..1; dữ liệu giả cho prototype (Q16, giả định S về cấu trúc bậc).",
+   "subtasks": [
+    "DB: luật kiểm trong fn_validate_rule_value",
+    "DB: seed bậc giả trong v1",
+    "Test: bậc không tăng dần → 400 (SCR-034 AC8)"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-23",
+    "Q16",
+    "ADR-008 danh mục khóa",
+    "FR-INC-02",
+    "SCR-034 AC8"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [
+    "T-RULE-02"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Bậc tỷ lệ đổi được qua phiên bản mới, không deploy; bậc sai thứ tự bị từ chối.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-INC-04",
+   "epic": "E-INC",
+   "title": "Tạo khoản phải thu `receivables` sinh từ giao dịch đã chốt",
+   "description": "Mỗi giao dịch confirmed (kể cả -R/-A) sinh/điều chỉnh khoản phải thu theo người tham gia: amount, tax theo item_tax_rates, business_date, payment_status; cơ sở trước/sau thuế là giả định (S, Q29).",
+   "subtasks": [
+    "DB: bảng receivables + payment_status riêng (INC-02)",
+    "DB: sinh trong fn_confirm_trade / fn_decide_correction",
+    "Test: -R/-A làm đổi số phải thu ròng"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-68",
+    "BC-70",
+    "Q29",
+    "FR-INC-01"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-01",
+    "T-INC-02",
+    "T-RULE-04",
+    "T-LOCK-03"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Tổng phải thu theo người tham gia khớp tổng giao dịch ròng (gốc + -R + -A) của kỳ.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-INC-05",
+   "epic": "E-INC",
+   "title": "Định nghĩa và cấu hình hạn thanh toán 支払期日",
+   "description": "Khóa rule_values payment_due_rule (ví dụ cuối tháng + N ngày nghiệp vụ, giả định S chờ Q16); hàm fn_due_date(receivable) tính theo market_calendar; due_date lưu trên khoản phải thu, không tính lại khi phiên bản đổi.",
+   "subtasks": [
+    "DB: khóa payment_due_rule + kiểm giá trị",
+    "DB: fn_due_date theo 業務日 JST",
+    "Test: kỳ có ngày nghỉ chợ"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-68",
+    "Q16",
+    "FR-INC-01",
+    "ADR-008",
+    "ADR-009"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-04",
+    "T-BDAY-01"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Mỗi khoản phải thu có due_date cố định; đổi payment_due_rule chỉ ảnh hưởng khoản phải thu sinh sau ngày hiệu lực.",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-INC-06",
+   "epic": "E-INC",
+   "title": "Ghi nhận thanh toán thủ công (bảng `payments` + API)",
+   "description": "payments append-only: participant_id, amount, paid_at, paid_business_date (JST), source manual|csv, ref, recorded_by; phân bổ vào khoản phải thu; quyền payments.record cho settlement; audit trong hàm.",
+   "subtasks": [
+    "DB: bảng + fn_record_payment + phân bổ",
+    "API: POST /api/payments, GET theo người tham gia",
+    "Test: trả thiếu → payment_status chưa đủ"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "BC-68",
+    "Q17",
+    "FR-INC-01",
+    "SCOPE-OUT-05"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-04",
+    "T-AUD-03",
+    "T-FND-03"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Nhập tay một khoản trả cập nhật đúng payment_status; không sửa/xóa được payment đã ghi (chỉ bút toán đảo).",
+   "sprint": "Sprint 2"
+  },
+  {
+   "id": "T-INC-07",
+   "epic": "E-INC",
+   "title": "Import CSV thanh toán (Plan A Q17)",
+   "description": "Upload CSV (UTF-8/Shift_JIS), validate từng dòng, xem trước, ghi idempotent theo (participant, ngày trả, số tiền, ref); trả danh sách dòng lỗi; liên kết ngân hàng ngoài phạm vi.",
+   "subtasks": [
+    "API: parse + validate + preview",
+    "API: commit idempotent",
+    "Test: import lại cùng file không trùng"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "BC-68",
+    "Q17",
+    "SCOPE-OUT-05"
+   ],
+   "story_points": 5,
+   "hours": 10,
+   "priority": "P1",
+   "depends_on": [
+    "T-INC-06"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Import lại cùng file không tạo payment trùng; dòng lỗi báo số dòng + lý do.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-INC-08",
+   "epic": "E-INC",
+   "title": "Dựng màn hình xác nhận tiền về (nhập tay + CSV)",
+   "description": "Danh sách khoản phải thu theo kỳ/người tham gia với due_date và payment_status; form nhập tay; tải CSV, xem trước, xác nhận ghi. Không có spec lõi — theo spec INC-01 (S).",
+   "subtasks": [
+    "UI: danh sách + bộ lọc",
+    "UI: form nhập tay",
+    "UI: luồng tải CSV + xem trước lỗi"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "BC-68",
+    "Q17",
+    "INC-01 spec"
+   ],
+   "story_points": 8,
+   "hours": 12,
+   "priority": "P1",
+   "depends_on": [
+    "T-INC-06",
+    "T-INC-07"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "FE",
+   "definition_of_done": "Settlement ghi được thanh toán bằng tay và CSV; khoản trả đủ hiện payment_complete, không dùng nhãn giao hàng.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-INC-09",
+   "epic": "E-INC",
+   "title": "Kiểm đúng hạn theo 業務日 JST, không ân hạn",
+   "description": "fn_payment_on_time(receivable): đủ tiền và paid_business_date ≤ due_date (JST, theo 業務日); trễ 1 ngày = không đạt; chưa có dữ liệu trả = chưa tính (không ra 0).",
+   "subtasks": [
+    "DB: hàm + 3 kết quả on_time | late | unknown",
+    "DB: dùng paid_business_date, không DATE(paid_at) UTC",
+    "Test: trả 23:30 UTC hôm trước (= 08:30 JST hôm sau)"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-67",
+    "BC-39",
+    "FR-INC-01",
+    "EX-SETTLE-01",
+    "01 §9.4"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-05",
+    "T-INC-06"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Trả đúng ngày due_date → on_time; trễ 1 業務日 → late; chưa nhập trả → unknown; không dùng ngày UTC.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-INC-10",
+   "epic": "E-INC",
+   "title": "Tạo bảng `incentive_calc` append-only theo kỳ",
+   "description": "incentive_calc(participant_id, period, eligible_amount, rate, rule_set_id, amount, result on_time|late, delta_of_id, period_locked); trigger chặn UPDATE/DELETE; kỳ đã khóa không ghi thêm dòng gốc.",
+   "subtasks": [
+    "DB: bảng + trigger append-only",
+    "DB: bảng incentive_periods (open|locked)",
+    "Test: UPDATE bị chặn"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-69",
+    "FR-INC-03",
+    "ADR-005"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-03"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Mọi UPDATE/DELETE trên incentive_calc bị chặn; dòng late vẫn được lưu với amount = 0.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-INC-11",
+   "epic": "E-INC",
+   "title": "Tính tiền khuyến khích: floor sau ×110/100 bằng số nguyên/Decimal",
+   "description": "amount = floor(eligible_amount × rate × 110 / 100) tính bằng numeric (không float), cắt xuống yên sau khi nhân; late → 0 vẫn ghi dòng; chọn bậc theo min_ratio (công thức là giả định S chờ Q16).",
+   "subtasks": [
+    "DB: fn_calc_incentive(participant, period)",
+    "DB: chọn bậc theo tỷ lệ trả đúng hạn",
+    "Test: INC-EDGE-01 và INC-EDGE-03"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-66",
+    "BC-67",
+    "BR-INC-01",
+    "INC-EDGE-01",
+    "INC-EDGE-03",
+    "01 §9.4"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-09",
+    "T-INC-10"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Kết quả khớp tay cho INC-EDGE-01 (đúng ngưỡng) và INC-EDGE-03 (thập phân sau ×110/100 cắt xuống yên); không có phép float.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-INC-12",
+   "epic": "E-INC",
+   "title": "Áp `rule_set_id` theo ngày áp dụng và lưu vết trên dòng tính",
+   "description": "Chọn bản approved có effective_from ≤ ngày áp dụng (giả định S: ngày áp dụng = due_date) qua fn_rule_set; draft/submitted không dùng; lưu rule_set_id trên incentive_calc để báo cáo gom theo phiên bản.",
+   "subtasks": [
+    "DB: truyền ngày áp dụng vào fn_calc_incentive",
+    "DB: lưu rule_set_id",
+    "Test: đổi bậc ở v2 không làm đổi kết quả kỳ áp dụng v1"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "FR-INC-02",
+    "ADR-008 §5",
+    "BC-14",
+    "BC-74",
+    "01 §9.4"
+   ],
+   "story_points": 2,
+   "hours": 4,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-11",
+    "T-RULE-03"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Mỗi dòng incentive_calc có rule_set_id; phiên bản nháp không bao giờ được dùng.",
+   "sprint": "Sprint 3"
+  },
+  {
+   "id": "T-INC-13",
+   "epic": "E-INC",
+   "title": "Điều chỉnh sau khóa kỳ thành dòng delta ở kỳ sau",
+   "description": "Khi khoản trả/khoản phải thu của kỳ đã khóa thay đổi (điều chỉnh -R/-A, nhập trả muộn), tính lại và ghi dòng delta (delta_of_id) vào kỳ đang mở; kỳ cũ và báo cáo kỳ cũ giữ nguyên.",
+   "subtasks": [
+    "DB: phát hiện thay đổi sau khóa",
+    "DB: ghi dòng delta append-only",
+    "Test: INC-EDGE-02"
+   ],
+   "layer": "DB",
+   "source_refs": [
+    "BC-69",
+    "FR-INC-03",
+    "INC-EDGE-02",
+    "ADR-005"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-12"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "INC-EDGE-02: kỳ trước không đổi một đồng; kỳ sau có đúng một dòng delta trỏ delta_of_id.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-INC-14",
+   "epic": "E-INC",
+   "title": "Dựng API chạy tính khuyến khích theo kỳ và khóa kỳ",
+   "description": "POST /api/incentives/run {period} (quyền incentives.run, settlement); chạy lại kỳ đang mở là idempotent; POST …/lock khóa kỳ; audit; cần mạng.",
+   "subtasks": [
+    "API: run + lock",
+    "API: quyền + MFA theo vai trò",
+    "Test: chạy 2 lần không nhân đôi dòng"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "FR-INC-01",
+    "FR-INC-03",
+    "BC-69"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-13",
+    "T-FND-03"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BE",
+   "definition_of_done": "Chạy lại kỳ mở không tạo dòng trùng; kỳ đã khóa chỉ nhận delta.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-INC-15",
+   "epic": "E-INC",
+   "title": "Dựng báo cáo RPT-07 khuyến khích (API + CSV)",
+   "description": "Báo cáo theo kỳ/người tham gia: eligible, rate, phiên bản, kết quả đúng hạn/trễ (dòng 0 vẫn hiện), delta kỳ trước; bộ lọc + CSV, không PDF (Q19). Mã RPT-07 theo brief LAB-5, giả định (S).",
+   "subtasks": [
+    "API: GET /api/reports/incentives",
+    "API: CSV có metadata",
+    "Test: tổng khớp incentive_calc"
+   ],
+   "layer": "API",
+   "source_refs": [
+    "BC-73",
+    "BC-74",
+    "FR-RPT-01",
+    "RPT-07",
+    "Q19"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P1",
+   "depends_on": [
+    "T-INC-14"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "FE",
+   "definition_of_done": "Báo cáo hiện cả dòng late = 0 và dòng delta; tổng CSV = tổng incentive_calc của kỳ.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-INC-16",
+   "epic": "E-INC",
+   "title": "Dựng màn hình báo cáo RPT-07",
+   "description": "Bộ lọc kỳ/người tham gia/kết quả, bảng có cột phiên bản quy tắc và delta, nút xuất CSV.",
+   "subtasks": [
+    "UI: bộ lọc + bảng",
+    "UI: xuất CSV",
+    "UI: nhãn 完納奨励金 chỉ ở ngữ cảnh thanh toán"
+   ],
+   "layer": "UI",
+   "source_refs": [
+    "RPT-07",
+    "BC-73",
+    "BC-65"
+   ],
+   "story_points": 5,
+   "hours": 8,
+   "priority": "P1",
+   "depends_on": [
+    "T-INC-15"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "FE",
+   "definition_of_done": "Settlement xem và xuất được RPT-07 theo kỳ.",
+   "sprint": "Sprint 5"
+  },
+  {
+   "id": "T-INC-17",
+   "epic": "E-INC",
+   "title": "Viết unit test INC-EDGE-01/02/03 và các nhánh biên",
+   "description": "Ba test vector RFP + trễ đúng 1 ngày = 0 vẫn có dòng + chưa nhập trả = chưa tính + trả lúc 00:30 JST + phiên bản nháp không dùng.",
+   "subtasks": [
+    "Test: INC-EDGE-01 đúng ngưỡng tối thiểu",
+    "Test: INC-EDGE-02 delta kỳ sau",
+    "Test: INC-EDGE-03 cắt xuống yên sau ×110/100",
+    "Test: trễ 1 ngày, unknown, giờ JST"
+   ],
+   "layer": "Test",
+   "source_refs": [
+    "INC-EDGE-01",
+    "INC-EDGE-02",
+    "INC-EDGE-03",
+    "BC-66",
+    "BC-67",
+    "BC-69"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P0",
+   "depends_on": [
+    "T-INC-13"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "QA",
+   "definition_of_done": "Tất cả test xanh trong CI; mỗi vector có giá trị kỳ vọng tính tay ghi trong test.",
+   "sprint": "Sprint 4"
+  },
+  {
+   "id": "T-INC-18",
+   "epic": "E-INC",
+   "title": "Viết kịch bản UAT 完納奨励金",
+   "description": "Kịch bản tiếng Nhật cho người phụ trách nghiệp vụ: nhập trả tay/CSV, trả đúng hạn/trễ 1 ngày, đổi bậc qua phiên bản mới, điều chỉnh sau khóa kỳ → delta, đọc RPT-07.",
+   "subtasks": [
+    "Doc: kịch bản + dữ liệu UAT",
+    "Doc: bảng kết quả kỳ vọng",
+    "Doc: phiếu ký nghiệm thu (ACC-GATE-01)"
+   ],
+   "layer": "Doc",
+   "source_refs": [
+    "BC-65",
+    "BC-66",
+    "BC-67",
+    "BC-69",
+    "BC-88",
+    "ACC-GATE-01"
+   ],
+   "story_points": 3,
+   "hours": 6,
+   "priority": "P1",
+   "depends_on": [
+    "T-INC-01"
+   ],
+   "special_constraint": "完納奨励金",
+   "role": "BrSE",
+   "definition_of_done": "Kịch bản được lead NHẬN và gửi khách trước UAT.",
+   "sprint": "Sprint 1"
+  }
+ ],
+ "sprints": [
+  {
+   "name": "Sprint 1",
+   "start": "2026-11-09",
+   "end": "2026-11-20",
+   "task_ids": [
+    "T-AUD-01",
+    "T-AUD-03",
+    "T-RULE-05",
+    "T-BDAY-01",
+    "T-RULE-01",
+    "T-BDAY-02",
+    "T-QUAL-01",
+    "T-RULE-02",
+    "T-LOCK-01",
+    "T-QUAL-02",
+    "T-FND-01",
+    "T-LOCK-03",
+    "T-QUAL-03",
+    "T-INC-01",
+    "T-RULE-03",
+    "T-RULE-04",
+    "T-BDAY-03",
+    "T-BDAY-05",
+    "T-RULE-14",
+    "T-AUC-04",
+    "T-LOCK-05",
+    "T-SEC-09",
+    "T-FND-12",
+    "T-FND-10",
+    "T-OFF-01",
+    "T-OFF-02",
+    "T-FND-08",
+    "T-TRADE-05",
+    "T-FND-09",
+    "T-INC-18",
+    "T-BDAY-06",
+    "T-BDAY-08",
+    "T-DEL-07",
+    "T-LOCK-14"
+   ],
+   "story_points": 120,
+   "hours": 208,
+   "hours_by_role": {
+    "BrSE": 31,
+    "BE": 107,
+    "FE": 52,
+    "QA": 18
+   }
+  },
+  {
+   "name": "Sprint 2",
+   "start": "2026-11-23",
+   "end": "2026-12-04",
+   "task_ids": [
+    "T-INC-02",
+    "T-FND-11",
+    "T-QUAL-04",
+    "T-INC-04",
+    "T-QUAL-05",
+    "T-DEL-01",
+    "T-FND-03",
+    "T-DEL-03",
+    "T-RULE-07",
+    "T-INC-06",
+    "T-QUAL-06",
+    "T-AUD-02",
+    "T-INC-05",
+    "T-INC-03",
+    "T-QUAL-08",
+    "T-RULE-10",
+    "T-AUC-02",
+    "T-RULE-11",
+    "T-AUD-04",
+    "T-RULE-06"
+   ],
+   "story_points": 78,
+   "hours": 142,
+   "hours_by_role": {
+    "BrSE": 0,
+    "BE": 104,
+    "FE": 32,
+    "QA": 6
+   }
+  },
+  {
+   "name": "Sprint 3",
+   "start": "2026-12-07",
+   "end": "2026-12-18",
+   "task_ids": [
+    "T-TRADE-01",
+    "T-DEL-04",
+    "T-DEL-02",
+    "T-INC-09",
+    "T-INC-10",
+    "T-RULE-08",
+    "T-LOT-01",
+    "T-QUAL-07",
+    "T-FND-07",
+    "T-INC-11",
+    "T-LOCK-07",
+    "T-TRADE-02",
+    "T-LOT-03",
+    "T-DEL-05",
+    "T-QUAL-09",
+    "T-LOT-04",
+    "T-INC-12",
+    "T-DEL-06"
+   ],
+   "story_points": 87,
+   "hours": 152,
+   "hours_by_role": {
+    "BrSE": 0,
+    "BE": 110,
+    "FE": 42,
+    "QA": 0
+   }
+  },
+  {
+   "name": "Sprint 4",
+   "start": "2026-12-21",
+   "end": "2027-01-01",
+   "task_ids": [
+    "T-RULE-09",
+    "T-ACC-01",
+    "T-SEC-01",
+    "T-TRADE-03",
+    "T-BDAY-04",
+    "T-LOCK-02",
+    "T-LOCK-08",
+    "T-ACC-02",
+    "T-INC-13",
+    "T-RULE-12",
+    "T-SEC-04",
+    "T-AUC-01",
+    "T-QUAL-10",
+    "T-LOCK-10",
+    "T-AUC-03",
+    "T-INC-14",
+    "T-SEC-05",
+    "T-LOT-02",
+    "T-LOCK-04",
+    "T-RULE-13",
+    "T-SEC-06",
+    "T-RULE-15",
+    "T-BDAY-07",
+    "T-OFF-03",
+    "T-OFF-07",
+    "T-INC-17"
+   ],
+   "story_points": 127,
+   "hours": 223,
+   "hours_by_role": {
+    "BrSE": 0,
+    "BE": 111,
+    "FE": 90,
+    "QA": 22
+   }
+  },
+  {
+   "name": "Sprint 5",
+   "start": "2027-01-04",
+   "end": "2027-01-15",
+   "task_ids": [
+    "T-ACC-03",
+    "T-TRADE-04",
+    "T-LOT-05",
+    "T-QUAL-11",
+    "T-TRADE-07",
+    "T-DEL-08",
+    "T-LOCK-06",
+    "T-ACC-04",
+    "T-AUC-05",
+    "T-LOCK-12",
+    "T-OFF-04",
+    "T-OFF-05",
+    "T-LOCK-09",
+    "T-INC-07",
+    "T-OFF-06",
+    "T-INC-15",
+    "T-SEC-07",
+    "T-INC-08",
+    "T-LOCK-11",
+    "T-SEC-02",
+    "T-SEC-03",
+    "T-SEC-08",
+    "T-TRADE-06",
+    "T-INC-16",
+    "T-FND-04",
+    "T-FND-02",
+    "T-FND-05",
+    "T-FND-06"
+   ],
+   "story_points": 120,
+   "hours": 213,
+   "hours_by_role": {
+    "BrSE": 0,
+    "BE": 69,
+    "FE": 88,
+    "QA": 56
+   }
+  },
+  {
+   "name": "Sprint 6",
+   "start": "2027-01-18",
+   "end": "2027-01-29",
+   "task_ids": [
+    "T-SEC-10",
+    "T-LOT-06",
+    "T-ACC-05",
+    "T-TRADE-08",
+    "T-OFF-08",
+    "T-LOCK-13",
+    "T-SEC-11"
+   ],
+   "story_points": 24,
+   "hours": 43,
+   "hours_by_role": {
+    "BrSE": 0,
+    "BE": 0,
+    "FE": 0,
+    "QA": 43
+   }
+  }
+ ],
+ "simulation": {
+  "label": "SIMULATED — số liệu giả lập cho báo cáo mẫu LAB-5, không phải công việc đã làm thật",
+  "sprint": "Sprint 1",
+  "report_date": "2026-11-20",
+  "focus_hours_per_day": 5.6,
+  "personas": {
+   "BrSE": [
+    "BrSE Linh"
+   ],
+   "BE": [
+    "BE An",
+    "BE Bình"
+   ],
+   "FE": [
+    "FE Chi",
+    "FE Dũng"
+   ],
+   "QA": [
+    "QA Hà"
+   ],
+   "Infra": [
+    "BE An"
+   ]
+  },
+  "status": {
+   "T-AUD-01": "Done",
+   "T-AUD-03": "Done",
+   "T-RULE-05": "Done",
+   "T-BDAY-01": "Done",
+   "T-RULE-01": "Done",
+   "T-BDAY-02": "Done",
+   "T-QUAL-01": "Done",
+   "T-RULE-02": "Done",
+   "T-LOCK-01": "Done",
+   "T-QUAL-02": "Done",
+   "T-FND-01": "Done",
+   "T-LOCK-03": "In Progress",
+   "T-QUAL-03": "In Progress",
+   "T-INC-01": "Blocked",
+   "T-RULE-03": "Todo",
+   "T-RULE-04": "Done",
+   "T-BDAY-03": "Done",
+   "T-BDAY-05": "In Review",
+   "T-RULE-14": "Done",
+   "T-AUC-04": "Done",
+   "T-LOCK-05": "Todo",
+   "T-SEC-09": "Done",
+   "T-FND-12": "Done",
+   "T-FND-10": "Done",
+   "T-OFF-01": "Done",
+   "T-OFF-02": "Done",
+   "T-FND-08": "Done",
+   "T-TRADE-05": "Done",
+   "T-FND-09": "Done",
+   "T-INC-18": "Todo",
+   "T-BDAY-06": "Done",
+   "T-BDAY-08": "Done",
+   "T-DEL-07": "Done",
+   "T-LOCK-14": "Done"
+  },
+  "assignee": {
+   "T-AUD-01": "BE An",
+   "T-AUD-03": "BE Bình",
+   "T-RULE-05": "BE An",
+   "T-BDAY-01": "BE Bình",
+   "T-RULE-01": "BE An",
+   "T-BDAY-02": "BE Bình",
+   "T-QUAL-01": "BE An",
+   "T-RULE-02": "BE Bình",
+   "T-LOCK-01": "BE An",
+   "T-QUAL-02": "BE Bình",
+   "T-FND-01": "BE An",
+   "T-LOCK-03": "BE Bình",
+   "T-QUAL-03": "BE An",
+   "T-INC-01": "BrSE Linh",
+   "T-RULE-03": "BE Bình",
+   "T-RULE-04": "BE An",
+   "T-BDAY-03": "FE Chi",
+   "T-BDAY-05": "FE Dũng",
+   "T-RULE-14": "BrSE Linh",
+   "T-AUC-04": "BrSE Linh",
+   "T-LOCK-05": "FE Chi",
+   "T-SEC-09": "BrSE Linh",
+   "T-FND-12": "QA Hà",
+   "T-FND-10": "QA Hà",
+   "T-OFF-01": "FE Dũng",
+   "T-OFF-02": "FE Chi",
+   "T-FND-08": "BrSE Linh",
+   "T-TRADE-05": "BrSE Linh",
+   "T-FND-09": "FE Dũng",
+   "T-INC-18": "BrSE Linh",
+   "T-BDAY-06": "FE Chi",
+   "T-BDAY-08": "BrSE Linh",
+   "T-DEL-07": "BrSE Linh",
+   "T-LOCK-14": "BrSE Linh"
+  },
+  "actual_hours": {
+   "T-AUD-01": 4.0,
+   "T-AUD-03": 12.0,
+   "T-RULE-05": 6.0,
+   "T-BDAY-01": 6.0,
+   "T-RULE-01": 8.0,
+   "T-BDAY-02": 12.8,
+   "T-QUAL-01": 4.0,
+   "T-RULE-02": 10.0,
+   "T-LOCK-01": 5.0,
+   "T-QUAL-02": 6.0,
+   "T-FND-01": 8.0,
+   "T-LOCK-03": 9.2,
+   "T-QUAL-03": 11.2,
+   "T-INC-01": 7.0,
+   "T-RULE-03": 0.0,
+   "T-RULE-04": 4.0,
+   "T-BDAY-03": 4.0,
+   "T-BDAY-05": 8.0,
+   "T-RULE-14": 2.0,
+   "T-AUC-04": 1.0,
+   "T-LOCK-05": 0.0,
+   "T-SEC-09": 1.0,
+   "T-FND-12": 10.0,
+   "T-FND-10": 8.0,
+   "T-OFF-01": 8.0,
+   "T-OFF-02": 10.0,
+   "T-FND-08": 6.0,
+   "T-TRADE-05": 4.0,
+   "T-FND-09": 10.0,
+   "T-INC-18": 0.0,
+   "T-BDAY-06": 4.0,
+   "T-BDAY-08": 1.0,
+   "T-DEL-07": 1.0,
+   "T-LOCK-14": 1.0
+  },
+  "remaining_hours": {
+   "T-AUD-01": 0.0,
+   "T-AUD-03": 0.0,
+   "T-RULE-05": 0.0,
+   "T-BDAY-01": 0.0,
+   "T-RULE-01": 0.0,
+   "T-BDAY-02": 0.0,
+   "T-QUAL-01": 0.0,
+   "T-RULE-02": 0.0,
+   "T-LOCK-01": 0.0,
+   "T-QUAL-02": 0.0,
+   "T-FND-01": 0.0,
+   "T-LOCK-03": 2.8,
+   "T-QUAL-03": 0.8,
+   "T-INC-01": 1.0,
+   "T-RULE-03": 6.0,
+   "T-RULE-04": 0.0,
+   "T-BDAY-03": 0.0,
+   "T-BDAY-05": 0.0,
+   "T-RULE-14": 0.0,
+   "T-AUC-04": 0.0,
+   "T-LOCK-05": 8.0,
+   "T-SEC-09": 0.0,
+   "T-FND-12": 0.0,
+   "T-FND-10": 0.0,
+   "T-OFF-01": 0.0,
+   "T-OFF-02": 0.0,
+   "T-FND-08": 0.0,
+   "T-TRADE-05": 0.0,
+   "T-FND-09": 0.0,
+   "T-INC-18": 6.0,
+   "T-BDAY-06": 0.0,
+   "T-BDAY-08": 0.0,
+   "T-DEL-07": 0.0,
+   "T-LOCK-14": 0.0
+  },
+  "reestimated_hours": {
+   "T-BDAY-02": 12.8,
+   "T-QUAL-03": 12.0
+  },
+  "notes": {
+   "T-INC-01": "EV-1: Spec 完納奨励金 không chốt được: khách chưa trả lời Q16 (bảng tỷ lệ, 支払期日) và Q17 (cách biết đã trả tiền)",
+   "T-BDAY-05": "EV-4: Review UI đổi ngày nghiệp vụ chậm: reviewer phía khách nghỉ phép, task nằm ở In Review qua cuối sprint",
+   "T-BDAY-02": "EV-2: Hàm ngày nghiệp vụ JST đụng nhiều hàm fn_* hơn dự kiến (trạng thái closing / reopened)",
+   "T-QUAL-03": "EV-3: Migrate basis cũ sang participant_qualifications: 買出人 thiếu hạn tham gia (mâu thuẫn M1 trong RFP), phải hỏi lại"
+  },
+  "finished_day": {
+   "T-AUD-01": 1,
+   "T-RULE-14": 2,
+   "T-AUC-04": 2,
+   "T-FND-12": 2,
+   "T-OFF-01": 2,
+   "T-AUD-03": 3,
+   "T-SEC-09": 3,
+   "T-OFF-02": 3,
+   "T-RULE-05": 4,
+   "T-BDAY-01": 4,
+   "T-RULE-01": 4,
+   "T-QUAL-01": 4,
+   "T-FND-10": 4,
+   "T-FND-08": 4,
+   "T-TRADE-05": 4,
+   "T-BDAY-06": 4,
+   "T-LOCK-01": 5,
+   "T-BDAY-08": 5,
+   "T-DEL-07": 5,
+   "T-LOCK-14": 5,
+   "T-BDAY-02": 6,
+   "T-BDAY-03": 6,
+   "T-FND-01": 7,
+   "T-RULE-04": 7,
+   "T-RULE-02": 8,
+   "T-QUAL-02": 9,
+   "T-FND-09": 9
+  },
+  "events": [
+   {
+    "id": "EV-1",
+    "day": 1,
+    "kind": "blocked_at_finish",
+    "note": "Spec 完納奨励金 không chốt được: khách chưa trả lời Q16 (bảng tỷ lệ, 支払期日) và Q17 (cách biết đã trả tiền)",
+    "task": "T-INC-01",
+    "effect_day": 2
+   },
+   {
+    "id": "EV-2",
+    "day": 2,
+    "kind": "overrun",
+    "factor": 1.6,
+    "note": "Hàm ngày nghiệp vụ JST đụng nhiều hàm fn_* hơn dự kiến (trạng thái closing / reopened)",
+    "task": "T-BDAY-02",
+    "effect_day": 2
+   },
+   {
+    "id": "EV-3",
+    "day": 5,
+    "kind": "overrun",
+    "factor": 1.5,
+    "note": "Migrate basis cũ sang participant_qualifications: 買出人 thiếu hạn tham gia (mâu thuẫn M1 trong RFP), phải hỏi lại",
+    "task": "T-QUAL-03",
+    "effect_day": 5
+   },
+   {
+    "id": "EV-4",
+    "day": 1,
+    "kind": "review_wait",
+    "note": "Review UI đổi ngày nghiệp vụ chậm: reviewer phía khách nghỉ phép, task nằm ở In Review qua cuối sprint",
+    "task": "T-BDAY-05",
+    "effect_day": 7
+   }
+  ],
+  "burndown": [
+   {
+    "day": 1,
+    "date": "2026-11-09",
+    "ideal_remaining_h": 187.2,
+    "actual_remaining_h": 180.0,
+    "done_sp": 2
+   },
+   {
+    "day": 2,
+    "date": "2026-11-10",
+    "ideal_remaining_h": 166.4,
+    "actual_remaining_h": 155.4,
+    "done_sp": 14
+   },
+   {
+    "day": 3,
+    "date": "2026-11-11",
+    "ideal_remaining_h": 145.6,
+    "actual_remaining_h": 128.6,
+    "done_sp": 28
+   },
+   {
+    "day": 4,
+    "date": "2026-11-12",
+    "ideal_remaining_h": 124.8,
+    "actual_remaining_h": 106.6,
+    "done_sp": 53
+   },
+   {
+    "day": 5,
+    "date": "2026-11-13",
+    "ideal_remaining_h": 104.0,
+    "actual_remaining_h": 96.8,
+    "done_sp": 59
+   },
+   {
+    "day": 6,
+    "date": "2026-11-16",
+    "ideal_remaining_h": 83.2,
+    "actual_remaining_h": 76.0,
+    "done_sp": 66
+   },
+   {
+    "day": 7,
+    "date": "2026-11-17",
+    "ideal_remaining_h": 62.4,
+    "actual_remaining_h": 59.4,
+    "done_sp": 73
+   },
+   {
+    "day": 8,
+    "date": "2026-11-18",
+    "ideal_remaining_h": 41.6,
+    "actual_remaining_h": 48.2,
+    "done_sp": 78
+   },
+   {
+    "day": 9,
+    "date": "2026-11-19",
+    "ideal_remaining_h": 20.8,
+    "actual_remaining_h": 35.8,
+    "done_sp": 86
+   },
+   {
+    "day": 10,
+    "date": "2026-11-20",
+    "ideal_remaining_h": 0.0,
+    "actual_remaining_h": 24.6,
+    "done_sp": 86
+   }
+  ],
+  "committed": {
+   "tasks": 34,
+   "sp": 120,
+   "hours": 208
+  },
+  "completed": {
+   "tasks": 27,
+   "sp": 86
+  }
+ }
+}
