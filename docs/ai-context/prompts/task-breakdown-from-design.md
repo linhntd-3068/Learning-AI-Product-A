@@ -6,8 +6,9 @@ Tách bộ thiết kế Product A thành task triển khai.
 
 Đầu vào (chỉ những file này):
 - `docs/ai-context/project-context.md`
-- `docs/design/03-database-diagram.md` §4 (gap G-01…G-20) — mỗi gap ít nhất một task
+- `docs/design/03-database-diagram.md` §4 (mọi gap G-xx có trong bảng, không giới hạn khoảng mã) — mỗi gap ít nhất một task
 - `docs/design/04-screen-specs/*.md` — mỗi màn hình: task theo §5 (field), §7 (hành động), §10 (nghiệm thu), §11 (khác prototype)
+- `docs/design/01-business-constraints.md` §6, §9.4 — quy tắc 完納奨励金 không có spec màn hình nào, phải tách thành epic riêng, mỗi task một biến nghiệp vụ
 - `docs/design/adr/ADR-006…010` (các quyết định "Đề xuất" cần hiện thực)
 
 Mỗi task ghi:
