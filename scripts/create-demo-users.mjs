@@ -9,7 +9,11 @@ if (!url || !key) {
   console.error("Thiếu NEXT_PUBLIC_SUPABASE_URL hoặc SUPABASE_SECRET_KEY trong .env.local");
   process.exit(1);
 }
-const PASSWORD = process.env.DEMO_PASSWORD ?? "Sakura-Demo-2026";
+const PASSWORD = process.env.DEMO_PASSWORD;
+if (!PASSWORD || PASSWORD.length < 12) {
+  console.error("Thiếu DEMO_PASSWORD (≥ 12 ký tự) trong .env.local — mật khẩu demo không ghi trong repo");
+  process.exit(1);
+}
 const USERS = [
   ["demo.admin@example.com", "Quản trị hệ thống (demo)", "sys_admin"],
   ["demo.ops@example.com", "Vận hành chợ (demo)", "market_ops"],
@@ -56,4 +60,4 @@ if (!count) {
     console.log(`ok  pending correction for ${trade.code}`);
   }
 }
-console.log(`\nĐã xong. Mật khẩu chung của tài khoản demo: xem README.md (hoặc biến DEMO_PASSWORD).`);
+console.log(`\nĐã xong. Mật khẩu chung của tài khoản demo là giá trị DEMO_PASSWORD bạn đã đặt.`);
