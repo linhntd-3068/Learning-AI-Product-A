@@ -22,7 +22,7 @@
 | GitHub Project | https://github.com/users/linhntd-3068/projects/1 |
 | Báo cáo HTML của skill chấm SWP | [`reports/swp/estimate-swp-product-a-project1-261111.html`](reports/swp/estimate-swp-product-a-project1-261111.html) (file HTML tự chứa — tải về rồi mở bằng trình duyệt) |
 
-Đã mở thử repo, Project và báo cáo HTML bằng cửa sổ ẩn danh (không đăng nhập) ngày `TODO-ngày`: `TODO-kết quả`.
+Đã mở thử repo, Project và báo cáo HTML bằng cửa sổ ẩn danh (không đăng nhập) ngày **2026-11-18**: mở được cả 3 — đọc được README và các file md, Project hiện đủ tiêu đề issue cùng trường `SWP`/`Iteration`, báo cáo HTML tải về và mở được.
 
 ## 3. Cấu trúc repo
 
